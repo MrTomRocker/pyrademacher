@@ -1,0 +1,1470 @@
+{
+	"error_description": "OK",
+	"error_code": 0,
+	"payload": {
+		"device": {
+			"capabilities": [
+				{
+					"name": "WIND_THRESH1_VALUE_CFG",
+					"value": "12",
+					"min_value": "1",
+					"max_value": "31",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "PROD_CODE_DEVICE_LOC",
+					"value": "32000064_S",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "REACHABILITY_EVT",
+					"value": "true",
+					"read_only": true,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "TEMPERATURE_STOP_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "TEMPERATURE_THRESH5_VALUE_CFG",
+					"value": "-10",
+					"min_value": "-40",
+					"max_value": "80",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "DAWN_THRESH4_VALUE_CFG",
+					"value": "60",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081868
+				},
+				{
+					"name": "SUN_THRESH3_TIME_2_RELEASE_CFG",
+					"value": "20",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "INTF_ID_DEVICE_LOC",
+					"value": "3",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "TEMPERATURE_THRESH1_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "DAWN_ENABLE_THRESH4_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081868
+				},
+				{
+					"name": "SUN_DETECTION_MEA",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1640437565
+				},
+				{
+					"name": "WIND_SPEED_EVT",
+					"value": "0.0",
+					"min_value": "0.0",
+					"max_value": "70.0",
+					"step_size": "0.1",
+					"read_only": true,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "SUN_THRESH4_TEMPERATURE_VALUE_CFG",
+					"value": "10",
+					"min_value": "-5",
+					"max_value": "26",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "WIND_THRESH3_ENV_NAMES_CFG",
+					"value": "Grenzwert 3",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "SUN_THRESH4_VALUE_CFG",
+					"value": "30",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "WIND_DETECT_FACTOR_CFG",
+					"value": "180",
+					"min_value": "1",
+					"max_value": "255",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081877
+				},
+				{
+					"name": "SUN_THRESH1_ENABLE_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "RAIN_START_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DAWN_THRESH3_VALUE_CFG",
+					"value": "60",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081868
+				},
+				{
+					"name": "DAWN_EVT",
+					"value": "1",
+					"min_value": "1",
+					"max_value": "5",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": 1641282145
+				},
+				{
+					"name": "TEMPERATURE_START_EVT",
+					"min_value": "1",
+					"max_value": "5",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH2_TEMPERATURE_VALUE_CFG",
+					"value": "10",
+					"min_value": "-5",
+					"max_value": "26",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "WIND_THRESH2_VALUE_CFG",
+					"value": "12",
+					"min_value": "1",
+					"max_value": "31",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "WIND_THRESH5_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "TEMP_CURR_DEG_MEA",
+					"value": "6.6",
+					"min_value": "-40.0",
+					"max_value": "80.0",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "TEMPERATURE_THRESH4_VALUE_CFG",
+					"value": "-10",
+					"min_value": "-40",
+					"max_value": "80",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "SENS_STATUS_INTERVAL_CFG",
+					"value": "5",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081877
+				},
+				{
+					"name": "DEGREE_LATITUDE_CFG",
+					"value": "52",
+					"min_value": "-90",
+					"max_value": "90",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081877
+				},
+				{
+					"name": "TEMPERATURE_THRESH1_ENV_NAMES_CFG",
+					"value": "Grenzwert 1",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "RAIN_START_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH2_ELEVATION_RANGE_CFG",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "52",
+					"step_size": "26",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH3_TEMPERATURE_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "TEMPERATURE_THRESH3_VALUE_CFG",
+					"value": "-10",
+					"min_value": "-40",
+					"max_value": "80",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "DAWN_THRESH2_VALUE_CFG",
+					"value": "60",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081867
+				},
+				{
+					"name": "DEGREE_LONGITUDE_CFG",
+					"value": "8",
+					"min_value": "0",
+					"max_value": "360",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081877
+				},
+				{
+					"name": "DAWN_THRESH3_ENV_NAMES_CFG",
+					"value": "Grenzwert 3",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "ICONSET_LOC",
+					"value": "iconset25",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DAWN_THRESH4_ENV_NAMES_CFG",
+					"value": "Grenzwert 4",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "DEVICE_TYPE_LOC",
+					"value": "3",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DUSK_ENABLE_THRESH1_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081867
+				},
+				{
+					"name": "DUSK_THRESH4_ENV_NAMES_CFG",
+					"value": "Grenzwert 4",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "DCF_VALID_EVT",
+					"value": "false",
+					"read_only": true,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "RESET_FULL_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "PAIRING_CONFIRMED_LOC",
+					"value": "true",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DUSK_ENABLE_THRESH5_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081870
+				},
+				{
+					"name": "SUN_THRESH2_VALUE_CFG",
+					"value": "30",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "REQ_DATE_TIME_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DAWN_THRESH5_VALUE_CFG",
+					"value": "60",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081870
+				},
+				{
+					"name": "WIND_START_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DUSK_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "WIND_THRESH3_VALUE_CFG",
+					"value": "12",
+					"min_value": "1",
+					"max_value": "31",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "SUN_THRESH1_AZIMUTH_RANGE_CFG",
+					"value": "45.0",
+					"min_value": "0.0",
+					"max_value": "180.0",
+					"step_size": "45.0",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH4_USE_ELEVATION_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_THRESH5_VALUE_CFG",
+					"value": "30",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "DUSK_THRESH5_ENV_NAMES_CFG",
+					"value": "Grenzwert 5",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "SUN_THRESH1_TEMPERATURE_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH1_VALUE_CFG",
+					"value": "30",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH3_USE_ELEVATION_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_THRESH3_USE_AZIMUTH_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "DAWN_THRESH1_VALUE_CFG",
+					"value": "60",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081867
+				},
+				{
+					"name": "TEMPERATURE_THRESH2_VALUE_CFG",
+					"value": "-10",
+					"min_value": "-40",
+					"max_value": "80",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "SUN_THRESH2_TIME_2_DETECT_CFG",
+					"value": "10",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "TEMPERATURE_STOP_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "PROTOCOL_ID_CFG",
+					"value": "692187",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH3_AZIMUTH_RANGE_CFG",
+					"value": "45.0",
+					"min_value": "0.0",
+					"max_value": "180.0",
+					"step_size": "45.0",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "TEMPERATURE_THRESH3_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "RAIN_DETECTION_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "SUN_THRESH4_AZIMUTH_RANGE_CFG",
+					"value": "45.0",
+					"min_value": "0.0",
+					"max_value": "180.0",
+					"step_size": "45.0",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_THRESH1_TARGET_ELEVATION_CFG",
+					"value": "26",
+					"min_value": "13",
+					"max_value": "78",
+					"step_size": "13",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "DAWN_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "TEMPERATURE_THRESH1_VALUE_CFG",
+					"value": "-10",
+					"min_value": "-40",
+					"max_value": "80",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "RAIN_DETECTION_MEA",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "DUSK_THRESH5_VALUE_CFG",
+					"value": "15",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081870
+				},
+				{
+					"name": "SUN_STOP_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "TEMPERATURE_THRESH5_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "PROT_ID_DEVICE_LOC",
+					"value": "692187_S_1",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "WIND_THRESH3_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "WIND_DETECT_TIME_CFG",
+					"value": "1",
+					"min_value": "1",
+					"max_value": "255",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081877
+				},
+				{
+					"name": "SUN_HEIGHT_DEG_MEA",
+					"value": "-10",
+					"min_value": "-90",
+					"max_value": "90",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "AUTOMATIC_SOMMERTIME_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1641263033
+				},
+				{
+					"name": "SUN_THRESH5_TIME_2_DETECT_CFG",
+					"value": "10",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "SENS_STATUS_MODE_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081877
+				},
+				{
+					"name": "WIND_STOP_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH5_TEMPERATURE_VALUE_CFG",
+					"value": "10",
+					"min_value": "-5",
+					"max_value": "26",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "WIND_THRESH1_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "SUN_DIRECTION_EVT",
+					"value": "253.5",
+					"min_value": "0.0",
+					"max_value": "360.0",
+					"step_size": "1.5",
+					"read_only": true,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "SUN_THRESH5_TEMPERATURE_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "RMT_START_UNPAIR_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DUSK_ENABLE_THRESH4_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081868
+				},
+				{
+					"name": "DAWN_ENABLE_THRESH3_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081868
+				},
+				{
+					"name": "TEMPERATURE_THRESH4_ENV_NAMES_CFG",
+					"value": "Grenzwert 4",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "SUN_THRESH5_ENV_NAMES_CFG",
+					"value": "Grenzwert 5",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "SUN_THRESH3_TEMPERATURE_VALUE_CFG",
+					"value": "10",
+					"min_value": "-5",
+					"max_value": "26",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "DUSK_THRESH3_VALUE_CFG",
+					"value": "15",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081868
+				},
+				{
+					"name": "NAME_DEVICE_LOC",
+					"value": "Umweltsensor",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DCF_MODE_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "DUSK_THRESH2_ENV_NAMES_CFG",
+					"value": "Grenzwert 2",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "DAWN_THRESH1_ENV_NAMES_CFG",
+					"value": "Grenzwert 1",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "SUN_START_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "TEMPERATURE_THRESH4_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "SUN_DIRECTION_MEA",
+					"value": "254.5",
+					"min_value": "0.0",
+					"max_value": "360.0",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "SUN_THRESH4_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "WIND_SPEED_MS_MEA",
+					"value": "0.0",
+					"min_value": "0.0",
+					"max_value": "70.0",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "SUN_THRESH1_ELEVATION_RANGE_CFG",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "52",
+					"step_size": "26",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "DUSK_EVT",
+					"value": "1",
+					"min_value": "1",
+					"max_value": "5",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": 1641311543
+				},
+				{
+					"name": "SUN_THRESH2_TEMPERATURE_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "TEMPERATURE_START_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH4_USE_AZIMUTH_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_THRESH1_USE_AZIMUTH_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH5_TARGET_ELEVATION_CFG",
+					"value": "26",
+					"min_value": "13",
+					"max_value": "78",
+					"step_size": "13",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "DUSK_THRESH2_VALUE_CFG",
+					"value": "15",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081867
+				},
+				{
+					"name": "DAWN_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH1_TEMPERATURE_VALUE_CFG",
+					"value": "10",
+					"min_value": "-5",
+					"max_value": "26",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH4_TIME_2_RELEASE_CFG",
+					"value": "20",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "TEMPERATURE_INT_CFG",
+					"value": "6.6",
+					"min_value": "-40.0",
+					"max_value": "80.0",
+					"step_size": "0.1",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "VERSION_CFG",
+					"value": "0.3-1",
+					"read_only": false,
+					"timestamp": 1641316855
+				},
+				{
+					"name": "DUSK_ENABLE_THRESH3_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081868
+				},
+				{
+					"name": "DATE_TIME_CFG",
+					"value": "1380330062",
+					"read_only": false,
+					"timestamp": 1641263033
+				},
+				{
+					"name": "SUN_THRESH3_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "WIND_THRESH1_ENV_NAMES_CFG",
+					"value": "Grenzwert 1",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "SUN_THRESH2_TIME_2_RELEASE_CFG",
+					"value": "20",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_START_EVT",
+					"value": "1",
+					"min_value": "1",
+					"max_value": "5",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": 1640432500
+				},
+				{
+					"name": "ICONSET_INV_LOC",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH4_TARGET_ELEVATION_CFG",
+					"value": "26",
+					"min_value": "13",
+					"max_value": "78",
+					"step_size": "13",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_START_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DUSK_THRESH1_VALUE_CFG",
+					"value": "15",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081867
+				},
+				{
+					"name": "SUN_THRESH1_TIME_2_DETECT_CFG",
+					"value": "10",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SET_TIME_ZONE_CMD",
+					"min_value": "-11",
+					"max_value": "13",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "RAIN_STOP_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH5_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "DAWN_ENABLE_THRESH2_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081867
+				},
+				{
+					"name": "DUSK_THRESH4_VALUE_CFG",
+					"value": "15",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081868
+				},
+				{
+					"name": "DAWN_THRESH5_ENV_NAMES_CFG",
+					"value": "Grenzwert 5",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "CURR_BRIGHTN_CFG",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "150000",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "RAIN_START_EVT",
+					"read_only": true,
+					"timestamp": 1641316553
+				},
+				{
+					"name": "SUN_THRESH3_TARGET_ELEVATION_CFG",
+					"value": "26",
+					"min_value": "13",
+					"max_value": "78",
+					"step_size": "13",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_STOP_EVT",
+					"value": "1",
+					"min_value": "1",
+					"max_value": "5",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": 1640437565
+				},
+				{
+					"name": "SUN_THRESH5_AZIMUTH_RANGE_CFG",
+					"value": "45.0",
+					"min_value": "0.0",
+					"max_value": "180.0",
+					"step_size": "45.0",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "TIME_ZONE_CFG",
+					"value": "2",
+					"min_value": "-11",
+					"max_value": "13",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081877
+				},
+				{
+					"name": "SUN_THRESH1_TIME_2_RELEASE_CFG",
+					"value": "20",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH3_TIME_2_DETECT_CFG",
+					"value": "10",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_THRESH5_TIME_2_RELEASE_CFG",
+					"value": "20",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "SUN_THRESH2_USE_ELEVATION_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "WIND_THRESH4_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "SUN_THRESH2_TARGET_ELEVATION_CFG",
+					"value": "26",
+					"min_value": "13",
+					"max_value": "78",
+					"step_size": "13",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "DAWN_ENABLE_THRESH5_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081870
+				},
+				{
+					"name": "WIND_THRESH4_VALUE_CFG",
+					"value": "12",
+					"min_value": "1",
+					"max_value": "31",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "DAWN_THRESH2_ENV_NAMES_CFG",
+					"value": "Grenzwert 2",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "LIGHT_VAL_LUX_MEA",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "150000",
+					"read_only": false,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "ID_DEVICE_LOC",
+					"value": "1010012",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH4_ENV_NAMES_CFG",
+					"value": "Grenzwert 4",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "SUN_HEIGHT_EVT",
+					"value": "10",
+					"min_value": "-90",
+					"max_value": "90",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "SUN_THRESH1_USE_ELEVATION_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH4_TIME_2_DETECT_CFG",
+					"value": "10",
+					"min_value": "1",
+					"max_value": "32",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_THRESH1_ENV_NAMES_CFG",
+					"value": "Grenzwert 1",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "RAIN_STOP_EVT",
+					"read_only": true,
+					"timestamp": 1641316853
+				},
+				{
+					"name": "TEMPERATURE_THRESH5_ENV_NAMES_CFG",
+					"value": "Grenzwert 5",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "DUSK_THRESH3_ENV_NAMES_CFG",
+					"value": "Grenzwert 3",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "WIND_THRESH5_VALUE_CFG",
+					"value": "12",
+					"min_value": "1",
+					"max_value": "31",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "VIS_DEVICE_LOC",
+					"value": "true",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "WIND_THRESH2_ENV_NAMES_CFG",
+					"value": "Grenzwert 2",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "REQ_SENS_INFO_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "WIND_STOP_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "TEMPERATURE_THRESH2_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "SUN_THRESH2_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "DESCR_DEVICE_LOC",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "TEMPERATURE_START_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH2_USE_AZIMUTH_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH2_AZIMUTH_RANGE_CFG",
+					"value": "45.0",
+					"min_value": "0.0",
+					"max_value": "180.0",
+					"step_size": "45.0",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "SUN_THRESH5_USE_ELEVATION_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "DUSK_ENABLE_THRESH2_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081867
+				},
+				{
+					"name": "SUN_THRESH3_VALUE_CFG",
+					"value": "30",
+					"min_value": "1",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "RESET_WO_PAIR_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH3_ENV_NAMES_CFG",
+					"value": "Grenzwert 3",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "SUN_THRESH3_ELEVATION_RANGE_CFG",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "52",
+					"step_size": "26",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "DAWN_ENABLE_THRESH1_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081867
+				},
+				{
+					"name": "TEMPERATURE_STOP_EVT",
+					"min_value": "1",
+					"max_value": "5",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH2_ENV_NAMES_CFG",
+					"value": "Grenzwert 2",
+					"read_only": false,
+					"timestamp": 1602066808
+				},
+				{
+					"name": "WIND_START_EVT",
+					"min_value": "1",
+					"max_value": "5",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH1_TARGET_AZIMUTH_CFG",
+					"value": "180.0",
+					"min_value": "22.5",
+					"max_value": "315.0",
+					"step_size": "22.5",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "TEMPERATURE_THRESH2_ENV_NAMES_CFG",
+					"value": "Grenzwert 2",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "RMT_STOP_PAIR_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "REQ_SENS_CFG_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH4_TEMPERATURE_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "WIND_THRESH5_ENV_NAMES_CFG",
+					"value": "Grenzwert 5",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "SUN_THRESH5_TARGET_AZIMUTH_CFG",
+					"value": "180.0",
+					"min_value": "22.5",
+					"max_value": "315.0",
+					"step_size": "22.5",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "SUN_THRESH4_ELEVATION_RANGE_CFG",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "52",
+					"step_size": "26",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "TEMPERATURE_THRESH3_ENV_NAMES_CFG",
+					"value": "Grenzwert 3",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "RAIN_DETECTED_EVT",
+					"value": "false",
+					"read_only": true,
+					"timestamp": 1641317154
+				},
+				{
+					"name": "WIND_STOP_EVT",
+					"min_value": "1",
+					"max_value": "5",
+					"step_size": "1",
+					"read_only": true,
+					"timestamp": -1
+				},
+				{
+					"name": "RMT_START_PAIR_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "WIND_START_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH4_TARGET_AZIMUTH_CFG",
+					"value": "180.0",
+					"min_value": "22.5",
+					"max_value": "315.0",
+					"step_size": "22.5",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_THRESH3_TARGET_AZIMUTH_CFG",
+					"value": "180.0",
+					"min_value": "22.5",
+					"max_value": "315.0",
+					"step_size": "22.5",
+					"read_only": false,
+					"timestamp": 1635081873
+				},
+				{
+					"name": "SUN_STOP_EVT_PUSH_ENABLED",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_THRESH2_TARGET_AZIMUTH_CFG",
+					"value": "180.0",
+					"min_value": "22.5",
+					"max_value": "315.0",
+					"step_size": "22.5",
+					"read_only": false,
+					"timestamp": 1635081871
+				},
+				{
+					"name": "DUSK_THRESH1_ENV_NAMES_CFG",
+					"value": "Grenzwert 1",
+					"read_only": false,
+					"timestamp": 1602066809
+				},
+				{
+					"name": "WIND_THRESH2_ENABLE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081875
+				},
+				{
+					"name": "USE_SECURE_WIND_FCT_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1635081877
+				},
+				{
+					"name": "SUN_THRESH5_USE_AZIMUTH_CFG",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "SUN_THRESH5_ELEVATION_RANGE_CFG",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "52",
+					"step_size": "26",
+					"read_only": false,
+					"timestamp": 1635081874
+				},
+				{
+					"name": "RAIN_STOP_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DUSK_EVT_PUSH_TEXT",
+					"value": "",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "WIND_THRESH4_ENV_NAMES_CFG",
+					"value": "Grenzwert 4",
+					"read_only": false,
+					"timestamp": 1602066809
+				}
+			],
+			"scenes": []
+		}
+	}
+}

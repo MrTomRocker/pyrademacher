@@ -1,0 +1,175 @@
+{
+    "error_description": "OK",
+    "error_code": 0,
+    "payload": {
+      "device": {
+        "capabilities": [
+          {
+            "name": "VERSION_CFG",
+            "value": "",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "PROD_CODE_DEVICE_LOC",
+            "value": "32003164",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "BATT_VALUE_EVT",
+            "value": "47",
+            "read_only": true,
+            "timestamp": 1605097273
+          },
+          {
+            "name": "REACHABILITY_EVT",
+            "value": "true",
+            "read_only": true,
+            "timestamp": 1605097273
+          },
+          { "name": "CONTACT_TILTED_EVT", "read_only": true, "timestamp": -1 },
+          {
+            "name": "NAME_DEVICE_LOC",
+            "value": "Esszimmer2",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "PROT_ID_DEVICE_LOC",
+            "value": "ac0914_1",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "INTF_ID_DEVICE_LOC",
+            "value": "3",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "ICONSET_LOC",
+            "value": "iconset24",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "CONTACT_CLOSED_EVT_PUSH_TEXT",
+            "value": "",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "DEVICE_TYPE_LOC",
+            "value": "3",
+            "read_only": false,
+            "timestamp": -1
+          },
+          { "name": "CONTACT_OPENED_EVT", "read_only": true, "timestamp": -1 },
+          {
+            "name": "ICONSET_INV_LOC",
+            "value": "false",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "CONTACT_CLOSED_EVT_PUSH_ENABLED",
+            "value": "false",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "BATT_LOW_EVT",
+            "value": "false",
+            "read_only": true,
+            "timestamp": -1
+          },
+          {
+            "name": "PAIRING_CONFIRMED_LOC",
+            "value": "true",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "BATTERY_LVL_PCT_MEA",
+            "value": "47",
+            "read_only": false,
+            "timestamp": 1605097273
+          },
+          {
+            "name": "ID_DEVICE_LOC",
+            "value": "1010072",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "PROTOCOL_ID_CFG",
+            "value": "ac092b",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "CONTACT_CLOSED_EVT",
+            "read_only": true,
+            "timestamp": 1605012795
+          },
+          {
+            "name": "BATT_LOW_EVT_PUSH_TEXT",
+            "value": "Batterie fast leer",
+            "read_only": false,
+            "timestamp": 1597783596
+          },
+          {
+            "name": "CONTACT_OPENED_EVT_PUSH_TEXT",
+            "value": "Kontakt geöffnet erkannt",
+            "read_only": false,
+            "timestamp": 1597783234
+          },
+          {
+            "name": "VIS_DEVICE_LOC",
+            "value": "true",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "CONTACT_TILTED_EVT_PUSH_TEXT",
+            "value": "",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "CLOSE_CONTACT_MEA",
+            "value": "0",
+            "read_only": false,
+            "timestamp": 1605012795
+          },
+          {
+            "name": "CONTACT_OPENED_EVT_PUSH_ENABLED",
+            "value": "false",
+            "read_only": false,
+            "timestamp": 1597783599
+          },
+          {
+            "name": "BATT_LOW_EVT_PUSH_ENABLED",
+            "value": "true",
+            "read_only": false,
+            "timestamp": 1597783596
+          },
+          {
+            "name": "CONTACT_TILTED_EVT_PUSH_ENABLED",
+            "value": "false",
+            "read_only": false,
+            "timestamp": -1
+          },
+          {
+            "name": "DESCR_DEVICE_LOC",
+            "value": "Ihre Gerätebeschreibung",
+            "read_only": false,
+            "timestamp": -1
+          }
+        ],
+        "scenes": []
+      }
+    }
+  }
+  

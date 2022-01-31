@@ -74,7 +74,7 @@ class HomePilotDevice:
 
     async def async_ping(self):
         if self.has_ping_cmd:
-            await self.api.ping(self.did)
+            await self.api.async_ping(self.did)
 
     @property
     def api(self) -> HomePilotApi:

@@ -1,0 +1,242 @@
+{
+	"error_description": "OK",
+	"error_code": 0,
+	"payload": {
+		"device": {
+			"capabilities": [
+				{
+					"name": "CURR_POS_CFG",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "POS_UP_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "VERSION_CFG",
+					"value": "1.2-1",
+					"read_only": false,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "INC_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "PROD_CODE_DEVICE_LOC",
+					"value": "14234511",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "GOTO_VENTIL_POS_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "REACHABILITY_EVT",
+					"value": "true",
+					"read_only": true,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "RESET_WO_PAIR_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "NAME_DEVICE_LOC",
+					"value": "Living Room Blinds",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "PROT_ID_DEVICE_LOC",
+					"value": "407903_1",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "INTF_ID_DEVICE_LOC",
+					"value": "3",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "GOTO_DAWN_POS_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "VENTIL_POS_MODE_CFG",
+					"value": "false",
+					"read_only": false,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "ICONSET_LOC",
+					"value": "iconset15",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DEVICE_TYPE_LOC",
+					"value": "2",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "ICONSET_INV_LOC",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "RMT_STOP_PAIR_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "VOICE_CONTROLLED_LOC",
+					"value": "",
+					"read_only": false,
+					"timestamp": 1641675814
+				},
+				{
+					"name": "REQ_STATUS_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "VENTIL_POS_CFG",
+					"value": "68",
+					"min_value": "0",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "RESET_FULL_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "PUSH_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "PAIRING_CONFIRMED_LOC",
+					"value": "true",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "ID_DEVICE_LOC",
+					"value": "1",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "PROTOCOL_ID_CFG",
+					"value": "407903",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "RMT_START_PAIR_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_PROG_ACTIVE_EVT",
+					"value": "false",
+					"read_only": true,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "GOTO_DUSK_POS_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "GOTO_POS_CMD",
+					"min_value": "0",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_START_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "SUN_STOP_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "STOP_CMD",
+					"value": "false",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "VIS_DEVICE_LOC",
+					"value": "true",
+					"read_only": false,
+					"timestamp": 1641676552
+				},
+				{
+					"name": "OBSTACLE_DET_EVT",
+					"value": "false",
+					"read_only": true,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "RMT_START_UNPAIR_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "BLOCK_DET_EVT",
+					"value": "false",
+					"read_only": true,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "POS_DOWN_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DESCR_DEVICE_LOC",
+					"value": "",
+					"read_only": false,
+					"timestamp": 1641507624
+				},
+				{
+					"name": "PING_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "DEC_CMD",
+					"read_only": false,
+					"timestamp": -1
+				}
+			],
+			"scenes": []
+		}
+	}
+}
