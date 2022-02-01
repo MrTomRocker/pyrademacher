@@ -55,7 +55,7 @@ class HomePilotManager:
 
     async def update_states(self):
         try:
-            states = await self.api.get_devices_state()
+            states = await self.api.async_get_devices_state()
             states["-1"] = await self.get_hub_state()
         except Exception:
             for did in self.devices:
