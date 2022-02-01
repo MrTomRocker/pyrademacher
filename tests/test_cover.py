@@ -45,7 +45,7 @@ class TestHomePilotCover:
         assert cover.model == "RolloTron radio beltwinder"
         assert cover.has_ping_cmd is True
         assert cover.can_set_position is True
-    
+
     def test_update_state(self, mocked_api):
         loop = asyncio.get_event_loop()
         cover = loop.run_until_complete(HomePilotCover.async_build_from_api(mocked_api, 1))

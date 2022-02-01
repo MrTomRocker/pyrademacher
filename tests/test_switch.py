@@ -37,8 +37,8 @@ class TestHomePilotSwitch:
         assert switch.device_group == "1"
         assert switch.fw_version == "4.7-1"
         assert switch.model == "DuoFern Universal actuator 2-channel"
-        assert switch.has_ping_cmd == True
-    
+        assert switch.has_ping_cmd is True
+
     def test_update_state(self, mocked_api):
         loop = asyncio.get_event_loop()
         switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api, 1))

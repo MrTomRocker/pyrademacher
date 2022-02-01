@@ -17,7 +17,7 @@ class TestHomePilotCover:
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
         yield api
-    
+
     @pytest.fixture
     def mocked_api_contact_sensor(self):
         f = open("tests/test_files/device_contact_sensor.json")
@@ -27,10 +27,10 @@ class TestHomePilotCover:
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
         yield api
-    
+
     def test_env_sensor_build_from_api(self, mocked_api_env_sensor):
         loop = asyncio.get_event_loop()
-        env_sensor: HomePilotSensor = loop.run_until_complete(HomePilotSensor.async_build_from_api(mocked_api_env_sensor,1))
+        env_sensor: HomePilotSensor = loop.run_until_complete(HomePilotSensor.async_build_from_api(mocked_api_env_sensor, 1))
         assert env_sensor.did == "1010012"
         assert env_sensor.uid == "692187_S_1"
         assert env_sensor.name == "Umweltsensor"
@@ -38,20 +38,22 @@ class TestHomePilotCover:
         assert env_sensor.device_group == "3"
         assert env_sensor.fw_version == "0.3-1"
         assert env_sensor.model == "Sensor DuoFern Environmental sensor"
-        assert env_sensor.has_ping_cmd == False
-        assert env_sensor.has_battery_level == False
-        assert env_sensor.has_brightness == True
-        assert env_sensor.has_contact_state == False
-        assert env_sensor.has_rain_detection == True
-        assert env_sensor.has_sun_detection == True
-        assert env_sensor.has_sun_direction == True
-        assert env_sensor.has_sun_height == True
-        assert env_sensor.has_temperature == True
-        assert env_sensor.has_wind_speed == True
-    
+        assert env_sensor.has_ping_cmd is False
+        assert env_sensor.has_battery_level is False
+        assert env_sensor.has_brightness is True
+        assert env_sensor.has_contact_state is False
+        assert env_sensor.has_rain_detection is True
+        assert env_sensor.has_sun_detection is True
+        assert env_sensor.has_sun_direction is True
+        assert env_sensor.has_sun_height is True
+        assert env_sensor.has_temperature is True
+        assert env_sensor.has_wind_speed is True
+
     def test_contact_sensor_build_from_api(self, mocked_api_contact_sensor):
         loop = asyncio.get_event_loop()
-        contact_sensor: HomePilotSensor = loop.run_until_complete(HomePilotSensor.async_build_from_api(mocked_api_contact_sensor,1))
+        contact_sensor: HomePilotSensor = loop.run_until_complete(
+            HomePilotSensor.async_build_from_api(mocked_api_contact_sensor, 1)
+        )
         assert contact_sensor.did == "1010072"
         assert contact_sensor.uid == "ac0914_1"
         assert contact_sensor.name == "Esszimmer2"
@@ -59,44 +61,48 @@ class TestHomePilotCover:
         assert contact_sensor.device_group == "3"
         assert contact_sensor.fw_version == ""
         assert contact_sensor.model == "DuoFern Window/Door Contact"
-        assert contact_sensor.has_ping_cmd == False
-        assert contact_sensor.has_battery_level == True
-        assert contact_sensor.has_brightness == False
-        assert contact_sensor.has_contact_state == True
-        assert contact_sensor.has_rain_detection == False
-        assert contact_sensor.has_sun_detection == False
-        assert contact_sensor.has_sun_direction == False
-        assert contact_sensor.has_sun_height == False
-        assert contact_sensor.has_temperature == False
-        assert contact_sensor.has_wind_speed == False
-    
+        assert contact_sensor.has_ping_cmd is False
+        assert contact_sensor.has_battery_level is True
+        assert contact_sensor.has_brightness is False
+        assert contact_sensor.has_contact_state is True
+        assert contact_sensor.has_rain_detection is False
+        assert contact_sensor.has_sun_detection is False
+        assert contact_sensor.has_sun_direction is False
+        assert contact_sensor.has_sun_height is False
+        assert contact_sensor.has_temperature is False
+        assert contact_sensor.has_wind_speed is False
+
     def test_env_sensor_update_state(self, mocked_api_env_sensor):
         loop = asyncio.get_event_loop()
-        env_sensor: HomePilotSensor = loop.run_until_complete(HomePilotSensor.async_build_from_api(mocked_api_env_sensor,1))
+        env_sensor: HomePilotSensor = loop.run_until_complete(
+            HomePilotSensor.async_build_from_api(mocked_api_env_sensor, 1)
+        )
         env_sensor.update_state({
             "readings": {
-				"sun_detected": False,
-				"sun_brightness": 1,
-				"sun_direction": 87.0,
-				"sun_elevation": -7,
-				"wind_speed": 0.0,
-				"rain_detected": True,
-				"temperature_primary": 2.5
+			    "sun_detected": False,
+                "sun_brightness": 1,
+                "sun_direction": 87.0,
+                "sun_elevation": -7,
+                "wind_speed": 0.0,
+                "rain_detected": True,
+                "temperature_primary": 2.5
             },
             "statusValid": True
         })
-        assert env_sensor.sun_detection_value == False
+        assert env_sensor.sun_detection_value is False
         assert env_sensor.brightness_value == 1
         assert env_sensor.sun_direction_value == 87.0
         assert env_sensor.sun_height_value == -7
         assert env_sensor.wind_speed_value == 0.0
-        assert env_sensor.rain_detection_value == True
+        assert env_sensor.rain_detection_value is True
         assert env_sensor.temperature_value == 2.5
-        assert env_sensor.available == True
+        assert env_sensor.available is True
 
     def test_contact_sensor_update_state(self, mocked_api_contact_sensor):
         loop = asyncio.get_event_loop()
-        contact_sensor: HomePilotSensor = loop.run_until_complete(HomePilotSensor.async_build_from_api(mocked_api_contact_sensor,1))
+        contact_sensor: HomePilotSensor = loop.run_until_complete(
+            HomePilotSensor.async_build_from_api(mocked_api_contact_sensor, 1)
+        )
         contact_sensor.update_state({
             "readings": {
                 "contact_state": "open"
@@ -106,7 +112,7 @@ class TestHomePilotCover:
         })
         assert contact_sensor.contact_state_value == ContactState.OPENED
         assert contact_sensor.battery_level_value == 54
-        assert contact_sensor.available == True
+        assert contact_sensor.available is True
         contact_sensor.update_state({
             "readings": {
                 "contact_state": "closed"
@@ -116,4 +122,4 @@ class TestHomePilotCover:
         })
         assert contact_sensor.contact_state_value == ContactState.CLOSED
         assert contact_sensor.battery_level_value == 99
-        assert contact_sensor.available == False
+        assert contact_sensor.available is False

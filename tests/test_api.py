@@ -44,7 +44,7 @@ class TestHomePilotApi:
         loop = asyncio.get_event_loop()
 
         with aioresponses() as mocked:
-            with pytest.raises(AuthError) as e_info:
+            with pytest.raises(AuthError):
                 mocked.post(
                     f"http://{TEST_HOST}/authentication/password_salt",
                     status=500,
@@ -53,7 +53,7 @@ class TestHomePilotApi:
                 loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST, TEST_PASSWORD))
 
         with aioresponses() as mocked:
-            with pytest.raises(CannotConnect) as e_info:
+            with pytest.raises(CannotConnect):
                 mocked.post(
                     f"http://{TEST_HOST}/authentication/password_salt",
                     status=200,
@@ -187,7 +187,7 @@ class TestHomePilotApi:
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             callback = lambda url, **kwargs: CallbackResult(
-                body = json.dumps(response) 
+                body=json.dumps(response)
                 if kwargs["json"] == {"name": "PING_CMD"}
                 else json.dumps({"error_code": 20})
             )
@@ -205,7 +205,7 @@ class TestHomePilotApi:
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             callback = lambda url, **kwargs: CallbackResult(
-                body = json.dumps(response) 
+                body=json.dumps(response)
                 if kwargs["json"] == {"name": "POS_UP_CMD"}
                 else json.dumps({"error_code": 20})
             )
@@ -223,7 +223,7 @@ class TestHomePilotApi:
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             callback = lambda url, **kwargs: CallbackResult(
-                body = json.dumps(response) 
+                body=json.dumps(response)
                 if kwargs["json"] == {"name": "POS_DOWN_CMD"}
                 else json.dumps({"error_code": 20})
             )
@@ -241,7 +241,7 @@ class TestHomePilotApi:
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             callback = lambda url, **kwargs: CallbackResult(
-                body = json.dumps(response) 
+                body=json.dumps(response)
                 if kwargs["json"] == {"name": "STOP_CMD"}
                 else json.dumps({"error_code": 20})
             )
@@ -260,7 +260,7 @@ class TestHomePilotApi:
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             callback = lambda url, **kwargs: CallbackResult(
-                body = json.dumps(response) 
+                body=json.dumps(response)
                 if kwargs["json"] == {"name": "GOTO_POS_CMD", "value": position}
                 else json.dumps({"error_code": 20})
             )
@@ -278,7 +278,7 @@ class TestHomePilotApi:
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             callback = lambda url, **kwargs: CallbackResult(
-                body = json.dumps(response) 
+                body=json.dumps(response)
                 if kwargs["json"] == {"name": "TURN_ON_CMD"}
                 else json.dumps({"error_code": 20})
             )
@@ -296,7 +296,7 @@ class TestHomePilotApi:
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             callback = lambda url, **kwargs: CallbackResult(
-                body = json.dumps(response) 
+                body=json.dumps(response)
                 if kwargs["json"] == {"name": "TURN_OFF_CMD"}
                 else json.dumps({"error_code": 20})
             )
