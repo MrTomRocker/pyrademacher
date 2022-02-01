@@ -8,11 +8,11 @@ TEST_HOST = "test_host"
 
 class TestHomePilotHub:
     @pytest.fixture
-    def mocked_api(self):
+    def mocked_api(self, event_loop):
         api = MagicMock()
         api.host = TEST_HOST
         api.password = ""
-        func_get_fw_version = asyncio.Future()
+        func_get_fw_version = asyncio.Future(loop=event_loop)
         func_get_fw_version.set_result({
             "hw_platform": "ampere",
             "sw_platform": "bridge",
@@ -20,16 +20,16 @@ class TestHomePilotHub:
             "df_stick_version": "2.0"
         })
         api.async_get_fw_version.return_value = func_get_fw_version
-        func_get_nodename = asyncio.Future()
+        func_get_nodename = asyncio.Future(loop=event_loop)
         func_get_nodename.set_result({"nodename": "testnodename"})
         api.async_get_nodename.return_value = func_get_nodename
-        func_turn_led_on = asyncio.Future()
+        func_turn_led_on = asyncio.Future(loop=event_loop)
         func_turn_led_on.set_result(None)
         api.async_turn_led_on.return_value = func_turn_led_on
-        func_turn_led_off = asyncio.Future()
+        func_turn_led_off = asyncio.Future(loop=event_loop)
         func_turn_led_off.set_result(None)
         api.async_turn_led_off.return_value = func_turn_led_off
-        func_ping = asyncio.Future()
+        func_ping = asyncio.Future(loop=event_loop)
         func_ping.set_result(None)
         api.async_ping.return_value = func_ping
         yield api

@@ -9,20 +9,20 @@ from homepilot.switch import HomePilotSwitch
 
 class TestHomePilotSwitch:
     @pytest.fixture
-    def mocked_api(self):
+    def mocked_api(self, event_loop):
         f = open("tests/test_files/device_switch.json")
         j = json.load(f)
         api = MagicMock()
-        func_get_device = asyncio.Future()
+        func_get_device = asyncio.Future(loop=event_loop)
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
-        func_turn_on = asyncio.Future()
+        func_turn_on = asyncio.Future(loop=event_loop)
         func_turn_on.set_result(None)
         api.async_turn_on.return_value = func_turn_on
-        func_turn_off = asyncio.Future()
+        func_turn_off = asyncio.Future(loop=event_loop)
         func_turn_off.set_result(None)
         api.async_turn_off.return_value = func_turn_off
-        func_ping = asyncio.Future()
+        func_ping = asyncio.Future(loop=event_loop)
         func_ping.set_result(None)
         api.async_ping.return_value = func_ping
         yield api
