@@ -79,7 +79,7 @@ class TestHomePilotCover:
         )
         env_sensor.update_state({
             "readings": {
-			    "sun_detected": False,
+                "sun_detected": False,
                 "sun_brightness": 1,
                 "sun_direction": 87.0,
                 "sun_elevation": -7,

@@ -180,132 +180,146 @@ class TestHomePilotApi:
             expected = {"1": {"did": "1", "name": "name1"}, "2": {"did": "2", "name": "name2"}}
             assert loop.run_until_complete(instance.async_get_devices_state()) == expected
 
+    def callback_ping(self, url, **kwargs):
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        return CallbackResult(
+            body=json.dumps(response)
+            if kwargs["json"] == {"name": "PING_CMD"}
+            else json.dumps({"error_code": 20})
+        )
+    
     def test_async_ping(self):
         did = "1234"
         loop = asyncio.get_event_loop()
-        response = {"error_code": 0, "error_description": "OK", "payload": {}}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
-            callback = lambda url, **kwargs: CallbackResult(
-                body=json.dumps(response)
-                if kwargs["json"] == {"name": "PING_CMD"}
-                else json.dumps({"error_code": 20})
-            )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                callback=callback
+                callback=self.callback_ping
             )
-            assert loop.run_until_complete(instance.async_ping(did)) == response
+            assert loop.run_until_complete(instance.async_ping(did))["error_code"] == 0
+
+    def callback_pos_up(self, url, **kwargs):
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        return CallbackResult(
+            body=json.dumps(response)
+            if kwargs["json"] == {"name": "POS_UP_CMD"}
+            else json.dumps({"error_code": 20})
+        )
 
     def test_async_open_cover(self):
         did = "1234"
         loop = asyncio.get_event_loop()
-        response = {"error_code": 0, "error_description": "OK", "payload": {}}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
-            callback = lambda url, **kwargs: CallbackResult(
-                body=json.dumps(response)
-                if kwargs["json"] == {"name": "POS_UP_CMD"}
-                else json.dumps({"error_code": 20})
-            )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                callback=callback
+                callback=self.callback_pos_up
             )
-            assert loop.run_until_complete(instance.async_open_cover(did)) == response
+            assert loop.run_until_complete(instance.async_open_cover(did))["error_code"] == 0
+
+    def callback_pos_down(self, url, **kwargs):
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        return CallbackResult(
+            body=json.dumps(response)
+            if kwargs["json"] == {"name": "POS_DOWN_CMD"}
+            else json.dumps({"error_code": 20})
+        )
 
     def test_async_close_cover(self):
         did = "1234"
         loop = asyncio.get_event_loop()
-        response = {"error_code": 0, "error_description": "OK", "payload": {}}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
-            callback = lambda url, **kwargs: CallbackResult(
-                body=json.dumps(response)
-                if kwargs["json"] == {"name": "POS_DOWN_CMD"}
-                else json.dumps({"error_code": 20})
-            )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                callback=callback
+                callback=self.callback_pos_down
             )
-            assert loop.run_until_complete(instance.async_close_cover(did)) == response
+            assert loop.run_until_complete(instance.async_close_cover(did))["error_code"] == 0
+
+    def callback_stop(self, url, **kwargs):
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        return CallbackResult(
+            body=json.dumps(response)
+            if kwargs["json"] == {"name": "STOP_CMD"}
+            else json.dumps({"error_code": 20})
+        )
 
     def test_async_stop_cover(self):
         did = "1234"
         loop = asyncio.get_event_loop()
-        response = {"error_code": 0, "error_description": "OK", "payload": {}}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
-            callback = lambda url, **kwargs: CallbackResult(
-                body=json.dumps(response)
-                if kwargs["json"] == {"name": "STOP_CMD"}
-                else json.dumps({"error_code": 20})
-            )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                callback=callback
+                callback=self.callback_stop
             )
-            assert loop.run_until_complete(instance.async_stop_cover(did)) == response
+            assert loop.run_until_complete(instance.async_stop_cover(did))["error_code"] == 0
+
+    def callback_goto_pos(self, url, **kwargs):
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        return CallbackResult(
+            body=json.dumps(response)
+            if kwargs["json"] == {"name": "GOTO_POS_CMD", "value": 40}
+            else json.dumps({"error_code": 20})
+        )
 
     def test_async_set_cover_position(self):
         did = "1234"
         position = 40
         loop = asyncio.get_event_loop()
-        response = {"error_code": 0, "error_description": "OK", "payload": {}}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
-            callback = lambda url, **kwargs: CallbackResult(
-                body=json.dumps(response)
-                if kwargs["json"] == {"name": "GOTO_POS_CMD", "value": position}
-                else json.dumps({"error_code": 20})
-            )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                callback=callback
+                callback=self.callback_goto_pos
             )
-            assert loop.run_until_complete(instance.async_set_cover_position(did, position)) == response
+            assert loop.run_until_complete(instance.async_set_cover_position(did, position))["error_code"] == 0
+
+    def callback_turn_on(self, url, **kwargs):
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        return CallbackResult(
+            body=json.dumps(response)
+            if kwargs["json"] == {"name": "TURN_ON_CMD"}
+            else json.dumps({"error_code": 20})
+        )
 
     def test_async_turn_on(self):
         did = "1234"
         loop = asyncio.get_event_loop()
-        response = {"error_code": 0, "error_description": "OK", "payload": {}}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
-            callback = lambda url, **kwargs: CallbackResult(
-                body=json.dumps(response)
-                if kwargs["json"] == {"name": "TURN_ON_CMD"}
-                else json.dumps({"error_code": 20})
-            )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                callback=callback
+                callback=self.callback_turn_on
             )
-            assert loop.run_until_complete(instance.async_turn_on(did)) == response
+            assert loop.run_until_complete(instance.async_turn_on(did))["error_code"] == 0
+
+    def callback_turn_off(self, url, **kwargs):
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        return CallbackResult(
+            body=json.dumps(response)
+            if kwargs["json"] == {"name": "TURN_OFF_CMD"}
+            else json.dumps({"error_code": 20})
+        )
 
     def test_async_turn_off(self):
         did = "1234"
         loop = asyncio.get_event_loop()
-        response = {"error_code": 0, "error_description": "OK", "payload": {}}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
-            callback = lambda url, **kwargs: CallbackResult(
-                body=json.dumps(response)
-                if kwargs["json"] == {"name": "TURN_OFF_CMD"}
-                else json.dumps({"error_code": 20})
-            )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                callback=callback
+                callback=self.callback_turn_off
             )
-            assert loop.run_until_complete(instance.async_turn_off(did)) == response
+            assert loop.run_until_complete(instance.async_turn_off(did))["error_code"] == 0
 
     def test_async_turn_led_on(self):
         loop = asyncio.get_event_loop()
@@ -317,7 +331,7 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response)
             )
-            assert loop.run_until_complete(instance.async_turn_led_on()) == response
+            assert loop.run_until_complete(instance.async_turn_led_on())["error_code"] == 0
 
     def test_async_turn_led_off(self):
         loop = asyncio.get_event_loop()
@@ -329,4 +343,4 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response)
             )
-            assert loop.run_until_complete(instance.async_turn_led_off()) == response
+            assert loop.run_until_complete(instance.async_turn_led_off())["error_code"] == 0
