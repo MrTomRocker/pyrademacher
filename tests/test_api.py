@@ -187,7 +187,7 @@ class TestHomePilotApi:
             if kwargs["json"] == {"name": "PING_CMD"}
             else json.dumps({"error_code": 20})
         )
-    
+
     def test_async_ping(self):
         did = "1234"
         loop = asyncio.get_event_loop()
