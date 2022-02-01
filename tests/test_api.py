@@ -3,11 +3,11 @@ import json
 from aiohttp.cookiejar import CookieJar
 from aioresponses import CallbackResult, aioresponses
 import pytest
-from homepilot import device
 from homepilot.api import AuthError, CannotConnect, HomePilotApi
 
 TEST_HOST = "test_host"
 TEST_PASSWORD = "test_password"
+
 
 class TestHomePilotApi:
     def test_init(self):
@@ -27,7 +27,7 @@ class TestHomePilotApi:
             mocked.get(f"http://{TEST_HOST}/", status=200, body="")
             mocked.post(f"http://{TEST_HOST}/authentication/password_salt", status=500)
             assert loop.run_until_complete(HomePilotApi.test_connection(TEST_HOST)) == "ok"
-            
+
         with aioresponses() as mocked:
             mocked.get(f"http://{TEST_HOST}/", status=500, body="")
             assert loop.run_until_complete(HomePilotApi.test_connection(TEST_HOST)) == "error"
@@ -48,42 +48,46 @@ class TestHomePilotApi:
                 mocked.post(
                     f"http://{TEST_HOST}/authentication/password_salt",
                     status=500,
-                    body=json.dumps({"error_code":5007})
+                    body=json.dumps({"error_code": 5007})
                 )
-                loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST,TEST_PASSWORD))
+                loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST, TEST_PASSWORD))
 
         with aioresponses() as mocked:
             with pytest.raises(CannotConnect) as e_info:
                 mocked.post(
                     f"http://{TEST_HOST}/authentication/password_salt",
                     status=200,
-                    body=json.dumps({"error_code":5007})
+                    body=json.dumps({"error_code": 5007})
                 )
-                loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST,TEST_PASSWORD))
+                loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST, TEST_PASSWORD))
 
         with aioresponses() as mocked:
-            with pytest.raises(AuthError) as e_info:
+            with pytest.raises(AuthError):
                 mocked.post(
                     f"http://{TEST_HOST}/authentication/password_salt",
                     status=200,
-                    body=json.dumps({"error_code":0, "password_salt": "12345"})
+                    body=json.dumps({"error_code": 0, "password_salt": "12345"})
                 )
-                mocked.post(f"http://{TEST_HOST}/authentication/login",
+                mocked.post(
+                    f"http://{TEST_HOST}/authentication/login",
                     status=500
                 )
-                loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST,TEST_PASSWORD))
+                loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST, TEST_PASSWORD))
 
         with aioresponses() as mocked:
             mocked.post(
                 f"http://{TEST_HOST}/authentication/password_salt",
                 status=200,
-                body=json.dumps({"error_code":0, "password_salt": "12345"})
+                body=json.dumps({"error_code": 0, "password_salt": "12345"})
             )
-            mocked.post(f"http://{TEST_HOST}/authentication/login",
+            mocked.post(
+                f"http://{TEST_HOST}/authentication/login",
                 status=200,
-                headers={"Set-Cookie":"HPSESSION=V6EivFUCps1ItXmkymnsZLcpGJZL20keUtBAIvZxsbUaDGNP31sQ4YYxUT0XXv7P;Path=/"}
+                headers={
+                    "Set-Cookie": "HPSESSION=V6EivFUCps1ItXmkymnsZLcpGJZL20keUtBAIvZxsbUaDGNP31sQ4YYxUT0XXv7P;Path=/"
+                }
             )
-            assert isinstance(loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST,TEST_PASSWORD)), CookieJar)
+            assert isinstance(loop.run_until_complete(HomePilotApi.test_auth(TEST_HOST, TEST_PASSWORD)), CookieJar)
 
     def test_async_get_devices(self):
         loop = asyncio.get_event_loop()
@@ -92,22 +96,22 @@ class TestHomePilotApi:
             mocked.get(
                 f"http://{TEST_HOST}/devices",
                 status=200,
-                body=json.dumps({"error_code":0,"payload":{"devices":["a"]}})
+                body=json.dumps({"error_code": 0, "payload": {"devices": ["a"]}})
             )
-            assert loop.run_until_complete(instance.get_devices())==["a"]
+            assert loop.run_until_complete(instance.get_devices()) == ["a"]
 
     def test_async_get_device(self):
         did = "1234"
-        device_resp = {"capabilities":[]}
+        device_resp = {"capabilities": []}
         loop = asyncio.get_event_loop()
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             mocked.get(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                body=json.dumps({"error_code":0,"payload":{"device":device_resp}})
+                body=json.dumps({"error_code": 0, "payload": {"device": device_resp}})
             )
-            assert loop.run_until_complete(instance.get_device(did))==device_resp
+            assert loop.run_until_complete(instance.get_device(did)) == device_resp
 
     def test_async_get_fw_status(self):
         loop = asyncio.get_event_loop()
@@ -119,7 +123,7 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response)
             )
-            assert loop.run_until_complete(instance.async_get_fw_status())==response
+            assert loop.run_until_complete(instance.async_get_fw_status()) == response
 
     def test_async_get_fw_version(self):
         loop = asyncio.get_event_loop()
@@ -131,7 +135,7 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response)
             )
-            assert loop.run_until_complete(instance.async_get_fw_version())==response
+            assert loop.run_until_complete(instance.async_get_fw_version()) == response
 
     def test_async_get_nodename(self):
         loop = asyncio.get_event_loop()
@@ -143,7 +147,7 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response)
             )
-            assert loop.run_until_complete(instance.async_get_nodename())==response
+            assert loop.run_until_complete(instance.async_get_nodename()) == response
 
     def test_async_get_led_status(self):
         loop = asyncio.get_event_loop()
@@ -155,7 +159,7 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response)
             )
-            assert loop.run_until_complete(instance.async_get_led_status())==response
+            assert loop.run_until_complete(instance.async_get_led_status()) == response
 
     def test_async_get_devices_state(self):
         loop = asyncio.get_event_loop()
@@ -174,7 +178,7 @@ class TestHomePilotApi:
                 body=json.dumps(response_sensors)
             )
             expected = {"1": {"did": "1", "name": "name1"}, "2": {"did": "2", "name": "name2"}}
-            assert loop.run_until_complete(instance.async_get_devices_state())==expected
+            assert loop.run_until_complete(instance.async_get_devices_state()) == expected
 
     def test_async_ping(self):
         did = "1234"
@@ -185,14 +189,14 @@ class TestHomePilotApi:
             callback = lambda url, **kwargs: CallbackResult(
                 body = json.dumps(response) 
                 if kwargs["json"] == {"name": "PING_CMD"}
-                else json.dumps({"error_code":20})
+                else json.dumps({"error_code": 20})
             )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
                 callback=callback
             )
-            assert loop.run_until_complete(instance.async_ping(did))==response
+            assert loop.run_until_complete(instance.async_ping(did)) == response
 
     def test_async_open_cover(self):
         did = "1234"
@@ -203,14 +207,14 @@ class TestHomePilotApi:
             callback = lambda url, **kwargs: CallbackResult(
                 body = json.dumps(response) 
                 if kwargs["json"] == {"name": "POS_UP_CMD"}
-                else json.dumps({"error_code":20})
+                else json.dumps({"error_code": 20})
             )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
                 callback=callback
             )
-            assert loop.run_until_complete(instance.async_open_cover(did))==response
+            assert loop.run_until_complete(instance.async_open_cover(did)) == response
 
     def test_async_close_cover(self):
         did = "1234"
@@ -221,14 +225,14 @@ class TestHomePilotApi:
             callback = lambda url, **kwargs: CallbackResult(
                 body = json.dumps(response) 
                 if kwargs["json"] == {"name": "POS_DOWN_CMD"}
-                else json.dumps({"error_code":20})
+                else json.dumps({"error_code": 20})
             )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
                 callback=callback
             )
-            assert loop.run_until_complete(instance.async_close_cover(did))==response
+            assert loop.run_until_complete(instance.async_close_cover(did)) == response
 
     def test_async_stop_cover(self):
         did = "1234"
@@ -239,14 +243,14 @@ class TestHomePilotApi:
             callback = lambda url, **kwargs: CallbackResult(
                 body = json.dumps(response) 
                 if kwargs["json"] == {"name": "STOP_CMD"}
-                else json.dumps({"error_code":20})
+                else json.dumps({"error_code": 20})
             )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
                 callback=callback
             )
-            assert loop.run_until_complete(instance.async_stop_cover(did))==response
+            assert loop.run_until_complete(instance.async_stop_cover(did)) == response
 
     def test_async_set_cover_position(self):
         did = "1234"
@@ -258,14 +262,14 @@ class TestHomePilotApi:
             callback = lambda url, **kwargs: CallbackResult(
                 body = json.dumps(response) 
                 if kwargs["json"] == {"name": "GOTO_POS_CMD", "value": position}
-                else json.dumps({"error_code":20})
+                else json.dumps({"error_code": 20})
             )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
                 callback=callback
             )
-            assert loop.run_until_complete(instance.async_set_cover_position(did, position))==response
+            assert loop.run_until_complete(instance.async_set_cover_position(did, position)) == response
 
     def test_async_turn_on(self):
         did = "1234"
@@ -276,14 +280,14 @@ class TestHomePilotApi:
             callback = lambda url, **kwargs: CallbackResult(
                 body = json.dumps(response) 
                 if kwargs["json"] == {"name": "TURN_ON_CMD"}
-                else json.dumps({"error_code":20})
+                else json.dumps({"error_code": 20})
             )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
                 callback=callback
             )
-            assert loop.run_until_complete(instance.async_turn_on(did))==response
+            assert loop.run_until_complete(instance.async_turn_on(did)) == response
 
     def test_async_turn_off(self):
         did = "1234"
@@ -294,14 +298,14 @@ class TestHomePilotApi:
             callback = lambda url, **kwargs: CallbackResult(
                 body = json.dumps(response) 
                 if kwargs["json"] == {"name": "TURN_OFF_CMD"}
-                else json.dumps({"error_code":20})
+                else json.dumps({"error_code": 20})
             )
             mocked.put(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
                 callback=callback
             )
-            assert loop.run_until_complete(instance.async_turn_off(did))==response
+            assert loop.run_until_complete(instance.async_turn_off(did)) == response
 
     def test_async_turn_led_on(self):
         loop = asyncio.get_event_loop()
@@ -313,7 +317,7 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response)
             )
-            assert loop.run_until_complete(instance.async_turn_led_on())==response
+            assert loop.run_until_complete(instance.async_turn_led_on()) == response
 
     def test_async_turn_led_off(self):
         loop = asyncio.get_event_loop()
@@ -325,5 +329,4 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response)
             )
-            assert loop.run_until_complete(instance.async_turn_led_off())==response
-
+            assert loop.run_until_complete(instance.async_turn_led_off()) == response

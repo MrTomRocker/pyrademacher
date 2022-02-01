@@ -4,7 +4,6 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from homepilot.cover import HomePilotCover
 from homepilot.sensor import ContactState, HomePilotSensor
 
 

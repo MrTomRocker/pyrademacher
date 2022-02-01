@@ -26,10 +26,10 @@ class TestHomePilotSwitch:
         func_ping.set_result(None)
         api.async_ping.return_value = func_ping
         yield api
-    
+
     def test_build_from_api(self, mocked_api):
         loop = asyncio.get_event_loop()
-        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api,1))
+        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api, 1))
         assert switch.did == "1010018"
         assert switch.uid == "43d488_1"
         assert switch.name == "Hütte"
@@ -41,15 +41,15 @@ class TestHomePilotSwitch:
     
     def test_update_state(self, mocked_api):
         loop = asyncio.get_event_loop()
-        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api,1))
+        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api, 1))
         switch.update_state({
             "statusesMap": {
                 "Position": 100
             },
             "statusValid": True
         })
-        assert switch.is_on == True
-        assert switch.available == True
+        assert switch.is_on is True
+        assert switch.available is True
 
         switch.update_state({
             "statusesMap": {
@@ -57,24 +57,24 @@ class TestHomePilotSwitch:
             },
             "statusValid": False
         })
-        assert switch.is_on == False
-        assert switch.available == False
+        assert switch.is_on is False
+        assert switch.available is False
 
     def test_async_turn_on(self, mocked_api):
         loop = asyncio.get_event_loop()
-        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api,1))
+        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api, 1))
         loop.run_until_complete(switch.async_turn_on())
         mocked_api.async_turn_on.assert_called_with('1010018')
 
     def test_async_turn_off(self, mocked_api):
         loop = asyncio.get_event_loop()
-        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api,1))
+        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api, 1))
         loop.run_until_complete(switch.async_turn_off())
         mocked_api.async_turn_off.assert_called_with('1010018')
 
     def test_async_toggle(self, mocked_api):
         loop = asyncio.get_event_loop()
-        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api,1))
+        switch = loop.run_until_complete(HomePilotSwitch.async_build_from_api(mocked_api, 1))
         switch.update_state({
             "statusesMap": {
                 "Position": 100
