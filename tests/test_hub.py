@@ -34,9 +34,9 @@ class TestHomePilotHub:
         api.async_ping.return_value = func_ping
         yield api
 
-    def test_build_from_api(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        hub = loop.run_until_complete(HomePilotHub.async_build_from_api(mocked_api, "-1"))
+    @pytest.mark.asyncio
+    async def test_build_from_api(self, mocked_api):
+        hub = await HomePilotHub.async_build_from_api(mocked_api, "-1")
         assert hub.api == mocked_api
         assert hub.did == "-1"
         assert hub.uid == TEST_HOST
@@ -51,9 +51,9 @@ class TestHomePilotHub:
         assert hub.sw_platform == "bridge"
         assert hub.has_ping_cmd is False
 
-    def test_update_state(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        hub = loop.run_until_complete(HomePilotHub.async_build_from_api(mocked_api, "-1"))
+    @pytest.mark.asyncio
+    async def test_update_state(self, mocked_api):
+        hub = await HomePilotHub.async_build_from_api(mocked_api, "-1")
         hub.update_state(
             {
                 "status": {
@@ -69,20 +69,20 @@ class TestHomePilotHub:
         assert hub.fw_update_version == "6.0.0"
         assert hub.led_status is True
 
-    def test_async_turn_led_on(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotHub.async_build_from_api(mocked_api, 1))
-        loop.run_until_complete(cover.async_turn_led_on())
+    @pytest.mark.asyncio
+    async def test_async_turn_led_on(self, mocked_api):
+        cover = await HomePilotHub.async_build_from_api(mocked_api, 1)
+        await cover.async_turn_led_on()
         mocked_api.async_turn_led_on.assert_called()
 
-    def test_async_turn_led_off(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotHub.async_build_from_api(mocked_api, 1))
-        loop.run_until_complete(cover.async_turn_led_off())
+    @pytest.mark.asyncio
+    async def test_async_turn_led_off(self, mocked_api):
+        cover = await HomePilotHub.async_build_from_api(mocked_api, 1)
+        await cover.async_turn_led_off()
         mocked_api.async_turn_led_off.assert_called()
 
-    def test_async_ping(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotHub.async_build_from_api(mocked_api, 1))
-        loop.run_until_complete(cover.async_ping())
+    @pytest.mark.asyncio
+    async def test_async_ping(self, mocked_api):
+        cover = await HomePilotHub.async_build_from_api(mocked_api, 1)
+        await cover.async_ping()
         mocked_api.async_ping.assert_not_called()

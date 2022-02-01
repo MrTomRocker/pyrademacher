@@ -28,9 +28,9 @@ class TestHomePilotCover:
         api.get_device.return_value = func_get_device
         yield api
 
-    def test_env_sensor_build_from_api(self, mocked_api_env_sensor):
-        loop = asyncio.get_event_loop()
-        env_sensor: HomePilotSensor = loop.run_until_complete(HomePilotSensor.async_build_from_api(mocked_api_env_sensor, 1))
+    @pytest.mark.asyncio
+    async def test_env_sensor_build_from_api(self, mocked_api_env_sensor):
+        env_sensor: HomePilotSensor = await HomePilotSensor.async_build_from_api(mocked_api_env_sensor, 1)
         assert env_sensor.did == "1010012"
         assert env_sensor.uid == "692187_S_1"
         assert env_sensor.name == "Umweltsensor"
@@ -49,11 +49,9 @@ class TestHomePilotCover:
         assert env_sensor.has_temperature is True
         assert env_sensor.has_wind_speed is True
 
-    def test_contact_sensor_build_from_api(self, mocked_api_contact_sensor):
-        loop = asyncio.get_event_loop()
-        contact_sensor: HomePilotSensor = loop.run_until_complete(
-            HomePilotSensor.async_build_from_api(mocked_api_contact_sensor, 1)
-        )
+    @pytest.mark.asyncio
+    async def test_contact_sensor_build_from_api(self, mocked_api_contact_sensor):
+        contact_sensor: HomePilotSensor = await HomePilotSensor.async_build_from_api(mocked_api_contact_sensor, 1)
         assert contact_sensor.did == "1010072"
         assert contact_sensor.uid == "ac0914_1"
         assert contact_sensor.name == "Esszimmer2"
@@ -72,11 +70,9 @@ class TestHomePilotCover:
         assert contact_sensor.has_temperature is False
         assert contact_sensor.has_wind_speed is False
 
-    def test_env_sensor_update_state(self, mocked_api_env_sensor):
-        loop = asyncio.get_event_loop()
-        env_sensor: HomePilotSensor = loop.run_until_complete(
-            HomePilotSensor.async_build_from_api(mocked_api_env_sensor, 1)
-        )
+    @pytest.mark.asyncio
+    async def test_env_sensor_update_state(self, mocked_api_env_sensor):
+        env_sensor: HomePilotSensor = await HomePilotSensor.async_build_from_api(mocked_api_env_sensor, 1)
         env_sensor.update_state({
             "readings": {
                 "sun_detected": False,
@@ -98,11 +94,9 @@ class TestHomePilotCover:
         assert env_sensor.temperature_value == 2.5
         assert env_sensor.available is True
 
-    def test_contact_sensor_update_state(self, mocked_api_contact_sensor):
-        loop = asyncio.get_event_loop()
-        contact_sensor: HomePilotSensor = loop.run_until_complete(
-            HomePilotSensor.async_build_from_api(mocked_api_contact_sensor, 1)
-        )
+    @pytest.mark.asyncio
+    async def test_contact_sensor_update_state(self, mocked_api_contact_sensor):
+        contact_sensor: HomePilotSensor = await HomePilotSensor.async_build_from_api(mocked_api_contact_sensor, 1)
         contact_sensor.update_state({
             "readings": {
                 "contact_state": "open"

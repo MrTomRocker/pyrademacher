@@ -33,9 +33,9 @@ class TestHomePilotCover:
         api.async_ping.return_value = func_ping
         yield api
 
-    def test_build_from_api(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotCover.async_build_from_api(mocked_api, 1))
+    @pytest.mark.asyncio
+    async def test_build_from_api(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
         assert cover.did == "1"
         assert cover.uid == "407903_1"
         assert cover.name == "Living Room Blinds"
@@ -46,9 +46,9 @@ class TestHomePilotCover:
         assert cover.has_ping_cmd is True
         assert cover.can_set_position is True
 
-    def test_update_state(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotCover.async_build_from_api(mocked_api, 1))
+    @pytest.mark.asyncio
+    async def test_update_state(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
         cover.update_state({
             "statusesMap": {
                 "Position": 100
@@ -73,32 +73,32 @@ class TestHomePilotCover:
         assert cover.is_opening is False
         assert cover.available is False
 
-    def test_async_open_cover(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotCover.async_build_from_api(mocked_api, 1))
-        loop.run_until_complete(cover.async_open_cover())
+    @pytest.mark.asyncio
+    async def test_async_open_cover(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_open_cover()
         mocked_api.async_open_cover.assert_called_with('1')
 
-    def test_async_close_cover(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotCover.async_build_from_api(mocked_api, 1))
-        loop.run_until_complete(cover.async_close_cover())
+    @pytest.mark.asyncio
+    async def test_async_close_cover(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_close_cover()
         mocked_api.async_close_cover.assert_called_with('1')
 
-    def test_async_stop_cover(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotCover.async_build_from_api(mocked_api, 1))
-        loop.run_until_complete(cover.async_stop_cover())
+    @pytest.mark.asyncio
+    async def test_async_stop_cover(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_stop_cover()
         mocked_api.async_stop_cover.assert_called_with('1')
 
-    def test_async_set_cover_position(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotCover.async_build_from_api(mocked_api, 1))
-        loop.run_until_complete(cover.async_set_cover_position(40))
+    @pytest.mark.asyncio
+    async def test_async_set_cover_position(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_set_cover_position(40)
         mocked_api.async_set_cover_position.assert_called_with('1', 60)
 
-    def test_async_ping(self, mocked_api):
-        loop = asyncio.get_event_loop()
-        cover = loop.run_until_complete(HomePilotCover.async_build_from_api(mocked_api, 1))
-        loop.run_until_complete(cover.async_ping())
+    @pytest.mark.asyncio
+    async def test_async_ping(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_ping()
         mocked_api.async_ping.assert_called_with('1')
