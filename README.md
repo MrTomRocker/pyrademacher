@@ -32,8 +32,11 @@ You can use the HomePilotManager helper class to more easily manage the devices:
 ```python
 import asyncio
 from homepilot.manager import HomePilotManager
+from homepilot.api import HomePilotApi
 
-manager = asyncio.run(HomePilotManager.async_build_manager("hostname", "password")) # password can be empty if not defined ("")
+api = HomePilotApi("hostname", "password") # password can be empty if not defined ("")
+
+manager = asyncio.run(HomePilotManager.async_build_manager(api))
 asyncio.run(manager.update_states())
 
 print(manager.devices["1"].is_closed)
