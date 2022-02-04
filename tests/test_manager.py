@@ -1,7 +1,6 @@
 import asyncio
 import json
-from unittest import mock
-from unittest.mock import AsyncMock, MagicMock, Mock, patch
+from unittest.mock import MagicMock
 import pytest
 from homepilot.api import HomePilotApi
 from homepilot.cover import HomePilotCover
@@ -14,6 +13,7 @@ from homepilot.switch import HomePilotSwitch
 
 TEST_HOST = "test_host"
 
+
 class TestHomePilotManager:
     @pytest.fixture
     def mocked_api(self, event_loop):
@@ -24,7 +24,7 @@ class TestHomePilotManager:
         func_get_devices = asyncio.Future(loop=event_loop)
         func_get_devices.set_result(devices["payload"]["devices"])
         api.get_devices.return_value = yield from func_get_devices
-        
+
         f1 = open("tests/test_files/device_cover.json")
         device1 = json.load(f1)
         func_get_device1 = asyncio.Future(loop=event_loop)
@@ -75,7 +75,7 @@ class TestHomePilotManager:
             "version": "5.4.9",
             "update_channel": "manifest-ampere-5.4.0",
             "is_default": True,
-            "update_status":"UPDATE_AVAILABLE"
+            "update_status": "UPDATE_AVAILABLE"
         })
         api.async_get_fw_status.return_value = yield from func_get_fw_status
         func_get_led_status = asyncio.Future(loop=event_loop)
@@ -88,14 +88,14 @@ class TestHomePilotManager:
     async def test_build_manager(self, mocked_api):
         manager = await HomePilotManager.async_build_manager(mocked_api)
         assert list(manager.devices.keys()) == ['1', '1010012', '1010018', '1010072', '-1']
-        assert isinstance(manager.devices['1'],HomePilotCover)
-        assert isinstance(manager.devices['1010012'],HomePilotSensor)
-        assert isinstance(manager.devices['1010018'],HomePilotSwitch)
-        assert isinstance(manager.devices['1010072'],HomePilotSensor)
-        assert isinstance(manager.devices['-1'],HomePilotHub)
+        assert isinstance(manager.devices['1'], HomePilotCover)
+        assert isinstance(manager.devices['1010012'], HomePilotSensor)
+        assert isinstance(manager.devices['1010018'], HomePilotSwitch)
+        assert isinstance(manager.devices['1010072'], HomePilotSensor)
+        assert isinstance(manager.devices['-1'], HomePilotHub)
 
     @pytest.mark.asyncio
-    async def test_build_manager(self, mocked_api):
+    async def test_update_state(self, mocked_api):
         manager = await HomePilotManager.async_build_manager(mocked_api)
         await manager.update_states()
         assert manager.devices["1"].cover_position == 35
@@ -106,4 +106,3 @@ class TestHomePilotManager:
         assert manager.devices["1010072"].battery_level_value == 99
         assert not manager.devices["-1"].led_status
         assert manager.devices["-1"].fw_update_version == "5.4.9"
-        
