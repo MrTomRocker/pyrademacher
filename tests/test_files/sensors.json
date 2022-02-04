@@ -1,0 +1,71 @@
+{
+	"response": "get_meters",
+	"meters": [
+		{
+			"description": "",
+			"deviceGroup": 3,
+			"did": 1010012,
+			"automations": [
+				30,
+				50,
+				60,
+				100,
+				20,
+				40
+			],
+			"readings": {
+				"sun_detected": false,
+				"sun_brightness": 0,
+				"sun_direction": 87.0,
+				"sun_elevation": -7,
+				"wind_speed": 0.0,
+				"rain_detected": true,
+				"temperature_primary": 2.5
+			},
+			"timestamp": 1641968105,
+			"iconSetInverted": 0,
+			"iconSet": {
+				"k": "iconset25"
+			},
+			"name": "Umweltsensor",
+			"statusValid": true,
+			"deviceNumber": "32000064_S",
+			"uid": "692187_S_1",
+			"visible": true
+		},
+		{
+		  "description": "Kontakt",
+		  "deviceGroup": 3,
+		  "did": 1010072,
+		  "automations": [120],
+		  "readings": { "contact_state": "open" },
+		  "batteryStatus": 99,
+		  "batteryLow": false,
+		  "timestamp": 1605101199,
+		  "iconSetInverted": 0,
+		  "iconSet": { "k": "iconset24" },
+		  "name": "Esszimmer2",
+		  "statusValid": true,
+		  "deviceNumber": "32003164",
+		  "uid": "ac0914_1",
+		  "visible": true
+		},
+		{
+			"description": "Ihre Gerätebeschreibung",
+			"deviceGroup": 3,
+			"did": 1010024,
+			"automations": [120],
+			"readings": { "contact_state": "closed" },
+			"batteryStatus": 47,
+			"batteryLow": false,
+			"timestamp": 1605012795,
+			"iconSetInverted": 0,
+			"iconSet": { "k": "iconset24" },
+			"name": "Türkontakt1",
+			"statusValid": true,
+			"deviceNumber": "32003164",
+			"uid": "ac092b_1",
+			"visible": true
+		  }
+	]
+}

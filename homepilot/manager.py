@@ -17,16 +17,16 @@ class HomePilotManager:
     _api: HomePilotApi
     _devices: Dict[str, HomePilotDevice]
 
-    def __init__(self, host: str, password: str) -> None:
-        self._api = HomePilotApi(host, password)
+    def __init__(self, api: HomePilotApi) -> None:
+        self._api = api
 
     @staticmethod
-    def build_manager(host: str, password: str):
-        return asyncio.run(HomePilotManager.async_build_manager(host, password))
+    def build_manager(api: HomePilotApi):
+        return asyncio.run(HomePilotManager.async_build_manager(api))
 
     @staticmethod
-    async def async_build_manager(host: str, password: str):
-        manager = HomePilotManager(host=host, password=password)
+    async def async_build_manager(api: HomePilotApi):
+        manager = HomePilotManager(api)
         manager.devices = {
             id_type["did"]: await HomePilotManager.async_build_device(manager.api, id_type)
             for id_type in await manager.get_device_ids_types()

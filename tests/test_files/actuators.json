@@ -1,0 +1,153 @@
+{
+	"response": "get_visible_devices",
+	"devices": [
+		{
+			"description": "",
+			"deviceGroup": 2,
+			"did": 1,
+			"hasErrors": 0,
+			"iconSetInverted": 0,
+			"iconSet": {
+				"k": "iconset15"
+			},
+			"messages": [],
+			"name": "Living Room Blinds",
+			"properties": {
+				"closingContact": 3,
+				"dawn": 3,
+				"dusk": 3,
+				"motion": 3,
+				"rain": 3,
+				"smartphone": 3,
+				"smoke": 3,
+				"sun": 3,
+				"temperature": 3,
+				"time": 3,
+				"trigger": 3,
+				"warning": 3,
+				"wind": 3
+			},
+			"statusValid": true,
+			"statusesMap": {
+				"Manuellbetrieb": 0,
+				"Position": 65
+			},
+			"visible": true,
+			"deviceNumber": "14234511",
+			"uid": "407903_1",
+			"voiceControlledBy": "",
+			"origin": "HomePilot"
+		},
+		{
+			"description": "",
+			"deviceGroup": 2,
+			"did": 1010011,
+			"hasErrors": 0,
+			"iconSetInverted": 0,
+			"iconSet": {
+				"k": "iconset15"
+			},
+			"messages": [],
+			"name": "Markise",
+			"properties": {
+				"closingContact": 3,
+				"dawn": 3,
+				"dusk": 3,
+				"motion": 3,
+				"rain": 3,
+				"smartphone": 3,
+				"smoke": 3,
+				"sun": 3,
+				"temperature": 3,
+				"time": 3,
+				"trigger": 3,
+				"warning": 3,
+				"wind": 3
+			},
+			"statusValid": true,
+			"statusesMap": {
+				"Manuellbetrieb": 0,
+				"Position": 50
+			},
+			"visible": true,
+			"deviceNumber": "32000064_A",
+			"uid": "692187_A_1",
+			"voiceControlledBy": "",
+			"origin": "HomePilot"
+		},
+		{
+			"description": "",
+			"deviceGroup": 1,
+			"did": 1010018,
+			"hasErrors": 0,
+			"iconSetInverted": 0,
+			"iconSet": {
+				"k": "iconset15"
+			},
+			"messages": [],
+			"name": "Hütte",
+			"properties": {
+				"closingContact": 3,
+				"dawn": 3,
+				"dusk": 3,
+				"motion": 3,
+				"rain": 3,
+				"smartphone": 3,
+				"smoke": 3,
+				"sun": 3,
+				"temperature": 3,
+				"time": 3,
+				"trigger": 3,
+				"warning": 3,
+				"wind": 3
+			},
+			"statusValid": true,
+			"statusesMap": {
+				"Manuellbetrieb": 0,
+				"Position": 100
+			},
+			"visible": true,
+			"deviceNumber": "35000262",
+			"uid": "43d488_1",
+			"voiceControlledBy": "",
+			"origin": "HomePilot"
+		},
+		{
+			"description": "",
+			"deviceGroup": 2,
+			"did": 1010019,
+			"hasErrors": 0,
+			"iconSetInverted": 0,
+			"iconSet": {
+				"k": "iconset15"
+			},
+			"messages": [],
+			"name": "Beet",
+			"properties": {
+				"closingContact": 3,
+				"dawn": 3,
+				"dusk": 3,
+				"motion": 3,
+				"rain": 3,
+				"smartphone": 3,
+				"smoke": 3,
+				"sun": 3,
+				"temperature": 3,
+				"time": 3,
+				"trigger": 3,
+				"warning": 3,
+				"wind": 3
+			},
+			"statusValid": true,
+			"statusesMap": {
+				"Manuellbetrieb": 0,
+				"Position": 0
+			},
+			"visible": true,
+			"deviceNumber": "35000262",
+			"uid": "43d488_2",
+			"voiceControlledBy": "",
+			"origin": "HomePilot"
+		}
+	]
+}
