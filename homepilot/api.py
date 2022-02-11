@@ -4,6 +4,17 @@ from typing import Any
 import aiohttp
 from aiohttp import ClientConnectorError
 from aiohttp.abc import AbstractCookieJar
+from .const import (
+    APICAP_AUTO_MODE_CFG,
+    APICAP_GOTO_POS_CMD,
+    APICAP_PING_CMD,
+    APICAP_POS_DOWN_CMD,
+    APICAP_POS_UP_CMD,
+    APICAP_STOP_CMD,
+    APICAP_TARGET_TEMPERATURE_CFG,
+    APICAP_TURN_OFF_CMD,
+    APICAP_TURN_ON_CMD
+)
 
 
 class HomePilotApi:
@@ -154,7 +165,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": "PING_CMD"}
+                f"http://{self.host}/devices/{did}", json={"name": APICAP_PING_CMD}
             ) as response:
                 return await response.json()
 
@@ -162,7 +173,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": "POS_UP_CMD"}
+                f"http://{self.host}/devices/{did}", json={"name": APICAP_POS_UP_CMD}
             ) as response:
                 return await response.json()
 
@@ -170,7 +181,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": "POS_DOWN_CMD"}
+                f"http://{self.host}/devices/{did}", json={"name": APICAP_POS_DOWN_CMD}
             ) as response:
                 return await response.json()
 
@@ -178,7 +189,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": "STOP_CMD"}
+                f"http://{self.host}/devices/{did}", json={"name": APICAP_STOP_CMD}
             ) as response:
                 return await response.json()
 
@@ -187,7 +198,7 @@ class HomePilotApi:
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
                 f"http://{self.host}/devices/{did}",
-                json={"name": "GOTO_POS_CMD", "value": position},
+                json={"name": APICAP_GOTO_POS_CMD, "value": position},
             ) as response:
                 return await response.json()
 
@@ -195,7 +206,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": "TURN_ON_CMD"}
+                f"http://{self.host}/devices/{did}", json={"name": APICAP_TURN_ON_CMD}
             ) as response:
                 return await response.json()
 
@@ -203,7 +214,25 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": "TURN_OFF_CMD"}
+                f"http://{self.host}/devices/{did}", json={"name": APICAP_TURN_OFF_CMD}
+            ) as response:
+                return await response.json()
+
+    async def async_set_target_temperature(self, did, temperature):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": APICAP_TARGET_TEMPERATURE_CFG, "value": temperature},
+            ) as response:
+                return await response.json()
+
+    async def async_set_auto_mode(self, did, auto_mode):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": APICAP_AUTO_MODE_CFG, "value": auto_mode},
             ) as response:
                 return await response.json()
 

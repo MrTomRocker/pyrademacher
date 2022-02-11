@@ -16,6 +16,12 @@ class TestHomePilotCover:
         func_get_device = asyncio.Future(loop=event_loop)
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
+        func_set_target_temperature = asyncio.Future(loop=event_loop)
+        func_set_target_temperature.set_result(None)
+        api.async_set_target_temperature.return_value = func_set_target_temperature
+        func_set_auto_mode = asyncio.Future(loop=event_loop)
+        func_set_auto_mode.set_result(None)
+        api.async_set_auto_mode.return_value = func_set_auto_mode
         yield api
 
     @pytest.mark.asyncio
@@ -54,3 +60,15 @@ class TestHomePilotCover:
         })
         assert thermostat.temperature_value == 21.2
         assert thermostat.target_temperature_value == 24.0
+
+    @pytest.mark.asyncio
+    async def test_async_set_target_temperature(self, mocked_api):
+        thermostat = await HomePilotThermostat.async_build_from_api(mocked_api, 1)
+        await thermostat.async_set_target_temperature(10)
+        mocked_api.async_set_target_temperature.assert_called_with('1010014', 10)
+
+    @pytest.mark.asyncio
+    async def test_async_set_auto_mode(self, mocked_api):
+        thermostat = await HomePilotThermostat.async_build_from_api(mocked_api, 1)
+        await thermostat.async_set_auto_mode(True)
+        mocked_api.async_set_auto_mode.assert_called_with('1010014', True)

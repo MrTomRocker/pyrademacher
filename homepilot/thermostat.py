@@ -117,6 +117,12 @@ class HomePilotThermostat(HomePilotDevice):
         if self.has_target_temperature:
             self.target_temperature_value = state["statusesMap"]["Position"] / 10
 
+    async def async_set_target_temperature(self, temperature) -> None:
+        await self.api.async_set_target_temperature(self.did, temperature)
+
+    async def async_set_auto_mode(self, auto_mode) -> None:
+        await self.api.async_set_auto_mode(self.did, auto_mode)
+
     @property
     def has_temperature(self) -> bool:
         return self._has_temperature

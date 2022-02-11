@@ -48,6 +48,7 @@ class TestHomePilotCover:
         assert env_sensor.has_sun_height is True
         assert env_sensor.has_temperature is True
         assert env_sensor.has_wind_speed is True
+        assert env_sensor.has_target_temperature is False
 
     @pytest.mark.asyncio
     async def test_contact_sensor_build_from_api(self, mocked_api_contact_sensor):
@@ -69,6 +70,7 @@ class TestHomePilotCover:
         assert contact_sensor.has_sun_height is False
         assert contact_sensor.has_temperature is False
         assert contact_sensor.has_wind_speed is False
+        assert contact_sensor.has_target_temperature is False
 
     @pytest.mark.asyncio
     async def test_env_sensor_update_state(self, mocked_api_env_sensor):
