@@ -1,0 +1,208 @@
+{
+  "error_description": "OK",
+  "error_code": 0,
+  "payload": {
+    "device": {
+      "capabilities": [
+        {
+          "name": "TEMPERATURE_INT_CFG",
+          "value": "21.2",
+          "min_value": "-40.0",
+          "max_value": "80.0",
+          "step_size": "0.1",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        { "name": "POS_UP_CMD", "read_only": false, "timestamp": -1 },
+        { "name": "INC_CMD", "read_only": false, "timestamp": -1 },
+        {
+          "name": "VERSION_CFG",
+          "value": "1.4-1",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "PROD_CODE_DEVICE_LOC",
+          "value": "32501812_A",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "REACHABILITY_EVT",
+          "value": "true",
+          "read_only": true,
+          "timestamp": 1644563763
+        },
+        { "name": "RESET_WO_PAIR_CMD", "read_only": false, "timestamp": -1 },
+        { "name": "CONTACT_OPEN_CMD", "read_only": false, "timestamp": -1 },
+        {
+          "name": "NAME_DEVICE_LOC",
+          "value": "Wohnzimmer-Raumthermostat",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "PROT_ID_DEVICE_LOC",
+          "value": "733e25_A_1",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "CURR_TEMPERATURE_THRESH_CFG",
+          "value": "1",
+          "min_value": "1",
+          "max_value": "4",
+          "step_size": "1",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "INTF_ID_DEVICE_LOC",
+          "value": "3",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "ICONSET_LOC",
+          "value": "iconset28",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "DEVICE_TYPE_LOC",
+          "value": "5",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "RELAIS_STATE_CFG",
+          "value": "true",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "ICONSET_INV_LOC",
+          "value": "false",
+          "read_only": false,
+          "timestamp": -1
+        },
+        { "name": "RMT_STOP_PAIR_CMD", "read_only": false, "timestamp": -1 },
+        {
+          "name": "VOICE_CONTROLLED_LOC",
+          "value": "Google,Alexa",
+          "read_only": false,
+          "timestamp": -1
+        },
+        { "name": "REQ_STATUS_CMD", "read_only": false, "timestamp": -1 },
+        {
+          "name": "MAN_OVERW_ACTUATOR_CFG",
+          "value": "false",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "AUTO_MODE_CFG",
+          "value": "false",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "TARGET_TEMPERATURE_CFG",
+          "value": "24.0",
+          "min_value": "4.0",
+          "max_value": "40.0",
+          "step_size": "0.5",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        { "name": "RESET_FULL_CMD", "read_only": false, "timestamp": -1 },
+        { "name": "PUSH_CMD", "read_only": false, "timestamp": -1 },
+        {
+          "name": "PAIRING_CONFIRMED_LOC",
+          "value": "true",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "TEMPERATURE_THRESH_2_CFG",
+          "value": "22.0",
+          "min_value": "4.0",
+          "max_value": "40.0",
+          "step_size": "0.5",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "ID_DEVICE_LOC",
+          "value": "1010014",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "PROTOCOL_ID_CFG",
+          "value": "733e25",
+          "read_only": false,
+          "timestamp": -1
+        },
+        { "name": "CONTACT_CLOSE_CMD", "read_only": false, "timestamp": -1 },
+        { "name": "RMT_START_PAIR_CMD", "read_only": false, "timestamp": -1 },
+        {
+          "name": "TEMPERATURE_THRESH_3_CFG",
+          "value": "21.5",
+          "min_value": "4.0",
+          "max_value": "40.0",
+          "step_size": "0.5",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "TEMPERATURE_THRESH_1_CFG",
+          "value": "21.5",
+          "min_value": "4.0",
+          "max_value": "40.0",
+          "step_size": "0.5",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "STOP_CMD",
+          "value": "false",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "VIS_DEVICE_LOC",
+          "value": "true",
+          "read_only": false,
+          "timestamp": -1
+        },
+        { "name": "RMT_START_UNPAIR_CMD", "read_only": false, "timestamp": -1 },
+        {
+          "name": "TEMPERATURE_THRESH_4_CFG",
+          "value": "17.0",
+          "min_value": "4.0",
+          "max_value": "40.0",
+          "step_size": "0.5",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        { "name": "POS_DOWN_CMD", "read_only": false, "timestamp": -1 },
+        {
+          "name": "DESCR_DEVICE_LOC",
+          "value": "Wohnzimmer Raumthermostat",
+          "read_only": false,
+          "timestamp": -1
+        },
+        {
+          "name": "TIME_AUTO_CFG",
+          "value": "false",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        { "name": "PING_CMD", "read_only": false, "timestamp": -1 },
+        { "name": "DEC_CMD", "read_only": false, "timestamp": -1 }
+      ],
+      "scenes": []
+    }
+  }
+}

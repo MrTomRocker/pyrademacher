@@ -57,6 +57,15 @@ class HomePilotDevice:
                 "timestamp": capability["timestamp"]
                 if "timestamp" in capability
                 else None,
+                "min_value": capability["min_value"]
+                if "min_value" in capability
+                else None,
+                "max_value": capability["max_value"]
+                if "max_value" in capability
+                else None,
+                "step_size": capability["step_size"]
+                if "step_size" in capability
+                else None,
             }
             for capability in device["capabilities"]
         }

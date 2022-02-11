@@ -4,6 +4,7 @@ OTHER_TYPE = 0
 COVER_TYPE = 1
 SENSOR_TYPE = 2
 SWITCH_ACTUATOR_TYPE = 3
+THERMOSTAT_TYPE = 4
 
 # API Capability names
 # Common
@@ -30,6 +31,10 @@ APICAP_RAIN_DETECTION_MEA = "RAIN_DETECTION_MEA"
 APICAP_SUN_DETECTION_MEA = "SUN_DETECTION_MEA"
 APICAP_CLOSE_CONTACT_MEA = "CLOSE_CONTACT_MEA"
 APICAP_BATTERY_LVL_PCT_MEA = "BATTERY_LVL_PCT_MEA"
+# Thermostat
+APICAP_TEMP_TARGET_DEG_MEA = "TEMP_TARGET_DEG_MEA"
+APICAP_TARGET_TEMPERATURE_CFG = "TARGET_TEMPERATURE_CFG"
+APICAP_TEMPERATURE_INT_CFG = "TEMPERATURE_INT_CFG"
 
 SUPPORTED_DEVICES = {
     "35001164": {"name": "DuoFern Switch actuator", "Type": SWITCH_ACTUATOR_TYPE},
@@ -49,7 +54,7 @@ SUPPORTED_DEVICES = {
         "name": "Temperature sensor DuoFern Radiator Actuator",
         "Type": SENSOR_TYPE,
     },
-    "32501812_A": {"name": "DuoFern Room Thermostat", "Type": OTHER_TYPE},
+    "32501812_A": {"name": "DuoFern Room Thermostat", "Type": THERMOSTAT_TYPE},
     "32501812_S": {
         "name": "Temperature sensor DuoFern Room thermostat",
         "Type": SENSOR_TYPE,
