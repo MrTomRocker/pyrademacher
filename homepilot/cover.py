@@ -67,7 +67,8 @@ class HomePilotCover(HomePilotDevice):
             ]
             if device_map[APICAP_PROD_CODE_DEVICE_LOC]["value"] in SUPPORTED_DEVICES
             else "Generic Device",
-            fw_version=device_map[APICAP_VERSION_CFG]["value"],
+            fw_version=device_map[APICAP_VERSION_CFG]["value"] 
+            if APICAP_VERSION_CFG in device_map else "",
             device_group=device_map[APICAP_DEVICE_TYPE_LOC]["value"],
             has_ping_cmd=APICAP_PING_CMD in device_map,
             can_set_position=APICAP_GOTO_POS_CMD in device_map,

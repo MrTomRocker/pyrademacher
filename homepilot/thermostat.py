@@ -1,5 +1,6 @@
 import asyncio
 from .const import (
+    APICAP_AUTO_MODE_CFG,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC,
     APICAP_NAME_DEVICE_LOC,
@@ -16,6 +17,8 @@ from .device import HomePilotDevice
 
 
 class HomePilotThermostat(HomePilotDevice):
+    _has_auto_mode: bool
+    _auto_mode_value: bool
     _has_temperature: bool
     _min_temperature: float
     _max_temperature: float
@@ -38,6 +41,7 @@ class HomePilotThermostat(HomePilotDevice):
         fw_version: str,
         device_group: int,
         has_ping_cmd: bool = False,
+        has_auto_mode: bool = False,
         has_temperature: bool = False,
         min_temperature: float = None,
         max_temperature: float = None,
@@ -58,6 +62,7 @@ class HomePilotThermostat(HomePilotDevice):
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,
         )
+        self._has_auto_mode = has_auto_mode
         self._has_temperature = has_temperature
         self._min_temperature = min_temperature
         self._max_temperature = max_temperature
@@ -87,9 +92,11 @@ class HomePilotThermostat(HomePilotDevice):
             ]
             if device_map[APICAP_PROD_CODE_DEVICE_LOC]["value"] in SUPPORTED_DEVICES
             else "Generic Device",
-            fw_version=device_map[APICAP_VERSION_CFG]["value"],
+            fw_version=device_map[APICAP_VERSION_CFG]["value"] 
+            if APICAP_VERSION_CFG in device_map else "",
             device_group=device_map[APICAP_DEVICE_TYPE_LOC]["value"],
             has_ping_cmd=APICAP_PING_CMD in device_map,
+            has_auto_mode=APICAP_AUTO_MODE_CFG in device_map,
             has_temperature=APICAP_TEMPERATURE_INT_CFG in device_map,
             min_temperature=float(
                 device_map[APICAP_TEMPERATURE_INT_CFG]["min_value"]
@@ -116,6 +123,8 @@ class HomePilotThermostat(HomePilotDevice):
             self.temperature_value = state["statusesMap"]["acttemperatur"] / 10
         if self.has_target_temperature:
             self.target_temperature_value = state["statusesMap"]["Position"] / 10
+        if self.has_auto_mode:
+            self.auto_mode_value = state["statusesMap"]["manualoverride"] != 0
 
     async def async_set_target_temperature(self, temperature) -> None:
         await self.api.async_set_target_temperature(self.did, temperature)
@@ -126,6 +135,10 @@ class HomePilotThermostat(HomePilotDevice):
     @property
     def has_temperature(self) -> bool:
         return self._has_temperature
+
+    @property
+    def has_auto_mode(self) -> bool:
+        return self._has_auto_mode
 
     @property
     def min_temperature(self) -> bool:
@@ -154,6 +167,14 @@ class HomePilotThermostat(HomePilotDevice):
     @property
     def step_target_temperature(self) -> bool:
         return self._step_target_temperature
+
+    @property
+    def auto_mode_value(self) -> bool:
+        return self._auto_mode_value
+
+    @auto_mode_value.setter
+    def auto_mode_value(self, auto_mode_value):
+        self._auto_mode_value = auto_mode_value
 
     @property
     def temperature_value(self) -> float:
