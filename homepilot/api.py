@@ -252,6 +252,14 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
+    async def async_update_firmware(self):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.post(
+                f"http://{self.host}/service/system-update-image/startupdate"
+            ) as response:
+                return await response.json()
+
     @property
     def host(self):
         return self._host

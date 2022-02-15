@@ -113,6 +113,9 @@ class HomePilotHub(HomePilotDevice):
     async def async_turn_led_off(self) -> None:
         await self.api.async_turn_led_off()
 
+    async def async_update_firmware(self) -> None:
+        await self.api.async_update_firmware()
+
     @property
     def hub_type(self):
         return self._hub_type
