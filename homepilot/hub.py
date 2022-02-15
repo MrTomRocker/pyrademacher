@@ -97,7 +97,11 @@ class HomePilotHub(HomePilotDevice):
         self.fw_update_available = (
             state["status"]["update_status"] != "NO_UPDATE_AVAILABLE"
         )
-        self.fw_update_version = state["status"]["version"]
+        self.fw_update_version = (
+            state["status"]["new_version"]
+            if "new_version" in state["status"] and self.fw_update_available
+            else state["status"]["version"]
+        )
         self.led_status = state["led"]["status"] == "enabled"
 
     async def async_ping(self):
