@@ -51,6 +51,8 @@ class HomePilotSensor(HomePilotDevice):
     _contact_state_value: ContactState
     _has_battery_level: bool
     _battery_level_value: float
+    _has_motion_detection: bool
+    _motion_detection_value: bool
 
     def __init__(
         self,
@@ -73,6 +75,7 @@ class HomePilotSensor(HomePilotDevice):
         has_sun_detection: bool = False,
         has_contact_state: bool = False,
         has_battery_level: bool = False,
+        has_motion_detection: bool = False,
     ) -> None:
         super().__init__(
             api=api,
@@ -95,6 +98,7 @@ class HomePilotSensor(HomePilotDevice):
         self._has_sun_detection = has_sun_detection
         self._has_contact_state = has_contact_state
         self._has_battery_level = has_battery_level
+        self._has_motion_detection = has_motion_detection
 
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
@@ -130,6 +134,7 @@ class HomePilotSensor(HomePilotDevice):
             has_sun_detection=APICAP_SUN_DETECTION_MEA in device_map,
             has_contact_state=APICAP_CLOSE_CONTACT_MEA in device_map,
             has_battery_level=APICAP_BATTERY_LVL_PCT_MEA in device_map,
+            has_motion_detection=APICAP_MOTION_DETECTION_MEA in device_map,
         )
 
     def update_state(self, state):
@@ -158,6 +163,8 @@ class HomePilotSensor(HomePilotDevice):
             )
         if self.has_battery_level:
             self.battery_level_value = state["batteryStatus"]
+        if self.has_motion_detection:
+            self.motion_detection_value = state["readings"]["movement_detected"]
 
     @property
     def has_temperature(self) -> bool:
@@ -198,6 +205,10 @@ class HomePilotSensor(HomePilotDevice):
     @property
     def has_battery_level(self) -> bool:
         return self._has_battery_level
+
+    @property
+    def has_motion_detection(self) -> bool:
+        return self._has_motion_detection
 
     @property
     def temperature_value(self) -> float:
@@ -278,3 +289,11 @@ class HomePilotSensor(HomePilotDevice):
     @battery_level_value.setter
     def battery_level_value(self, battery_level_value):
         self._battery_level_value = battery_level_value
+
+    @property
+    def motion_detection_value(self) -> bool:
+        return self._motion_detection_value
+
+    @motion_detection_value.setter
+    def motion_detection_value(self, motion_detection_value):
+        self._motion_detection_value = motion_detection_value
