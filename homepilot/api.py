@@ -132,6 +132,22 @@ class HomePilotApi:
                 response = await response.json()
                 return response
 
+    async def async_get_device_state(self, did):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.get(
+                f"http://{self.host}/v4/devices/{did}"
+            ) as response:
+                response = await response.json()
+                if response["response"] != "get_device":
+                    device = {}
+                else:
+                    if "device" in response:
+                        device = response["device"]
+                    else:
+                        device = {}
+                return device
+
     async def async_get_devices_state(self):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:

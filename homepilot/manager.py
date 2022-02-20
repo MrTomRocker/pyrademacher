@@ -56,6 +56,20 @@ class HomePilotManager:
             "led": await self.api.async_get_led_status(),
         }
 
+    async def update_state(self, did):
+        try:
+            if did == "-1":
+                state = await self.get_hub_state()
+            else:
+                state = await self.api.async_get_device_state(did)
+        except:
+            device: HomePilotDevice = self.devices[did]
+            device.available = False
+
+        device: HomePilotDevice = self.devices[did]
+        device.update_state(state)
+        return device
+
     async def update_states(self):
         try:
             states = await self.api.async_get_devices_state()
