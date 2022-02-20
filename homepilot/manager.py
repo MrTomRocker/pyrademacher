@@ -62,7 +62,7 @@ class HomePilotManager:
                 state = await self.get_hub_state()
             else:
                 state = await self.api.async_get_device_state(did)
-        except:
+        except Exception:
             device: HomePilotDevice = self.devices[did]
             device.available = False
 
