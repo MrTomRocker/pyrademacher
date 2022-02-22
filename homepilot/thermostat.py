@@ -100,21 +100,26 @@ class HomePilotThermostat(HomePilotDevice):
             has_temperature=APICAP_TEMPERATURE_INT_CFG in device_map,
             min_temperature=float(
                 device_map[APICAP_TEMPERATURE_INT_CFG]["min_value"]
-            ) if APICAP_TEMPERATURE_INT_CFG in device_map else None,
+            ) if APICAP_TEMPERATURE_INT_CFG in device_map
+            and "min_value" in device_map[APICAP_TEMPERATURE_INT_CFG] else None,
             max_temperature=float(
                 device_map[APICAP_TEMPERATURE_INT_CFG]["max_value"]
-            ) if APICAP_TEMPERATURE_INT_CFG in device_map else None,
+            ) if APICAP_TEMPERATURE_INT_CFG in device_map
+            and "max_value" in device_map[APICAP_TEMPERATURE_INT_CFG] else None,
             has_target_temperature=APICAP_TARGET_TEMPERATURE_CFG in device_map,
             can_set_target_temperature=APICAP_TARGET_TEMPERATURE_CFG in device_map,
             min_target_temperature=float(
                 device_map[APICAP_TARGET_TEMPERATURE_CFG]["min_value"]
-            ) if APICAP_TARGET_TEMPERATURE_CFG in device_map else None,
+            ) if APICAP_TARGET_TEMPERATURE_CFG in device_map
+            and "min_value" in device_map[APICAP_TARGET_TEMPERATURE_CFG] else None,
             max_target_temperature=float(
                 device_map[APICAP_TARGET_TEMPERATURE_CFG]["max_value"]
-            ) if APICAP_TARGET_TEMPERATURE_CFG in device_map else None,
+            ) if APICAP_TARGET_TEMPERATURE_CFG in device_map
+            and "max_value" in device_map[APICAP_TARGET_TEMPERATURE_CFG] else None,
             step_target_temperature=float(
                 device_map[APICAP_TARGET_TEMPERATURE_CFG]["step_size"]
-            ) if APICAP_TARGET_TEMPERATURE_CFG in device_map else None,
+            ) if APICAP_TARGET_TEMPERATURE_CFG in device_map
+            and "step_size" in device_map[APICAP_TARGET_TEMPERATURE_CFG] else None,
         )
 
     def update_state(self, state):
