@@ -12,6 +12,7 @@ from .const import (
     APICAP_PROD_CODE_DEVICE_LOC,
     APICAP_PROT_ID_DEVICE_LOC,
     APICAP_RAIN_DETECTION_MEA,
+    APICAP_SMOKE_DETECTION_MEA,
     APICAP_SUN_DETECTION_MEA,
     APICAP_SUN_DIRECTION_MEA,
     APICAP_SUN_HEIGHT_DEG_MEA,
@@ -53,6 +54,8 @@ class HomePilotSensor(HomePilotDevice):
     _battery_level_value: float
     _has_motion_detection: bool
     _motion_detection_value: bool
+    _has_smoke_detection: bool
+    _smoke_detection_value: bool
 
     def __init__(
         self,
@@ -76,6 +79,7 @@ class HomePilotSensor(HomePilotDevice):
         has_contact_state: bool = False,
         has_battery_level: bool = False,
         has_motion_detection: bool = False,
+        has_smoke_detection: bool = False,
     ) -> None:
         super().__init__(
             api=api,
@@ -99,6 +103,7 @@ class HomePilotSensor(HomePilotDevice):
         self._has_contact_state = has_contact_state
         self._has_battery_level = has_battery_level
         self._has_motion_detection = has_motion_detection
+        self._has_smoke_detection = has_smoke_detection
 
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
@@ -135,36 +140,39 @@ class HomePilotSensor(HomePilotDevice):
             has_contact_state=APICAP_CLOSE_CONTACT_MEA in device_map,
             has_battery_level=APICAP_BATTERY_LVL_PCT_MEA in device_map,
             has_motion_detection=APICAP_MOTION_DETECTION_MEA in device_map,
+            has_smoke_detection=APICAP_SMOKE_DETECTION_MEA in device_map,
         )
 
     def update_state(self, state):
         super().update_state(state)
-        if self.has_temperature:
+        if self.has_temperature and "temperature_primary" in state["readings"]:
             self.temperature_value = state["readings"]["temperature_primary"]
-        if self.has_target_temperature:
+        if self.has_target_temperature and "temperature_target" in state["readings"]:
             self.target_temperature_value = state["readings"]["temperature_target"]
-        if self.has_wind_speed:
+        if self.has_wind_speed and "wind_speed" in state["readings"]:
             self.wind_speed_value = state["readings"]["wind_speed"]
-        if self.has_brightness:
+        if self.has_brightness and "sun_brightness" in state["readings"]:
             self.brightness_value = state["readings"]["sun_brightness"]
-        if self.has_sun_height:
+        if self.has_sun_height and "sun_elevation" in state["readings"]:
             self.sun_height_value = state["readings"]["sun_elevation"]
-        if self.has_sun_direction:
+        if self.has_sun_direction and "sun_direction" in state["readings"]:
             self.sun_direction_value = state["readings"]["sun_direction"]
-        if self.has_rain_detection:
+        if self.has_rain_detection and "rain_detected" in state["readings"]:
             self.rain_detection_value = state["readings"]["rain_detected"]
-        if self.has_sun_detection:
+        if self.has_sun_detection and "sun_detected" in state["readings"]:
             self.sun_detection_value = state["readings"]["sun_detected"]
-        if self.has_contact_state:
+        if self.has_contact_state and "contact_state" in state["readings"]:
             self.contact_state_value = (
                 ContactState.CLOSED
                 if state["readings"]["contact_state"] == "closed"
                 else ContactState.OPENED
             )
-        if self.has_battery_level:
+        if self.has_battery_level and "batteryStatus" in state:
             self.battery_level_value = state["batteryStatus"]
-        if self.has_motion_detection:
+        if self.has_motion_detection and "movement_detected" in state["readings"]:
             self.motion_detection_value = state["readings"]["movement_detected"]
+        if self.has_smoke_detection and "smoke_detected" in state["readings"]:
+            self.smoke_detection_value = state["readings"]["smoke_detected"]
 
     @property
     def has_temperature(self) -> bool:
@@ -209,6 +217,10 @@ class HomePilotSensor(HomePilotDevice):
     @property
     def has_motion_detection(self) -> bool:
         return self._has_motion_detection
+
+    @property
+    def has_smoke_detection(self) -> bool:
+        return self._has_smoke_detection
 
     @property
     def temperature_value(self) -> float:
@@ -297,3 +309,11 @@ class HomePilotSensor(HomePilotDevice):
     @motion_detection_value.setter
     def motion_detection_value(self, motion_detection_value):
         self._motion_detection_value = motion_detection_value
+
+    @property
+    def smoke_detection_value(self) -> bool:
+        return self._smoke_detection_value
+
+    @smoke_detection_value.setter
+    def smoke_detection_value(self, smoke_detection_value):
+        self._smoke_detection_value = smoke_detection_value

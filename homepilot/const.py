@@ -5,6 +5,9 @@ COVER_TYPE = 1
 SENSOR_TYPE = 2
 SWITCH_ACTUATOR_TYPE = 3
 THERMOSTAT_TYPE = 4
+SMOKE_SENSOR_TYPE = 5
+CONTACT_SENSOR_TYPE = 6
+MOTION_SENSOR_TYPE = 7
 
 # API Capability names
 # Common
@@ -38,6 +41,7 @@ APICAP_SUN_DETECTION_MEA = "SUN_DETECTION_MEA"
 APICAP_CLOSE_CONTACT_MEA = "CLOSE_CONTACT_MEA"
 APICAP_BATTERY_LVL_PCT_MEA = "BATTERY_LVL_PCT_MEA"
 APICAP_MOTION_DETECTION_MEA = "MOTION_DETECTION_MEA"
+APICAP_SMOKE_DETECTION_MEA = "SMOKE_DETECTION_MEA"
 # Thermostat
 APICAP_TEMP_TARGET_DEG_MEA = "TEMP_TARGET_DEG_MEA"
 APICAP_TARGET_TEMPERATURE_CFG = "TARGET_TEMPERATURE_CFG"
@@ -98,15 +102,15 @@ SUPPORTED_DEVICES = {
         "Type": OTHER_TYPE,
     },
     "32000069": {"name": "DuoFern Sun Sensor", "Type": OTHER_TYPE},
-    "32001664": {"name": "DuoFern Smoke Alarm Device", "Type": OTHER_TYPE},
+    "32001664": {"name": "DuoFern Smoke Alarm Device", "Type": SMOKE_SENSOR_TYPE},
     "32001464": {"name": "DuoFern Awning monitor", "Type": OTHER_TYPE},
-    "32002119": {"name": "Z-Wave window/door contact", "Type": SENSOR_TYPE},
+    "32002119": {"name": "Z-Wave window/door contact", "Type": CONTACT_SENSOR_TYPE},
     "32004219": {"name": "HomePilot\xae HD Camera (Indoor)", "Type": OTHER_TYPE},
     "32004329": {"name": "HomePilot\xae HD Camera (Outdoor)", "Type": OTHER_TYPE},
     "32004119": {"name": "IP Camera", "Type": OTHER_TYPE},
     "99999999": {"name": "Android Smartphone (GeoPilot)", "Type": OTHER_TYPE},
     "99999998": {"name": "iOS Smartphone (GeoPilot)", "Type": OTHER_TYPE},
-    "32003164": {"name": "DuoFern Window/Door Contact", "Type": SENSOR_TYPE},
+    "32003164": {"name": "DuoFern Window/Door Contact", "Type": CONTACT_SENSOR_TYPE},
     "32480366": {
         "name": "DuoFern Standard manual transmitter 6 groups 48 devices",
         "Type": OTHER_TYPE,
