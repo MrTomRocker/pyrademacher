@@ -106,7 +106,7 @@ class TestHomePilotCover:
             "batteryStatus": 54,
             "statusValid": True
         })
-        assert contact_sensor.contact_state_value == ContactState.OPENED
+        assert contact_sensor.contact_state_value == ContactState.OPEN
         assert contact_sensor.battery_level_value == 54
         assert contact_sensor.available is True
         contact_sensor.update_state({

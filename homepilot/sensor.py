@@ -168,7 +168,7 @@ class HomePilotSensor(HomePilotDevice):
                 if state["readings"]["contact_state"] == "closed"
                 else (ContactState.TILTED
                 if state["readings"]["contact_state"] == "tilted"
-                else ContactState.OPENED)
+                else ContactState.OPEN)
             )
         if self.has_battery_level and "batteryStatus" in state:
             self.battery_level_value = state["batteryStatus"]
