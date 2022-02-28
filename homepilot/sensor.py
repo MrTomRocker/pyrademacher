@@ -27,8 +27,9 @@ from .device import HomePilotDevice
 
 
 class ContactState(Enum):
-    OPENED = True
-    CLOSED = False
+    OPEN = 2
+    TILTED = 1
+    CLOSED = 0
 
 
 class HomePilotSensor(HomePilotDevice):
@@ -165,7 +166,9 @@ class HomePilotSensor(HomePilotDevice):
             self.contact_state_value = (
                 ContactState.CLOSED
                 if state["readings"]["contact_state"] == "closed"
-                else ContactState.OPENED
+                else (ContactState.TILTED
+                if state["readings"]["contact_state"] == "tilted"
+                else ContactState.OPENED)
             )
         if self.has_battery_level and "batteryStatus" in state:
             self.battery_level_value = state["batteryStatus"]
