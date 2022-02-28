@@ -102,7 +102,7 @@ class TestHomePilotManager:
         assert manager.devices["1010012"].temperature_value == 2.5
         assert manager.devices["1010012"].sun_height_value == -7
         assert manager.devices["1010018"].is_on
-        assert manager.devices["1010072"].contact_state_value == ContactState.OPENED
+        assert manager.devices["1010072"].contact_state_value == ContactState.OPEN
         assert manager.devices["1010072"].battery_level_value == 99
         assert not manager.devices["-1"].led_status
         assert manager.devices["-1"].fw_update_version == "5.4.9"
