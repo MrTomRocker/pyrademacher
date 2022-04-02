@@ -31,7 +31,7 @@ class HomePilotManager:
         manager.devices = {
             id_type["did"]: await HomePilotManager.async_build_device(manager.api, id_type)
             for id_type in await manager.get_device_ids_types()
-            if id_type["type"] in ["-1", "1", "2", "3", "5"]
+            if id_type["type"] in ["-1", "1", "2", "3", "5", "8"]
         }
         return manager
 
