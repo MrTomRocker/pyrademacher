@@ -81,7 +81,7 @@ class HomePilotCover(HomePilotDevice):
             device_group=device_map[APICAP_DEVICE_TYPE_LOC]["value"],
             has_ping_cmd=APICAP_PING_CMD in device_map,
             can_set_position=APICAP_GOTO_POS_CMD in device_map,
-            cover_type=int(device_map[APICAP_DEVICE_TYPE_LOC])
+            cover_type=int(device_map[APICAP_DEVICE_TYPE_LOC]["value"])
         )
 
     def update_state(self, state):
