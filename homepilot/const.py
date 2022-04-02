@@ -84,7 +84,7 @@ SUPPORTED_DEVICES = {
     },
     "14236011": {"name": "RolloTron radio beltwinder 60 kg", "Type": COVER_TYPE},
     "14234511": {"name": "RolloTron radio beltwinder", "Type": COVER_TYPE},
-    "45059071": {"name": "RolloPort SX5 DuoFern", "Type": COVER_TYPE,
+    "45059071": {"name": "RolloPort SX5 DuoFern", "Type": COVER_TYPE},
     "32000064_A": {
         "name": "DuoFern tubular motor actuator environmental sensor",
         "Type": COVER_TYPE,
