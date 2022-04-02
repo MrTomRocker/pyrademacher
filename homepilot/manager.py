@@ -47,6 +47,8 @@ class HomePilotManager:
             return await HomePilotSensor.async_build_from_api(api, id_type["did"])
         if id_type["type"] == "5":
             return await HomePilotThermostat.async_build_from_api(api, id_type["did"])
+        if id_type["type"] == "8":
+            return await HomePilotCover.async_build_from_api(api, id_type["did"])
         return None
 
     async def get_hub_state(self):

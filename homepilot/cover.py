@@ -1,4 +1,5 @@
 import asyncio
+from enum import Enum
 from .const import (
     APICAP_DEVICE_TYPE_LOC,
     APICAP_GOTO_POS_CMD,
@@ -14,8 +15,14 @@ from .api import HomePilotApi
 from .device import HomePilotDevice
 
 
+class CoverType(Enum):
+    SHUTTER = 2
+    GARAGE = 8
+
+
 class HomePilotCover(HomePilotDevice):
     _can_set_position: bool
+    _cover_type: int
     _cover_position: int
     _is_closed: bool
     _is_closing: bool
@@ -33,6 +40,7 @@ class HomePilotCover(HomePilotDevice):
         device_group: int,
         has_ping_cmd: bool = False,
         can_set_position: bool = True,
+        cover_type: int = 2,
     ) -> None:
         super().__init__(
             api=api,
@@ -46,6 +54,7 @@ class HomePilotCover(HomePilotDevice):
             has_ping_cmd=has_ping_cmd,
         )
         self._can_set_position = can_set_position
+        self._cover_type = cover_type
 
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
@@ -72,6 +81,7 @@ class HomePilotCover(HomePilotDevice):
             device_group=device_map[APICAP_DEVICE_TYPE_LOC]["value"],
             has_ping_cmd=APICAP_PING_CMD in device_map,
             can_set_position=APICAP_GOTO_POS_CMD in device_map,
+            cover_type=int(device_map[APICAP_DEVICE_TYPE_LOC]["value"])
         )
 
     def update_state(self, state):
@@ -129,3 +139,7 @@ class HomePilotCover(HomePilotDevice):
     @property
     def can_set_position(self) -> bool:
         return self._can_set_position
+
+    @property
+    def cover_type(self) -> bool:
+        return self._cover_type
