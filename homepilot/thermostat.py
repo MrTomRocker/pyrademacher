@@ -1,6 +1,7 @@
 import asyncio
 from .const import (
     APICAP_AUTO_MODE_CFG,
+    APICAP_BATTERY_LVL_PCT_MEA,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC,
     APICAP_NAME_DEVICE_LOC,
@@ -29,6 +30,8 @@ class HomePilotThermostat(HomePilotDevice):
     _min_target_temperature: float
     _step_target_temperature: float
     _can_set_target_temperature: bool
+    _has_battery_level: bool
+    _battery_level_value: float
 
     def __init__(
         self,
@@ -50,6 +53,7 @@ class HomePilotThermostat(HomePilotDevice):
         min_target_temperature: float = None,
         max_target_temperature: float = None,
         step_target_temperature: float = None,
+        has_battery_level: bool = False,
     ) -> None:
         super().__init__(
             api=api,
@@ -71,6 +75,7 @@ class HomePilotThermostat(HomePilotDevice):
         self._min_target_temperature = min_target_temperature
         self._max_target_temperature = max_target_temperature
         self._step_target_temperature = step_target_temperature
+        self._has_battery_level = has_battery_level
 
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
@@ -120,6 +125,7 @@ class HomePilotThermostat(HomePilotDevice):
                 device_map[APICAP_TARGET_TEMPERATURE_CFG]["step_size"]
             ) if APICAP_TARGET_TEMPERATURE_CFG in device_map
             and device_map[APICAP_TARGET_TEMPERATURE_CFG]["step_size"] is not None else None,
+            has_battery_level=APICAP_BATTERY_LVL_PCT_MEA in device_map,
         )
 
     def update_state(self, state):
@@ -134,6 +140,8 @@ class HomePilotThermostat(HomePilotDevice):
                 if "Manuellbetrieb" in state["statusesMap"]
                 else False
             )
+        if self.has_battery_level and "batteryStatus" in state:
+            self.battery_level_value = state["batteryStatus"]
 
     async def async_set_target_temperature(self, temperature) -> None:
         await self.api.async_set_target_temperature(self.did, temperature)
@@ -160,6 +168,10 @@ class HomePilotThermostat(HomePilotDevice):
     @property
     def has_target_temperature(self) -> bool:
         return self._has_target_temperature
+
+    @property
+    def has_battery_level(self) -> bool:
+        return self._has_battery_level
 
     @property
     def can_set_target_temperature(self) -> bool:
@@ -200,3 +212,11 @@ class HomePilotThermostat(HomePilotDevice):
     @target_temperature_value.setter
     def target_temperature_value(self, target_temperature_value):
         self._target_temperature_value = target_temperature_value
+
+    @property
+    def battery_level_value(self) -> float:
+        return self._battery_level_value
+
+    @battery_level_value.setter
+    def battery_level_value(self, battery_level_value):
+        self._battery_level_value = battery_level_value
