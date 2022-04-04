@@ -1,6 +1,7 @@
 import asyncio
 from .const import (
     APICAP_AUTO_MODE_CFG,
+    APICAP_BATT_VALUE_EVT,
     APICAP_BATTERY_LVL_PCT_MEA,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC,
@@ -125,7 +126,7 @@ class HomePilotThermostat(HomePilotDevice):
                 device_map[APICAP_TARGET_TEMPERATURE_CFG]["step_size"]
             ) if APICAP_TARGET_TEMPERATURE_CFG in device_map
             and device_map[APICAP_TARGET_TEMPERATURE_CFG]["step_size"] is not None else None,
-            has_battery_level=APICAP_BATTERY_LVL_PCT_MEA in device_map,
+            has_battery_level=APICAP_BATT_VALUE_EVT in device_map,
         )
 
     def update_state(self, state):
