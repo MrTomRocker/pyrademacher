@@ -26,8 +26,8 @@ class HomePilotCover(HomePilotDevice):
     _cover_type: int
     _has_tilt: bool
     _can_set_tilt_position: bool
-    _cover_position: int
-    _cover_tilt_position: int
+    _cover_position: int = None
+    _cover_tilt_position: int = None
     _is_closed: bool
     _is_closing: bool
     _is_opening: bool
