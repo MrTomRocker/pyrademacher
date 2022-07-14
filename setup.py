@@ -5,10 +5,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrademacher",
-    version="0.6.1",
+    version="0.6.2",
     author="Pedro Ribeiro",
     author_email="pedroeusebio@gmail.com",
-    description="Control devices connected to your Rademacher Homepilot (or Start2Smart) hub",
+    description="Control devices connected to your Rademacher Homepilot "
+    "(or Start2Smart) hub",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/peribeir/pyrademacher",

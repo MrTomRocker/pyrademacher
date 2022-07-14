@@ -24,7 +24,8 @@ class TestHomePilotApi:
 
         with aioresponses() as mocked:
             mocked.get(f"http://{TEST_HOST}/", status=200, body="")
-            mocked.post(f"http://{TEST_HOST}/authentication/password_salt", status=500)
+            mocked.post(f"http://{TEST_HOST}/authentication/password_salt",
+                        status=500)
             assert await HomePilotApi.test_connection(TEST_HOST) == "ok"
 
         with aioresponses() as mocked:
@@ -33,8 +34,10 @@ class TestHomePilotApi:
 
         with aioresponses() as mocked:
             mocked.get(f"http://{TEST_HOST}/", status=200, body="")
-            mocked.post(f"http://{TEST_HOST}/authentication/password_salt", status=200)
-            assert await HomePilotApi.test_connection(TEST_HOST) == "auth_required"
+            mocked.post(f"http://{TEST_HOST}/authentication/password_salt",
+                        status=200)
+            assert await HomePilotApi.test_connection(TEST_HOST) \
+                == "auth_required"
 
     @pytest.mark.asyncio
     async def test_test_auth(self):
@@ -64,7 +67,8 @@ class TestHomePilotApi:
                 mocked.post(
                     f"http://{TEST_HOST}/authentication/password_salt",
                     status=200,
-                    body=json.dumps({"error_code": 0, "password_salt": "12345"})
+                    body=json.dumps({"error_code": 0,
+                                     "password_salt": "12345"})
                 )
                 mocked.post(
                     f"http://{TEST_HOST}/authentication/login",
@@ -82,10 +86,14 @@ class TestHomePilotApi:
                 f"http://{TEST_HOST}/authentication/login",
                 status=200,
                 headers={
-                    "Set-Cookie": "HPSESSION=V6EivFUCps1ItXmkymnsZLcpGJZL20keUtBAIvZxsbUaDGNP31sQ4YYxUT0XXv7P;Path=/"
+                    "Set-Cookie":
+                    "HPSESSION=V6EivFUCps1ItXmkymnsZLcpGJZL2"
+                    "0keUtBAIvZxsbUaDGNP31sQ4YYxUT0XXv7P;Path=/"
                 }
             )
-            assert isinstance(await HomePilotApi.test_auth(TEST_HOST, TEST_PASSWORD), CookieJar)
+            assert isinstance(await HomePilotApi.test_auth(TEST_HOST,
+                                                           TEST_PASSWORD),
+                              CookieJar)
 
     @pytest.mark.asyncio
     async def test_async_get_devices(self):
@@ -94,7 +102,8 @@ class TestHomePilotApi:
             mocked.get(
                 f"http://{TEST_HOST}/devices",
                 status=200,
-                body=json.dumps({"error_code": 0, "payload": {"devices": ["a"]}})
+                body=json.dumps({"error_code": 0,
+                                 "payload": {"devices": ["a"]}})
             )
             assert await instance.get_devices() == ["a"]
 
@@ -107,7 +116,8 @@ class TestHomePilotApi:
             mocked.get(
                 f"http://{TEST_HOST}/devices/{did}",
                 status=200,
-                body=json.dumps({"error_code": 0, "payload": {"device": device_resp}})
+                body=json.dumps({"error_code": 0,
+                                 "payload": {"device": device_resp}})
             )
             assert await instance.get_device(did) == device_resp
 
@@ -161,8 +171,10 @@ class TestHomePilotApi:
 
     @pytest.mark.asyncio
     async def test_async_get_devices_state(self):
-        response_actuators = {"response": "get_visible_devices", "devices": [{"did": "1", "name": "name1"}]}
-        response_sensors = {"response": "get_meters", "meters": [{"did": "2", "name": "name2"}]}
+        response_actuators = {"response": "get_visible_devices",
+                              "devices": [{"did": "1", "name": "name1"}]}
+        response_sensors = {"response": "get_meters",
+                            "meters": [{"did": "2", "name": "name2"}]}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             mocked.get(
@@ -175,7 +187,8 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response_sensors)
             )
-            expected = {"1": {"did": "1", "name": "name1"}, "2": {"did": "2", "name": "name2"}}
+            expected = {"1": {"did": "1", "name": "name1"},
+                        "2": {"did": "2", "name": "name2"}}
             assert await instance.async_get_devices_state() == expected
 
     def callback_ping(self, url, **kwargs):
@@ -277,7 +290,8 @@ class TestHomePilotApi:
                 status=200,
                 callback=self.callback_goto_pos
             )
-            assert (await instance.async_set_cover_position(did, position))["error_code"] == 0
+            assert (await instance.async_set_cover_position(did, position))[
+                "error_code"] == 0
 
     def callback_turn_on(self, url, **kwargs):
         response = {"error_code": 0, "error_description": "OK", "payload": {}}

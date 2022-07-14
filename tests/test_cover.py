@@ -52,12 +52,13 @@ class TestHomePilotCover:
         cover.update_state({
             "statusesMap": {
                 "Position": 100,
-                "slatposition": 50
+                "slatposition": 34
             },
             "statusValid": True
         })
         assert cover.is_closed is True
         assert cover.cover_position == 0
+        assert cover.cover_tilt_position == 66
         assert cover.is_closing is False
         assert cover.is_opening is False
         assert cover.available is True
@@ -65,12 +66,13 @@ class TestHomePilotCover:
         cover.update_state({
             "statusesMap": {
                 "Position": 40,
-                "slatposition": 60
+                "slatposition": 55
             },
             "statusValid": False
         })
         assert cover.is_closed is False
         assert cover.cover_position == 60
+        assert cover.cover_tilt_position == 45
         assert cover.is_closing is False
         assert cover.is_opening is False
         assert cover.available is False
