@@ -13,7 +13,9 @@ from .const import (
     APICAP_STOP_CMD,
     APICAP_TARGET_TEMPERATURE_CFG,
     APICAP_TURN_OFF_CMD,
-    APICAP_TURN_ON_CMD
+    APICAP_TURN_ON_CMD,
+    APICAP_SET_SLAT_POS_CMD,
+    APICAP_STOP_SLAT_CMD
 )
 
 
@@ -215,6 +217,42 @@ class HomePilotApi:
             async with session.put(
                 f"http://{self.host}/devices/{did}",
                 json={"name": APICAP_GOTO_POS_CMD, "value": position},
+            ) as response:
+                return await response.json()
+
+    async def async_open_cover_tilt(self, did) -> None:
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": APICAP_SET_SLAT_POS_CMD, "value": 0},
+            ) as response:
+                return await response.json()
+
+    async def async_close_cover_tilt(self, did) -> None:
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": APICAP_SET_SLAT_POS_CMD, "value": 100},
+            ) as response:
+                return await response.json()
+
+    async def async_set_cover_tilt_position(self, did, position) -> None:
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": APICAP_SET_SLAT_POS_CMD, "value": position},
+            ) as response:
+                return await response.json()
+
+    async def async_stop_cover_tilt(self, did) -> None:
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": APICAP_STOP_SLAT_CMD},
             ) as response:
                 return await response.json()
 
