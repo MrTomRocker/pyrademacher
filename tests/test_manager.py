@@ -54,13 +54,16 @@ class TestHomePilotManager:
 
         f_actuators = open("tests/test_files/actuators.json")
         actuators_response = json.load(f_actuators)
-        actuators = {str(device["did"]): device for device in actuators_response["devices"]}
+        actuators = {str(device["did"]): device for device in
+                     actuators_response["devices"]}
         f_actuators = open("tests/test_files/sensors.json")
         sensors_response = json.load(f_actuators)
-        sensors = {str(device["did"]): device for device in sensors_response["meters"]}
+        sensors = {str(device["did"]): device for device in sensors_response[
+            "meters"]}
         func_get_devices_state = asyncio.Future(loop=event_loop)
         func_get_devices_state.set_result({**actuators, **sensors})
-        api.async_get_devices_state.return_value = yield from func_get_devices_state
+        api.async_get_devices_state.return_value = \
+            yield from func_get_devices_state
 
         func_get_fw_version = asyncio.Future(loop=event_loop)
         func_get_fw_version.set_result({
@@ -87,7 +90,8 @@ class TestHomePilotManager:
     @pytest.mark.asyncio
     async def test_build_manager(self, mocked_api):
         manager = await HomePilotManager.async_build_manager(mocked_api)
-        assert list(manager.devices.keys()) == ['1', '1010012', '1010018', '1010072', '-1']
+        assert list(manager.devices.keys()) == \
+            ['1', '1010012', '1010018', '1010072', '-1']
         assert isinstance(manager.devices['1'], HomePilotCover)
         assert isinstance(manager.devices['1010012'], HomePilotSensor)
         assert isinstance(manager.devices['1010018'], HomePilotSwitch)
@@ -99,10 +103,12 @@ class TestHomePilotManager:
         manager = await HomePilotManager.async_build_manager(mocked_api)
         await manager.update_states()
         assert manager.devices["1"].cover_position == 35
+        assert manager.devices["1"].cover_tilt_position == 11
         assert manager.devices["1010012"].temperature_value == 2.5
         assert manager.devices["1010012"].sun_height_value == -7
         assert manager.devices["1010018"].is_on
-        assert manager.devices["1010072"].contact_state_value == ContactState.OPEN
+        assert manager.devices["1010072"].contact_state_value == \
+            ContactState.OPEN
         assert manager.devices["1010072"].battery_level_value == 99
         assert not manager.devices["-1"].led_status
         assert manager.devices["-1"].fw_update_version == "5.4.9"

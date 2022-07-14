@@ -30,7 +30,8 @@
 			"statusValid": true,
 			"statusesMap": {
 				"Manuellbetrieb": 0,
-				"Position": 65
+				"Position": 65,
+				"slatposition": 89
 			},
 			"visible": true,
 			"deviceNumber": "14234511",

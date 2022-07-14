@@ -92,7 +92,29 @@
 					"read_only": false,
 					"timestamp": -1
 				},
-				{
+                {
+					"name": "SET_SLAT_POS_CMD",
+					"min_value": "0",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": -1
+				  },
+				  {
+					"name": "GOTO_POS_SLAT_CMD",
+					"read_only": false,
+					"timestamp": -1
+				  },
+				  {
+					"name": "CURR_SLAT_POS_CFG",
+					"value": "0",
+					"min_value": "0",
+					"max_value": "100",
+					"step_size": "1",
+					"read_only": false,
+					"timestamp": 1657795153
+				  },
+				  {
 					"name": "ICONSET_INV_LOC",
 					"value": "false",
 					"read_only": false,

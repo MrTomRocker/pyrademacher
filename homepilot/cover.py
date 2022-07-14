@@ -9,7 +9,6 @@ from .const import (
     APICAP_PING_CMD,
     APICAP_PROD_CODE_DEVICE_LOC,
     APICAP_PROT_ID_DEVICE_LOC,
-    APICAP_SET_SLAT_POS_CMD,
     APICAP_VERSION_CFG,
     SUPPORTED_DEVICES,
 )
@@ -82,7 +81,8 @@ class HomePilotCover(HomePilotDevice):
             device_number=device_map[APICAP_PROD_CODE_DEVICE_LOC]["value"],
             model=SUPPORTED_DEVICES[device_map[APICAP_PROD_CODE_DEVICE_LOC][
                 "value"]]["name"]
-            if device_map[APICAP_PROD_CODE_DEVICE_LOC]["value"] in SUPPORTED_DEVICES
+            if device_map[APICAP_PROD_CODE_DEVICE_LOC]["value"] in
+            SUPPORTED_DEVICES
             else "Generic Device",
             fw_version=device_map[APICAP_VERSION_CFG]["value"]
             if APICAP_VERSION_CFG in device_map else "",
@@ -98,7 +98,8 @@ class HomePilotCover(HomePilotDevice):
         super().update_state(state)
         self.cover_position = 100 - state["statusesMap"]["Position"]
         if self.has_tilt:
-            self.cover_tilt_position = 100 - state["statusesMap"]["slatposition"]
+            self.cover_tilt_position = 100 - state["statusesMap"][
+                "slatposition"]
         self.is_closed = self.cover_position == 0
         self.is_closing = False
         self.is_opening = False
@@ -111,7 +112,8 @@ class HomePilotCover(HomePilotDevice):
 
     async def async_set_cover_position(self, new_position) -> None:
         if self.can_set_position:
-            await self.api.async_set_cover_position(self.did, 100 - new_position)
+            await self.api.async_set_cover_position(self.did,
+                                                    100 - new_position)
 
     async def async_stop_cover(self) -> None:
         await self.api.async_stop_cover(self.did)
@@ -126,7 +128,8 @@ class HomePilotCover(HomePilotDevice):
 
     async def async_set_cover_tilt_position(self, new_position) -> None:
         if self.has_tilt and self.can_set_tilt_position:
-            await self.api.async_set_cover_tilt_position(self.did, 100 - new_position)
+            await self.api.async_set_cover_tilt_position(self.did,
+                                                         100 - new_position)
 
     async def async_stop_cover_tilt(self) -> None:
         if self.has_tilt:
@@ -177,7 +180,7 @@ class HomePilotCover(HomePilotDevice):
         return self._can_set_position
 
     @property
-    def cover_type(self) -> bool:
+    def cover_type(self) -> int:
         return self._cover_type
 
     @property
