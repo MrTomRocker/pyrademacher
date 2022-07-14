@@ -98,7 +98,7 @@ class HomePilotCover(HomePilotDevice):
         super().update_state(state)
         self.cover_position = 100 - state["statusesMap"]["Position"]
         if self.has_tilt:
-            self.cover_tilt_position = 100 - state["statusesMap"]["SlatPosition"]
+            self.cover_tilt_position = 100 - state["statusesMap"]["slatposition"]
         self.is_closed = self.cover_position == 0
         self.is_closing = False
         self.is_opening = False

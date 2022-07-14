@@ -52,7 +52,7 @@ class TestHomePilotCover:
         cover.update_state({
             "statusesMap": {
                 "Position": 100,
-                "SlatPosition": 50
+                "slatposition": 50
             },
             "statusValid": True
         })
@@ -65,7 +65,7 @@ class TestHomePilotCover:
         cover.update_state({
             "statusesMap": {
                 "Position": 40,
-                "SlatPosition": 60
+                "slatposition": 60
             },
             "statusValid": False
         })
