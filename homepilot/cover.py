@@ -9,6 +9,7 @@ from .const import (
     APICAP_PING_CMD,
     APICAP_PROD_CODE_DEVICE_LOC,
     APICAP_PROT_ID_DEVICE_LOC,
+    APICAP_SET_SLAT_POS_CMD,
     APICAP_VERSION_CFG,
     SUPPORTED_DEVICES,
 )
@@ -90,16 +91,20 @@ class HomePilotCover(HomePilotDevice):
             has_ping_cmd=APICAP_PING_CMD in device_map,
             can_set_position=APICAP_GOTO_POS_CMD in device_map,
             cover_type=int(device_map[APICAP_DEVICE_TYPE_LOC]["value"]),
-            has_tilt=APICAP_CURR_SLAT_POS_CFG in device_map,
-            can_set_tilt_position=APICAP_CURR_SLAT_POS_CFG in device_map,
+            has_tilt=APICAP_SET_SLAT_POS_CMD in device_map,
+            can_set_tilt_position=APICAP_SET_SLAT_POS_CMD in device_map,
         )
 
     def update_state(self, state):
         super().update_state(state)
         self.cover_position = 100 - state["statusesMap"]["Position"]
         if self.has_tilt:
-            self.cover_tilt_position = 100 - state["statusesMap"][
-                "slatposition"]
+            if "slatposition" not in state["statusesMap"]:
+                self.has_tilt = False
+                self.can_set_tilt_position = False
+            else:
+                self.cover_tilt_position = 100 - state["statusesMap"][
+                    "slatposition"]
         self.is_closed = self.cover_position == 0
         self.is_closing = False
         self.is_opening = False
