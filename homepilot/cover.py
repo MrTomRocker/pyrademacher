@@ -192,6 +192,10 @@ class HomePilotCover(HomePilotDevice):
     def has_tilt(self) -> bool:
         return self._has_tilt
 
+    @has_tilt.setter
+    def has_tilt(self, has_tilt):
+        self._has_tilt = has_tilt
+
     @property
     def can_set_tilt_position(self) -> bool:
         return self._can_set_tilt_position
