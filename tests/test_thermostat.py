@@ -7,7 +7,7 @@ import pytest
 from homepilot.thermostat import HomePilotThermostat
 
 
-class TestHomePilotCover:
+class TestHomePilotThermostat:
     @pytest.fixture
     def mocked_api(self, event_loop):
         f = open("tests/test_files/device_thermostat.json")
@@ -43,6 +43,7 @@ class TestHomePilotCover:
         assert thermostat.min_target_temperature == 4.0
         assert thermostat.max_target_temperature == 40.0
         assert thermostat.step_target_temperature == 0.5
+        assert thermostat.has_relais_status is True
 
     @pytest.mark.asyncio
     async def test_update_state(self, mocked_api):
@@ -60,6 +61,7 @@ class TestHomePilotCover:
         })
         assert thermostat.temperature_value == 21.2
         assert thermostat.target_temperature_value == 24.0
+        assert thermostat.relais_status == 1
 
     @pytest.mark.asyncio
     async def test_async_set_target_temperature(self, mocked_api):
