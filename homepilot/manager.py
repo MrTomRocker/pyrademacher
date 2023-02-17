@@ -7,6 +7,7 @@ from .sensor import HomePilotSensor
 from .switch import HomePilotSwitch
 from .cover import HomePilotCover
 from .thermostat import HomePilotThermostat
+from .actuator import HomePilotActuator
 from .api import HomePilotApi
 
 from .device import HomePilotDevice
@@ -31,7 +32,7 @@ class HomePilotManager:
         manager.devices = {
             id_type["did"]: await HomePilotManager.async_build_device(manager.api, id_type)
             for id_type in await manager.get_device_ids_types()
-            if id_type["type"] in ["-1", "1", "2", "3", "5", "8"]
+            if id_type["type"] in ["-1", "1", "2", "3", "4", "5", "8"]
         }
         return manager
 
@@ -45,6 +46,8 @@ class HomePilotManager:
             return await HomePilotCover.async_build_from_api(api, id_type["did"])
         if id_type["type"] == "3":
             return await HomePilotSensor.async_build_from_api(api, id_type["did"])
+        if id_type["type"] == "4":
+            return await HomePilotActuator.async_build_from_api(api, id_type["did"])
         if id_type["type"] == "5":
             return await HomePilotThermostat.async_build_from_api(api, id_type["did"])
         if id_type["type"] == "8":
