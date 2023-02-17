@@ -85,7 +85,7 @@ class HomePilotActuator(HomePilotDevice):
         return self._brightness
 
     @brightness.setter
-    def is_on(self, brightness):
+    def brightness(self, brightness):
         self._brightness = brightness
 
     async def async_turn_on(self) -> None:
