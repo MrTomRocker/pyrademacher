@@ -81,7 +81,7 @@ class HomePilotActuator(HomePilotDevice):
         self._is_on = is_on
 
     @property
-    def brightness(self) -> bool:
+    def brightness(self) -> int:
         return self._brightness
 
     @brightness.setter
