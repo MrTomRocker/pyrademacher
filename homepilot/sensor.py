@@ -145,7 +145,7 @@ class HomePilotSensor(HomePilotDevice):
         )
 
     async def update_state(self, state, api):
-        await super().update_state(state)
+        await super().update_state(state, api)
         if self.has_temperature and "temperature_primary" in state["readings"]:
             self.temperature_value = state["readings"]["temperature_primary"]
         if self.has_target_temperature and "temperature_target" in state["readings"]:

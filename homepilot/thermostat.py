@@ -136,7 +136,7 @@ class HomePilotThermostat(HomePilotDevice):
         )
 
     async def update_state(self, state, api):
-        await super().update_state(state)
+        await super().update_state(state, api)
         if self.has_temperature:
             self.temperature_value = state["statusesMap"]["acttemperatur"] / 10
         if self.has_target_temperature:

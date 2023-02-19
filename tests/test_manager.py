@@ -49,7 +49,8 @@ class TestHomePilotManager:
             (yield from func_get_device1),
             (yield from func_get_device2),
             (yield from func_get_device3),
-            (yield from func_get_device4)
+            (yield from func_get_device4),
+            (yield from func_get_device1),
         ]
 
         f_actuators = open("tests/test_files/actuators.json")

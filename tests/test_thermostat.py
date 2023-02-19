@@ -48,7 +48,7 @@ class TestHomePilotThermostat:
     @pytest.mark.asyncio
     async def test_update_state(self, mocked_api):
         thermostat: HomePilotThermostat = await HomePilotThermostat.async_build_from_api(mocked_api, 1)
-        thermostat.update_state({
+        await thermostat.update_state({
             "statusesMap": {
                 "Manuellbetrieb": 100,
                 "Position": 240,
@@ -58,7 +58,7 @@ class TestHomePilotThermostat:
                 "manualoverride": 0
             },
             "statusValid": True
-        })
+        }, mocked_api)
         assert thermostat.temperature_value == 21.2
         assert thermostat.target_temperature_value == 24.0
         assert thermostat.relais_status == 1

@@ -104,7 +104,7 @@ class HomePilotCover(HomePilotDevice):
         )
 
     async def update_state(self, state, api):
-        await super().update_state(state)
+        await super().update_state(state, api)
         self.cover_position = 100 - state["statusesMap"]["Position"]
         if self.has_tilt:
             if "slatposition" not in state["statusesMap"]:

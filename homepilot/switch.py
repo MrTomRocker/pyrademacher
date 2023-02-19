@@ -67,7 +67,7 @@ class HomePilotSwitch(HomePilotDevice):
         )
 
     async def update_state(self, state, api):
-        await super().update_state(state)
+        await super().update_state(state, api)
         self.is_on = state["statusesMap"]["Position"] != 0
 
     @property

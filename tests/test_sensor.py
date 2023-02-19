@@ -75,7 +75,7 @@ class TestHomePilotCover:
     @pytest.mark.asyncio
     async def test_env_sensor_update_state(self, mocked_api_env_sensor):
         env_sensor: HomePilotSensor = await HomePilotSensor.async_build_from_api(mocked_api_env_sensor, 1)
-        env_sensor.update_state({
+        await env_sensor.update_state({
             "readings": {
                 "sun_detected": False,
                 "sun_brightness": 1,
@@ -86,7 +86,7 @@ class TestHomePilotCover:
                 "temperature_primary": 2.5
             },
             "statusValid": True
-        })
+        }, mocked_api_env_sensor)
         assert env_sensor.sun_detection_value is False
         assert env_sensor.brightness_value == 1
         assert env_sensor.sun_direction_value == 87.0
@@ -99,23 +99,23 @@ class TestHomePilotCover:
     @pytest.mark.asyncio
     async def test_contact_sensor_update_state(self, mocked_api_contact_sensor):
         contact_sensor: HomePilotSensor = await HomePilotSensor.async_build_from_api(mocked_api_contact_sensor, 1)
-        contact_sensor.update_state({
+        await contact_sensor.update_state({
             "readings": {
                 "contact_state": "open"
             },
             "batteryStatus": 54,
             "statusValid": True
-        })
+        }, mocked_api_contact_sensor)
         assert contact_sensor.contact_state_value == ContactState.OPEN
         assert contact_sensor.battery_level_value == 54
         assert contact_sensor.available is True
-        contact_sensor.update_state({
+        await contact_sensor.update_state({
             "readings": {
                 "contact_state": "closed"
             },
             "batteryStatus": 99,
             "statusValid": False
-        })
+        }, mocked_api_contact_sensor)
         assert contact_sensor.contact_state_value == ContactState.CLOSED
         assert contact_sensor.battery_level_value == 99
         assert contact_sensor.available is False

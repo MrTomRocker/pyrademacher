@@ -49,13 +49,13 @@ class TestHomePilotCover:
     @pytest.mark.asyncio
     async def test_update_state(self, mocked_api):
         cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
-        cover.update_state({
+        await cover.update_state({
             "statusesMap": {
                 "Position": 100,
                 "slatposition": 34
             },
             "statusValid": True
-        })
+        }, mocked_api)
         assert cover.is_closed is True
         assert cover.cover_position == 0
         assert cover.cover_tilt_position == 66
@@ -63,13 +63,13 @@ class TestHomePilotCover:
         assert cover.is_opening is False
         assert cover.available is True
 
-        cover.update_state({
+        await cover.update_state({
             "statusesMap": {
                 "Position": 40,
                 "slatposition": 55
             },
             "statusValid": False
-        })
+        }, mocked_api)
         assert cover.is_closed is False
         assert cover.cover_position == 60
         assert cover.cover_tilt_position == 45
