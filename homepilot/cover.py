@@ -117,7 +117,7 @@ class HomePilotCover(HomePilotDevice):
         self.is_closing = False
         self.is_opening = False
         if self.has_ventilation_position_config:
-            device = await api.get_device(did)
+            device = await api.get_device(self.did)
             device_map = HomePilotDevice.get_capabilities_map(device)
             self.ventilation_position_mode = device_map[APICAP_VENTIL_POS_MODE_CFG]["value"] == "true"
             self.ventilation_position = int(device_map[APICAP_VENTIL_POS_CFG]["value"])
