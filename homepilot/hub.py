@@ -92,7 +92,7 @@ class HomePilotHub(HomePilotDevice):
             ]
         }
 
-    def update_state(self, state):
+    async def update_state(self, state, api):
         self.available = True
         self.fw_update_available = (
             state["status"]["update_status"] != "NO_UPDATE_AVAILABLE"

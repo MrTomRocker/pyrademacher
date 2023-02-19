@@ -144,8 +144,8 @@ class HomePilotSensor(HomePilotDevice):
             has_smoke_detection=APICAP_SMOKE_DETECTION_MEA in device_map,
         )
 
-    def update_state(self, state):
-        super().update_state(state)
+    async def update_state(self, state, api):
+        await super().update_state(state, api)
         if self.has_temperature and "temperature_primary" in state["readings"]:
             self.temperature_value = state["readings"]["temperature_primary"]
         if self.has_target_temperature and "temperature_target" in state["readings"]:

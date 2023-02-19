@@ -42,21 +42,21 @@ class TestHomePilotSwitch:
     @pytest.mark.asyncio
     async def test_update_state(self, mocked_api):
         switch = await HomePilotSwitch.async_build_from_api(mocked_api, 1)
-        switch.update_state({
+        await switch.update_state({
             "statusesMap": {
                 "Position": 100
             },
             "statusValid": True
-        })
+        }, mocked_api)
         assert switch.is_on is True
         assert switch.available is True
 
-        switch.update_state({
+        await switch.update_state({
             "statusesMap": {
                 "Position": 0
             },
             "statusValid": False
-        })
+        }, mocked_api)
         assert switch.is_on is False
         assert switch.available is False
 
@@ -75,19 +75,19 @@ class TestHomePilotSwitch:
     @pytest.mark.asyncio
     async def test_async_toggle(self, mocked_api):
         switch = await HomePilotSwitch.async_build_from_api(mocked_api, 1)
-        switch.update_state({
+        await switch.update_state({
             "statusesMap": {
                 "Position": 100
             },
             "statusValid": True
-        })
+        }, mocked_api)
         await switch.async_toggle()
         mocked_api.async_turn_off.assert_called_with('1010018')
-        switch.update_state({
+        await switch.update_state({
             "statusesMap": {
                 "Position": 0
             },
             "statusValid": True
-        })
+        }, mocked_api)
         await switch.async_toggle()
         mocked_api.async_turn_on.assert_called_with('1010018')

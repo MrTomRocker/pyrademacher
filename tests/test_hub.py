@@ -54,7 +54,7 @@ class TestHomePilotHub:
     @pytest.mark.asyncio
     async def test_update_state(self, mocked_api):
         hub = await HomePilotHub.async_build_from_api(mocked_api, "-1")
-        hub.update_state(
+        await hub.update_state(
             {
                 "status": {
                     "update_status": "UPDATE_AVAILABLE",
@@ -63,7 +63,7 @@ class TestHomePilotHub:
                 "led": {
                     "status": "enabled"
                 }
-            }
+            }, mocked_api
         )
         assert hub.fw_update_available is True
         assert hub.fw_update_version == "6.0.0"

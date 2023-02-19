@@ -88,7 +88,7 @@ class HomePilotManager:
         for did in self.devices:
             device: HomePilotDevice = self.devices[did]
             if device.did in states:
-                device.update_state(states[did])
+                await device.update_state(states[did], self.api)
             else:
                 device.available = False
 
