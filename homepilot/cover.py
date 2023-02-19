@@ -103,7 +103,7 @@ class HomePilotCover(HomePilotDevice):
             has_ventilation_position_config=APICAP_VENTIL_POS_MODE_CFG in device_map,
         )
 
-    async def update_state(self, state):
+    async def update_state(self, state, api):
         await super().update_state(state)
         self.cover_position = 100 - state["statusesMap"]["Position"]
         if self.has_tilt:

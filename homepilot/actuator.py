@@ -67,7 +67,7 @@ class HomePilotActuator(HomePilotDevice):
             has_ping_cmd=APICAP_PING_CMD in device_map,
         )
 
-    async def update_state(self, state):
+    async def update_state(self, state, api):
         await super().update_state(state)
         self.is_on = state["statusesMap"]["Position"] != 0
         self.brightness = state["statusesMap"]["Position"]
