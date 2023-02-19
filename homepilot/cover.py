@@ -11,6 +11,8 @@ from .const import (
     APICAP_PROT_ID_DEVICE_LOC,
     APICAP_SET_SLAT_POS_CMD,
     APICAP_VERSION_CFG,
+    APICAP_VENTIL_POS_CFG,
+    APICAP_VENTIL_POS_MODE_CFG,
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
