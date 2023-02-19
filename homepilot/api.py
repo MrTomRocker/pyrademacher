@@ -272,7 +272,7 @@ class HomePilotApi:
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
                 f"http://{self.host}/devices/{did}",
-                json={"name": APICAP_VENTIL_POS_CFG, "value": str(position)},
+                json={"name": APICAP_VENTIL_POS_CFG, "value": str(int(position))},
             ) as response:
                 return await response.json()
 

@@ -120,7 +120,7 @@ class HomePilotCover(HomePilotDevice):
             device = await api.get_device(self.did)
             device_map = HomePilotDevice.get_capabilities_map(device)
             self.ventilation_position_mode = device_map[APICAP_VENTIL_POS_MODE_CFG]["value"] == "true"
-            self.ventilation_position = int(device_map[APICAP_VENTIL_POS_CFG]["value"])
+            self.ventilation_position = 100 - int(device_map[APICAP_VENTIL_POS_CFG]["value"])
 
     async def async_open_cover(self) -> None:
         await self.api.async_open_cover(self.did)
@@ -159,7 +159,7 @@ class HomePilotCover(HomePilotDevice):
 
     async def async_set_ventilation_position(self, position) -> None:
         if self.has_ventilation_position_config:
-            await self.api.async_set_ventilation_position(self.did, position)
+            await self.api.async_set_ventilation_position(self.did, 100 - position)
 
     @property
     def cover_position(self) -> int:
