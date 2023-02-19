@@ -66,8 +66,8 @@ class HomePilotSwitch(HomePilotDevice):
             has_ping_cmd=APICAP_PING_CMD in device_map,
         )
 
-    def update_state(self, state):
-        super().update_state(state)
+    async def update_state(self, state):
+        await super().update_state(state)
         self.is_on = state["statusesMap"]["Position"] != 0
 
     @property

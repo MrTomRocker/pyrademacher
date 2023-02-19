@@ -135,8 +135,8 @@ class HomePilotThermostat(HomePilotDevice):
             has_relais_status=APICAP_RELAIS_STATE_CFG in device_map,
         )
 
-    def update_state(self, state):
-        super().update_state(state)
+    async def update_state(self, state):
+        await super().update_state(state)
         if self.has_temperature:
             self.temperature_value = state["statusesMap"]["acttemperatur"] / 10
         if self.has_target_temperature:

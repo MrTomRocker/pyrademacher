@@ -256,6 +256,24 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
+    async def async_set_ventilation_position_mode(self, did, mode) -> None:
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": APICAP_VENTIL_POS_MODE_CFG, "value": mode},
+            ) as response:
+                return await response.json()
+
+    async def async_set_ventilation_position(self, did, position) -> None:
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": APICAP_VENTIL_POS_CFG, "value": str(position)},
+            ) as response:
+                return await response.json()
+
     async def async_turn_on(self, did):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:

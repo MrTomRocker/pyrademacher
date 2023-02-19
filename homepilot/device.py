@@ -78,7 +78,7 @@ class HomePilotDevice:
             "type": device_map[APICAP_DEVICE_TYPE_LOC]["value"],
         }
 
-    def update_state(self, state):
+    async def update_state(self, state):
         self.available = state["statusValid"]
 
     async def async_ping(self):

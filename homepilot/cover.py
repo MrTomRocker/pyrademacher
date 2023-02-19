@@ -32,6 +32,9 @@ class HomePilotCover(HomePilotDevice):
     _is_closed: bool
     _is_closing: bool
     _is_opening: bool
+    _has_ventilation_position_config: bool
+    _ventilation_position_mode: bool
+    _ventilation_position: int
 
     def __init__(
         self,
@@ -48,6 +51,7 @@ class HomePilotCover(HomePilotDevice):
         cover_type: int = 2,
         has_tilt: bool = False,
         can_set_tilt_position: bool = False,
+        has_ventilation_position_config: bool = False,
     ) -> None:
         super().__init__(
             api=api,
@@ -64,6 +68,7 @@ class HomePilotCover(HomePilotDevice):
         self._cover_type = cover_type
         self._has_tilt = has_tilt
         self._can_set_tilt_position = can_set_tilt_position
+        self._has_ventilation_position_config = has_ventilation_position_config
 
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
@@ -93,10 +98,11 @@ class HomePilotCover(HomePilotDevice):
             cover_type=int(device_map[APICAP_DEVICE_TYPE_LOC]["value"]),
             has_tilt=APICAP_SET_SLAT_POS_CMD in device_map,
             can_set_tilt_position=APICAP_SET_SLAT_POS_CMD in device_map,
+            has_ventilation_position_config=APICAP_VENTIL_POS_MODE_CFG in device_map,
         )
 
-    def update_state(self, state):
-        super().update_state(state)
+    async def update_state(self, state):
+        await super().update_state(state)
         self.cover_position = 100 - state["statusesMap"]["Position"]
         if self.has_tilt:
             if "slatposition" not in state["statusesMap"]:
@@ -108,6 +114,11 @@ class HomePilotCover(HomePilotDevice):
         self.is_closed = self.cover_position == 0
         self.is_closing = False
         self.is_opening = False
+        if self.has_ventilation_position_config:
+            device = await api.get_device(did)
+            device_map = HomePilotDevice.get_capabilities_map(device)
+            self.ventilation_position_mode = device_map[APICAP_VENTIL_POS_MODE_CFG]["value"] == "true"
+            self.ventilation_position = int(device_map[APICAP_VENTIL_POS_CFG]["value"])
 
     async def async_open_cover(self) -> None:
         await self.api.async_open_cover(self.did)
@@ -139,6 +150,14 @@ class HomePilotCover(HomePilotDevice):
     async def async_stop_cover_tilt(self) -> None:
         if self.has_tilt:
             await self.api.async_stop_cover_tilt(self.did)
+
+    async def async_set_ventilation_position_mode(self, mode) -> None:
+        if self.has_ventilation_position_config:
+            await self.api.async_set_ventilation_position_mode(self.did, mode)
+
+    async def async_set_ventilation_position(self, position) -> None:
+        if self.has_ventilation_position_config:
+            await self.api.async_set_ventilation_position(self.did, position)
 
     @property
     def cover_position(self) -> int:
@@ -203,3 +222,27 @@ class HomePilotCover(HomePilotDevice):
     @can_set_tilt_position.setter
     def can_set_tilt_position(self, can_set_tilt_position):
         self._can_set_tilt_position = can_set_tilt_position
+
+    @property
+    def has_ventilation_position_config(self) -> bool:
+        return self._has_ventilation_position_config
+
+    @has_ventilation_position_config.setter
+    def has_ventilation_position_config(self, has_ventilation_position_config):
+        self._has_ventilation_position_config = has_ventilation_position_config
+
+    @property
+    def ventilation_position_mode(self) -> bool:
+        return self._ventilation_position_mode
+
+    @ventilation_position_mode.setter
+    def ventilation_position_mode(self, ventilation_position_mode):
+        self._ventilation_position_mode = ventilation_position_mode
+
+    @property
+    def ventilation_position(self) -> int:
+        return self._ventilation_position
+
+    @ventilation_position.setter
+    def ventilation_position(self, ventilation_position):
+        self._ventilation_position = ventilation_position
