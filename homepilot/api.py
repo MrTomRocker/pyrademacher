@@ -109,6 +109,15 @@ class HomePilotApi:
                 response = await response.json()
                 return response
 
+    async def async_get_interfaces(self):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.get(
+                f"http://{self.host}service/system/networkmgr/v1/interfaces"
+            ) as response:
+                response = await response.json()
+                return response
+
     async def async_get_fw_version(self):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:

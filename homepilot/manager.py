@@ -54,6 +54,13 @@ class HomePilotManager:
             return await HomePilotCover.async_build_from_api(api, id_type["did"])
         return None
 
+    async def get_hub_macaddress(self):
+        interfaces = await self.api.async_get_interfaces()["interfaces"]
+        for k in interfaces:
+            if interfaces[k]["enabled"] == True:
+                return interfaces[k]["address"]
+        return None
+
     async def get_hub_state(self):
         return {
             "status": await self.api.async_get_fw_status(),
