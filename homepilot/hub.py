@@ -20,6 +20,7 @@ class HomePilotHub(HomePilotDevice):
     _duofern_stick_version: str
     _fw_update_available: bool
     _fw_update_version: str
+    _release_notes: str
     _led_status: bool
 
     def __init__(
@@ -102,6 +103,11 @@ class HomePilotHub(HomePilotDevice):
             if "new_version" in state["status"] and self.fw_update_available
             else state["status"]["version"]
         )
+        self.release_notes = (
+            state["status"]["release_notes"]
+            if "new_version" in state["status"] and self.fw_update_available
+            else ""
+        )
         self.led_status = state["led"]["status"] == "enabled"
 
     async def async_ping(self):
@@ -147,6 +153,14 @@ class HomePilotHub(HomePilotDevice):
     @fw_update_available.setter
     def fw_update_available(self, fw_update_available):
         self._fw_update_available = fw_update_available
+
+    @property
+    def release_notes(self):
+        return self._release_notes
+
+    @release_notes.setter
+    def release_notes(self, release_notes):
+        self._release_notes = release_notes
 
     @property
     def fw_update_version(self):
