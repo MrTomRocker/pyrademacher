@@ -20,6 +20,8 @@ class HomePilotHub(HomePilotDevice):
     _duofern_stick_version: str
     _fw_update_available: bool
     _fw_update_version: str
+    _download_progress: int | bool
+    _auto_update: bool
     _release_notes: str
     _led_status: bool
 
@@ -105,8 +107,18 @@ class HomePilotHub(HomePilotDevice):
         )
         self.release_notes = (
             state["status"]["release_notes"]
-            if "new_version" in state["status"] and self.fw_update_available
+            if "release_notes" in state["status"] and self.fw_update_available
             else ""
+        )
+        self.download_progress = (
+            state["status"]["download_progress"]
+            if "download_progress" in state["status"]
+            else False
+        )
+        self.auto_update = (
+            state["status"]["auto_update"]
+            if "auto_update" in state["status"]
+            else False
         )
         self.led_status = state["led"]["status"] == "enabled"
 
@@ -161,6 +173,22 @@ class HomePilotHub(HomePilotDevice):
     @release_notes.setter
     def release_notes(self, release_notes):
         self._release_notes = release_notes
+
+    @property
+    def download_progress(self):
+        return self._download_progress
+
+    @download_progress.setter
+    def download_progress(self, download_progress):
+        self._download_progress = download_progress
+
+    @property
+    def auto_update(self):
+        return self._auto_update
+
+    @auto_update.setter
+    def auto_update(self, auto_update):
+        self._auto_update = auto_update
 
     @property
     def fw_update_version(self):
