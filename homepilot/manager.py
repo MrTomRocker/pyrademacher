@@ -61,6 +61,9 @@ class HomePilotManager:
                 return interfaces["interfaces"][k]["address"]
         return None
 
+    async def get_nodename(self):
+        return (await self.api.async_get_nodename())["nodename"]
+
     async def get_hub_state(self):
         return {
             "status": await self.api.async_get_fw_status(),
