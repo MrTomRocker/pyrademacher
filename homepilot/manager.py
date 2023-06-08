@@ -8,7 +8,7 @@ from .switch import HomePilotSwitch
 from .cover import HomePilotCover
 from .thermostat import HomePilotThermostat
 from .actuator import HomePilotActuator
-from .api import HomePilotApi
+from .api import HomePilotApi, AuthError
 
 from .device import HomePilotDevice
 
@@ -89,6 +89,8 @@ class HomePilotManager:
         try:
             states = await self.api.async_get_devices_state()
             states["-1"] = await self.get_hub_state()
+        except AuthError:
+            raise
         except Exception:
             for did in self.devices:
                 device: HomePilotDevice = self.devices[did]

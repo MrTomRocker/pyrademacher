@@ -107,6 +107,8 @@ class HomePilotApi:
                 f"http://{self.host}/service/system-update-image/status"
             ) as response:
                 response = await response.json()
+                if response.status == 401:
+                    raise AuthError()
                 return response
 
     async def async_get_interfaces(self):
@@ -125,6 +127,8 @@ class HomePilotApi:
                 f"http://{self.host}/service/system-update-image/version"
             ) as response:
                 response = await response.json()
+                if response.status == 401:
+                    raise AuthError()
                 return response
 
     async def async_get_nodename(self):
@@ -143,6 +147,8 @@ class HomePilotApi:
                 f"http://{self.host}/service/system/leds/status"
             ) as response:
                 response = await response.json()
+                if response.status == 401:
+                    raise AuthError()
                 return response
 
     async def async_get_device_state(self, did):
@@ -168,6 +174,8 @@ class HomePilotApi:
                 f"http://{self.host}/v4/devices?devtype=Actuator"
             ) as response:
                 response = await response.json()
+                if response.status == 401:
+                    raise AuthError()
                 if response["response"] != "get_visible_devices":
                     actuators = {}
                 else:
@@ -180,6 +188,8 @@ class HomePilotApi:
                 f"http://{self.host}/v4/devices?devtype=Sensor"
             ) as response:
                 response = await response.json()
+                if response.status == 401:
+                    raise AuthError()
                 if response["response"] != "get_meters":
                     sensors = {}
                 else:
