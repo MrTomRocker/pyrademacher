@@ -80,6 +80,8 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(f"http://{self.host}/devices") as response:
+                if response.status == 401:
+                    raise AuthError()
                 response = await response.json()
                 if response["error_code"] != 0:
                     return []
