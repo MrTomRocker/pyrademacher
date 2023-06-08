@@ -338,7 +338,7 @@ class HomePilotApi:
     async def async_set_auto_update_on(self):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
-            async with session.post(
+            async with session.put(
                 f"http://{self.host}/service/system-update-image/auto_update",
                 json={"auto_update": True},
             ) as response:
@@ -347,7 +347,7 @@ class HomePilotApi:
     async def async_set_auto_update_off(self):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
-            async with session.post(
+            async with session.put(
                 f"http://{self.host}/service/system-update-image/auto_update",
                 json={"auto_update": False},
             ) as response:
