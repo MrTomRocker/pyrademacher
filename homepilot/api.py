@@ -119,6 +119,8 @@ class HomePilotApi:
             async with session.get(
                 f"http://{self.host}/service/system/networkmgr/v1/interfaces"
             ) as response:
+                if response.status == 401:
+                    raise AuthError()
                 response = await response.json()
                 return response
 
@@ -139,6 +141,8 @@ class HomePilotApi:
             async with session.get(
                 f"http://{self.host}/service/system/networkmgr/v1/nodename"
             ) as response:
+                if response.status == 401:
+                    raise AuthError()
                 response = await response.json()
                 return response
 
