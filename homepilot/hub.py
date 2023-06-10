@@ -100,6 +100,7 @@ class HomePilotHub(HomePilotDevice):
         self.fw_update_available = (
             state["status"]["update_status"] != "NO_UPDATE_AVAILABLE"
         )
+        self.fw_version = state["status"]["version"]
         self.fw_update_version = (
             state["status"]["new_version"]
             if "new_version" in state["status"] and self.fw_update_available
@@ -147,6 +148,10 @@ class HomePilotHub(HomePilotDevice):
     @property
     def fw_version(self):
         return self._fw_version
+
+    @fw_version.setter
+    def fw_version(self, fw_version):
+        self._fw_version = fw_version
 
     @property
     def nodename(self):
