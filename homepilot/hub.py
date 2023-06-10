@@ -62,8 +62,17 @@ class HomePilotHub(HomePilotDevice):
         return asyncio.run(HomePilotHub.async_build_from_api(api, did))
 
     @staticmethod
+    async def get_hub_macaddress(api):
+        interfaces = await api.async_get_interfaces()
+        for k in interfaces["interfaces"]:
+            if interfaces["interfaces"][k]["enabled"] == True:
+                return interfaces["interfaces"][k]["address"]
+        return None
+
+    @staticmethod
     async def async_build_from_api(api: HomePilotApi, did):
         fw_version = await api.async_get_fw_version()
+        mac_address = await self.get_hub_macaddress(api)
         nodename: str = (await api.async_get_nodename())["nodename"]
         capabilities_map = HomePilotDevice.get_capabilities_map(
             HomePilotHub.get_capabilities()
@@ -71,7 +80,7 @@ class HomePilotHub(HomePilotDevice):
         return HomePilotHub(
             api=api,
             did=capabilities_map[APICAP_ID_DEVICE_LOC]["value"],
-            uid=api.host,
+            uid=mac_address.replace(":", "") if mac_address is not None else api.host,
             name=nodename.capitalize(),
             device_number=capabilities_map[APICAP_PROD_CODE_DEVICE_LOC]["value"],
             model="Start2Smart"
