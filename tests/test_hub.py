@@ -20,6 +20,20 @@ class TestHomePilotHub:
             "df_stick_version": "2.0"
         })
         api.async_get_fw_version.return_value = func_get_fw_version
+        func_get_interfaces = asyncio.Future(loop=event_loop)
+        func_get_interfaces.set_result({
+            "interfaces": {
+                "eth0": {
+                    "address": "b0:1f:81:b1:21:7a",
+                    "carrier": "1",
+                    "speed": "100",
+                    "type": "ethernet",
+                    "duplex": "full",
+                    "enabled": True
+                }
+            }
+        })
+        api.async_get_interfaces.return_value = func_get_interfaces
         func_get_nodename = asyncio.Future(loop=event_loop)
         func_get_nodename.set_result({"nodename": "testnodename"})
         api.async_get_nodename.return_value = func_get_nodename
@@ -39,7 +53,7 @@ class TestHomePilotHub:
         hub = await HomePilotHub.async_build_from_api(mocked_api, "-1")
         assert hub.api == mocked_api
         assert hub.did == "-1"
-        assert hub.uid == TEST_HOST
+        assert hub.uid == "b01f81b1217a"
         assert hub.device_number == "-1"
         assert hub.device_group == "-1"
         assert hub.duofern_stick_version == "2.0"

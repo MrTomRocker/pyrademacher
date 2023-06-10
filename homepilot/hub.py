@@ -72,7 +72,7 @@ class HomePilotHub(HomePilotDevice):
     @staticmethod
     async def async_build_from_api(api: HomePilotApi, did):
         fw_version = await api.async_get_fw_version()
-        mac_address = await self.get_hub_macaddress(api)
+        mac_address = await HomePilotHub.get_hub_macaddress(api)
         nodename: str = (await api.async_get_nodename())["nodename"]
         capabilities_map = HomePilotDevice.get_capabilities_map(
             HomePilotHub.get_capabilities()
