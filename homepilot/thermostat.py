@@ -3,7 +3,6 @@ from typing import List
 from .const import (
     APICAP_AUTO_MODE_CFG,
     APICAP_BATT_VALUE_EVT,
-    APICAP_BATTERY_LVL_PCT_MEA,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC,
     APICAP_NAME_DEVICE_LOC,
@@ -14,10 +13,6 @@ from .const import (
     APICAP_TARGET_TEMPERATURE_CFG,
     APICAP_TEMPERATURE_INT_CFG,
     APICAP_VERSION_CFG,
-    APICAP_TEMPERATURE_THRESH_1_CFG,
-    APICAP_TEMPERATURE_THRESH_2_CFG,
-    APICAP_TEMPERATURE_THRESH_3_CFG,
-    APICAP_TEMPERATURE_THRESH_4_CFG,
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
@@ -41,11 +36,11 @@ class HomePilotThermostat(HomePilotDevice):
     _battery_level_value: float
     _has_relais_status: bool
     _relais_status: float
-    _has_temperature_thresh_cfg: List[bool|None]
-    _temperature_thresh_cfg_value: List[float|None]
-    _temperature_thresh_cfg_min: List[float|None]
-    _temperature_thresh_cfg_max: List[float|None]
-    _temperature_thresh_cfg_step: List[float|None]
+    _has_temperature_thresh_cfg: List[bool | None]
+    _temperature_thresh_cfg_value: List[float | None]
+    _temperature_thresh_cfg_min: List[float | None]
+    _temperature_thresh_cfg_max: List[float | None]
+    _temperature_thresh_cfg_step: List[float | None]
 
     def __init__(
         self,
@@ -69,7 +64,7 @@ class HomePilotThermostat(HomePilotDevice):
         step_target_temperature: float = None,
         has_battery_level: bool = False,
         has_relais_status: bool = False,
-        capabilities = None,
+        capabilities=None,
     ) -> None:
         super().__init__(
             api=api,
@@ -98,7 +93,7 @@ class HomePilotThermostat(HomePilotDevice):
         self._temperature_thresh_cfg_min = [None] * 4
         self._temperature_thresh_cfg_max = [None] * 4
         self._temperature_thresh_cfg_step = [None] * 4
-        for i in range(1,5):
+        for i in range(1, 5):
             if capabilities is not None and capabilities[f"TEMPERATURE_THRESH_{i}_CFG"] is not None:
                 self._has_temperature_thresh_cfg[i-1] = True
                 self._temperature_thresh_cfg_min[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["min_value"]
@@ -176,8 +171,8 @@ class HomePilotThermostat(HomePilotDevice):
             self.battery_level_value = state["batteryStatus"]
         if self.has_relais_status:
             self.relais_status = state["statusesMap"]["relaisstatus"]
-        capabilities = HomePilotDevice.get_capabilities_map(self.api.get_device(self.did))
-        for i in range(1,5):
+        capabilities = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
+        for i in range(1, 5):
             if self.has_temperature_thresh_cfg[i-1]:
                 self.temperature_thresh_cfg_value[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["value"]
 
@@ -219,23 +214,23 @@ class HomePilotThermostat(HomePilotDevice):
         return self._has_relais_status
 
     @property
-    def has_temperature_thresh_cfg(self) -> List[bool|None]:
+    def has_temperature_thresh_cfg(self) -> List[bool | None]:
         return self._has_temperature_thresh_cfg
 
     @property
-    def temperature_thresh_cfg_value(self) -> List[float|None]:
+    def temperature_thresh_cfg_value(self) -> List[float | None]:
         return self._temperature_thresh_cfg_value
 
     @property
-    def temperature_thresh_cfg_min(self) -> List[float|None]:
+    def temperature_thresh_cfg_min(self) -> List[float | None]:
         return self._temperature_thresh_cfg_min
 
     @property
-    def temperature_thresh_cfg_max(self) -> List[float|None]:
+    def temperature_thresh_cfg_max(self) -> List[float | None]:
         return self._temperature_thresh_cfg_max
 
     @property
-    def temperature_thresh_cfg_step(self) -> List[float|None]:
+    def temperature_thresh_cfg_step(self) -> List[float | None]:
         return self._temperature_thresh_cfg_step
 
     @property
