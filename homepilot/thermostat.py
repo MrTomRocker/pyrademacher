@@ -176,7 +176,7 @@ class HomePilotThermostat(HomePilotDevice):
             self.battery_level_value = state["batteryStatus"]
         if self.has_relais_status:
             self.relais_status = state["statusesMap"]["relaisstatus"]
-        capabilities = HomePilotDevice.get_capabilities_map(self.api.get_device(did))
+        capabilities = HomePilotDevice.get_capabilities_map(self.api.get_device(self.did))
         for i in range(1,5):
             if self.has_temperature_thresh_cfg[i-1]:
                 self.temperature_thresh_cfg_value[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["value"]
