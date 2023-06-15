@@ -1,7 +1,6 @@
 import asyncio
 from enum import Enum
 from .const import (
-    APICAP_CURR_SLAT_POS_CFG,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_GOTO_POS_CMD,
     APICAP_ID_DEVICE_LOC,

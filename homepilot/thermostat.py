@@ -1,8 +1,8 @@
 import asyncio
+from typing import List
 from .const import (
     APICAP_AUTO_MODE_CFG,
     APICAP_BATT_VALUE_EVT,
-    APICAP_BATTERY_LVL_PCT_MEA,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC,
     APICAP_NAME_DEVICE_LOC,
@@ -36,6 +36,11 @@ class HomePilotThermostat(HomePilotDevice):
     _battery_level_value: float
     _has_relais_status: bool
     _relais_status: float
+    _has_temperature_thresh_cfg: List[bool | None]
+    _temperature_thresh_cfg_value: List[float | None]
+    _temperature_thresh_cfg_min: List[float | None]
+    _temperature_thresh_cfg_max: List[float | None]
+    _temperature_thresh_cfg_step: List[float | None]
 
     def __init__(
         self,
@@ -58,7 +63,8 @@ class HomePilotThermostat(HomePilotDevice):
         max_target_temperature: float = None,
         step_target_temperature: float = None,
         has_battery_level: bool = False,
-        has_relais_status: bool = False
+        has_relais_status: bool = False,
+        capabilities=None,
     ) -> None:
         super().__init__(
             api=api,
@@ -82,6 +88,19 @@ class HomePilotThermostat(HomePilotDevice):
         self._step_target_temperature = step_target_temperature
         self._has_battery_level = has_battery_level
         self._has_relais_status = has_relais_status
+        self._has_temperature_thresh_cfg = [None] * 4
+        self._temperature_thresh_cfg_value = [None] * 4
+        self._temperature_thresh_cfg_min = [None] * 4
+        self._temperature_thresh_cfg_max = [None] * 4
+        self._temperature_thresh_cfg_step = [None] * 4
+        for i in range(1, 5):
+            if capabilities is not None and capabilities[f"TEMPERATURE_THRESH_{i}_CFG"] is not None:
+                self._has_temperature_thresh_cfg[i-1] = True
+                self._temperature_thresh_cfg_min[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["min_value"]
+                self._temperature_thresh_cfg_max[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["max_value"]
+                self._temperature_thresh_cfg_step[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["step_size"]
+            else:
+                self._has_temperature_thresh_cfg[i-1] = False
 
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
@@ -133,6 +152,7 @@ class HomePilotThermostat(HomePilotDevice):
             and device_map[APICAP_TARGET_TEMPERATURE_CFG]["step_size"] is not None else None,
             has_battery_level=APICAP_BATT_VALUE_EVT in device_map,
             has_relais_status=APICAP_RELAIS_STATE_CFG in device_map,
+            capabilities=device_map,
         )
 
     async def update_state(self, state, api):
@@ -151,12 +171,19 @@ class HomePilotThermostat(HomePilotDevice):
             self.battery_level_value = state["batteryStatus"]
         if self.has_relais_status:
             self.relais_status = state["statusesMap"]["relaisstatus"]
+        capabilities = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
+        for i in range(1, 5):
+            if self.has_temperature_thresh_cfg[i-1]:
+                self.temperature_thresh_cfg_value[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["value"]
 
     async def async_set_target_temperature(self, temperature) -> None:
         await self.api.async_set_target_temperature(self.did, temperature)
 
     async def async_set_auto_mode(self, auto_mode) -> None:
         await self.api.async_set_auto_mode(self.did, auto_mode)
+
+    async def async_set_temperature_thresh_cfg(self, thresh_number, temperature) -> None:
+        await self.api.async_set_temperature_thresh_cfg(self.did, thresh_number, temperature)
 
     @property
     def has_temperature(self) -> bool:
@@ -185,6 +212,26 @@ class HomePilotThermostat(HomePilotDevice):
     @property
     def has_relais_status(self) -> bool:
         return self._has_relais_status
+
+    @property
+    def has_temperature_thresh_cfg(self) -> List[bool | None]:
+        return self._has_temperature_thresh_cfg
+
+    @property
+    def temperature_thresh_cfg_value(self) -> List[float | None]:
+        return self._temperature_thresh_cfg_value
+
+    @property
+    def temperature_thresh_cfg_min(self) -> List[float | None]:
+        return self._temperature_thresh_cfg_min
+
+    @property
+    def temperature_thresh_cfg_max(self) -> List[float | None]:
+        return self._temperature_thresh_cfg_max
+
+    @property
+    def temperature_thresh_cfg_step(self) -> List[float | None]:
+        return self._temperature_thresh_cfg_step
 
     @property
     def can_set_target_temperature(self) -> bool:

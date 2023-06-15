@@ -57,7 +57,7 @@ class HomePilotManager:
     async def get_hub_macaddress(self):
         interfaces = await self.api.async_get_interfaces()
         for k in interfaces["interfaces"]:
-            if interfaces["interfaces"][k]["enabled"] == True:
+            if interfaces["interfaces"][k]["enabled"]:
                 return interfaces["interfaces"][k]["address"]
         return None
 
