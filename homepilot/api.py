@@ -335,6 +335,15 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
+    async def async_set_temperature_thresh_cfg(self, did, thresh_number, temperature):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.put(
+                f"http://{self.host}/devices/{did}",
+                json={"name": f"TEMPERATURE_THRESH_{thresh_number}_CFG", "value": temperature},
+            ) as response:
+                return await response.json()
+
     async def async_turn_led_on(self):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
