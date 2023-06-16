@@ -97,9 +97,9 @@ class HomePilotThermostat(HomePilotDevice):
             if capabilities is not None and f"TEMPERATURE_THRESH_{i}_CFG" in capabilities \
             and capabilities[f"TEMPERATURE_THRESH_{i}_CFG"] is not None:
                 self._has_temperature_thresh_cfg[i-1] = True
-                self._temperature_thresh_cfg_min[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["min_value"]
-                self._temperature_thresh_cfg_max[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["max_value"]
-                self._temperature_thresh_cfg_step[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["step_size"]
+                self._temperature_thresh_cfg_min[i-1] = float(capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["min_value"])
+                self._temperature_thresh_cfg_max[i-1] = float(capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["max_value"])
+                self._temperature_thresh_cfg_step[i-1] = float(capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["step_size"])
             else:
                 self._has_temperature_thresh_cfg[i-1] = False
 
@@ -175,7 +175,7 @@ class HomePilotThermostat(HomePilotDevice):
         capabilities = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
         for i in range(1, 5):
             if self.has_temperature_thresh_cfg[i-1]:
-                self.temperature_thresh_cfg_value[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["value"]
+                self.temperature_thresh_cfg_value[i-1] = float(capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["value"])
 
     async def async_set_target_temperature(self, temperature) -> None:
         await self.api.async_set_target_temperature(self.did, temperature)
