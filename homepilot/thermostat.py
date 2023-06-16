@@ -94,7 +94,7 @@ class HomePilotThermostat(HomePilotDevice):
         self._temperature_thresh_cfg_max = [None] * 4
         self._temperature_thresh_cfg_step = [None] * 4
         for i in range(1, 5):
-            if capabilities is not None and "TEMPERATURE_THRESH_{i}_CFG" in capabilities \
+            if capabilities is not None and f"TEMPERATURE_THRESH_{i}_CFG" in capabilities \
             and capabilities[f"TEMPERATURE_THRESH_{i}_CFG"] is not None:
                 self._has_temperature_thresh_cfg[i-1] = True
                 self._temperature_thresh_cfg_min[i-1] = capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["min_value"]
