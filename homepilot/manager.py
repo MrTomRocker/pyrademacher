@@ -9,6 +9,7 @@ from .cover import HomePilotCover
 from .thermostat import HomePilotThermostat
 from .actuator import HomePilotActuator
 from .api import HomePilotApi, AuthError
+from .wallcontroller import HomePilotWallController
 
 from .device import HomePilotDevice
 
@@ -32,7 +33,7 @@ class HomePilotManager:
         manager.devices = {
             id_type["did"]: await HomePilotManager.async_build_device(manager.api, id_type)
             for id_type in await manager.get_device_ids_types()
-            if id_type["type"] in ["-1", "1", "2", "3", "4", "5", "8"]
+            if id_type["type"] in ["-1", "1", "2", "3", "4", "5", "8", "10"]
         }
         return manager
 
@@ -52,6 +53,8 @@ class HomePilotManager:
             return await HomePilotThermostat.async_build_from_api(api, id_type["did"])
         if id_type["type"] == "8":
             return await HomePilotCover.async_build_from_api(api, id_type["did"])
+        if id_type["type"] == "10":
+            return await HomePilotWallController.async_build_from_api(api, id_type["did"])
         return None
 
     async def get_hub_macaddress(self):
