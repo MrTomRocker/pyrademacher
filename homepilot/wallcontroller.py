@@ -14,6 +14,8 @@ from .const import (
 from .api import HomePilotApi
 from .device import HomePilotDevice
 
+import logging
+_LOGGER = logging.getLogger(__name__)
 
 class HomePilotWallController(HomePilotDevice):
     def __init__(
@@ -43,6 +45,7 @@ class HomePilotWallController(HomePilotDevice):
         )
         self._channels = channels
         self._has_battery_low = has_battery_low
+        self._is_updating = False
         for channel in self._channels:
             setattr(self, f"channel_{channel}", False)
 
@@ -82,7 +85,9 @@ class HomePilotWallController(HomePilotDevice):
         await super().update_state(state, api)
         if self.has_battery_low and "batteryLow" in state:
             self.battery_low_value = state["batteryLow"]
-
+    
+    async def update_custom(self):
+        self._is_updating = True
         device_map = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
         for i in range(len(device_map)):
             if f"KEY_PUSH_CH{i}_EVT" in device_map:
@@ -91,6 +96,11 @@ class HomePilotWallController(HomePilotDevice):
                     keypush = True
                 setattr(self, f"channel_{i}", keypush)
                 self._channels[i] = device_map[f"KEY_PUSH_CH{i}_EVT"]["timestamp"]
+        self._is_updating = False
+
+    @property
+    def is_updating(self) -> bool:
+        return self._is_updating
 
     @property
     def channels(self):
