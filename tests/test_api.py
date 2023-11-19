@@ -30,6 +30,7 @@ class TestHomePilotApi:
 
         with aioresponses() as mocked:
             mocked.get(f"http://{TEST_HOST}/", status=500, body="")
+            mocked.get(f"http://{TEST_HOST}/hp/devices/0", status=500, body="")
             assert await HomePilotApi.test_connection(TEST_HOST) == "error"
 
         with aioresponses() as mocked:

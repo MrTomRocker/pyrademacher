@@ -37,7 +37,10 @@ class HomePilotApi:
             try:
                 response = await session.get(f"http://{host}/")
                 if response.status != 200:
-                    return "error"
+                    response = await session.get(f"http://{host}/hp/devices/0")
+                    if response.status != 200:
+                        return "error"
+                    return "ok_v2"
                 response = await session.post(
                     f"http://{host}/authentication/password_salt"
                 )
