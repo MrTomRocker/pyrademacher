@@ -204,7 +204,21 @@ class HomePilotApi:
                         sensors = {str(device["did"]): device for device in devices}
                     else:
                         sensors = {}
-            return {**actuators, **sensors}
+            async with session.get(
+                f"http://{self.host}/v4/devices?devtype=Transmitter"
+            ) as response:
+                if response.status == 401:
+                    raise AuthError()
+                response = await response.json()
+                if response["response"] != "get_transmitters":
+                    transmitters = {}
+                else:
+                    if response["transmitters"]:
+                        devices = response["transmitters"]
+                        transmitters = {str(device["did"]): device for device in devices}
+                    else:
+                        transmitters = {}
+            return {**actuators, **sensors, **transmitters}
 
     async def async_ping(self, did):
         await self.authenticate()
