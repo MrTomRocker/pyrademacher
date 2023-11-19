@@ -175,6 +175,8 @@ class TestHomePilotApi:
                               "devices": [{"did": "1", "name": "name1"}]}
         response_sensors = {"response": "get_meters",
                             "meters": [{"did": "2", "name": "name2"}]}
+        response_transmitters = {"response": "get_transmitters",
+                            "transmitters": [{"did": "3", "name": "name3"}]}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             mocked.get(
@@ -187,8 +189,14 @@ class TestHomePilotApi:
                 status=200,
                 body=json.dumps(response_sensors)
             )
+            mocked.get(
+                f"http://{TEST_HOST}/v4/devices?devtype=Transmitter",
+                status=200,
+                body=json.dumps(response_transmitters)
+            )
             expected = {"1": {"did": "1", "name": "name1"},
-                        "2": {"did": "2", "name": "name2"}}
+                        "2": {"did": "2", "name": "name2"},
+                        "3": {"did": "3", "name": "name3"}}
             assert await instance.async_get_devices_state() == expected
 
     def callback_ping(self, url, **kwargs):
