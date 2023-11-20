@@ -20,6 +20,7 @@ from .const import (
     APICAP_TEMP_TARGET_DEG_MEA,
     APICAP_VERSION_CFG,
     APICAP_WIND_SPEED_MS_MEA,
+    APICAP_WIND_DETECTION_MEA,
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
@@ -39,6 +40,8 @@ class HomePilotSensor(HomePilotDevice):
     _target_temperature_value: float
     _has_wind_speed: bool
     _wind_speed_value: float
+    _has_wind_detection: bool
+    _wind_detection_value: bool
     _has_brightness: bool
     _brightness_value: float
     _has_sun_height: bool
@@ -71,6 +74,7 @@ class HomePilotSensor(HomePilotDevice):
         has_ping_cmd: bool = False,
         has_temperature: bool = False,
         has_target_temperature: bool = False,
+        has_wind_detection: bool = False,
         has_wind_speed: bool = False,
         has_brightness: bool = False,
         has_sun_height: bool = False,
@@ -95,6 +99,7 @@ class HomePilotSensor(HomePilotDevice):
         )
         self._has_temperature = has_temperature
         self._has_target_temperature = has_target_temperature
+        self._has_wind_detection = has_wind_detection
         self._has_wind_speed = has_wind_speed
         self._has_brightness = has_brightness
         self._has_sun_height = has_sun_height
@@ -133,6 +138,7 @@ class HomePilotSensor(HomePilotDevice):
             has_temperature=APICAP_TEMP_CURR_DEG_MEA in device_map,
             has_target_temperature=APICAP_TEMP_TARGET_DEG_MEA in device_map,
             has_wind_speed=APICAP_WIND_SPEED_MS_MEA in device_map,
+            has_wind_detection=APICAP_WIND_DETECTION_MEA in device_map,
             has_brightness=APICAP_LIGHT_VAL_LUX_MEA in device_map and APICAP_MOTION_DETECTION_MEA not in device_map,
             has_sun_height=APICAP_SUN_HEIGHT_DEG_MEA in device_map,
             has_sun_direction=APICAP_SUN_DIRECTION_MEA in device_map,
@@ -152,6 +158,8 @@ class HomePilotSensor(HomePilotDevice):
             self.target_temperature_value = state["readings"]["temperature_target"]
         if self.has_wind_speed and "wind_speed" in state["readings"]:
             self.wind_speed_value = state["readings"]["wind_speed"]
+        if self.has_wind_detection and "wind_detected" in state["readings"]:
+            self.wind_detection_value = state["readings"]["wind_detected"]
         if self.has_brightness and "sun_brightness" in state["readings"]:
             self.brightness_value = state["readings"]["sun_brightness"]
         if self.has_sun_height and "sun_elevation" in state["readings"]:
@@ -190,6 +198,10 @@ class HomePilotSensor(HomePilotDevice):
     @property
     def has_wind_speed(self) -> bool:
         return self._has_wind_speed
+
+    @property
+    def has_wind_detection(self) -> bool:
+        return self._has_wind_detection
 
     @property
     def has_brightness(self) -> bool:
@@ -250,6 +262,14 @@ class HomePilotSensor(HomePilotDevice):
     @wind_speed_value.setter
     def wind_speed_value(self, wind_speed_value):
         self._wind_speed_value = wind_speed_value
+
+    @property
+    def wind_detection_value(self) -> bool:
+        return self._wind_detection_value
+
+    @wind_detection_value.setter
+    def wind_detection_value(self, wind_detection_value):
+        self._wind_detection_value = wind_detection_value
 
     @property
     def brightness_value(self) -> float:
