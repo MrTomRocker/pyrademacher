@@ -403,6 +403,46 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
+# Scenes
+    async def async_get_scenes(self):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.get(
+                f"http://{self.host}/scenes"
+            ) as response:
+                if response.status == 401:
+                    raise AuthError()
+                if response.status == 200:
+                    responseJson = await response.json()
+                    if "scenes" in responseJson:
+                        scenes = responseJson["scenes"]
+                        return scenes
+                return []
+
+    async def async_get_scenes_v4(self):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.get(
+                f"http://{self.host}/v4/scenes"
+            ) as response:
+                if response.status == 401:
+                    raise AuthError()
+                if response.status == 200:
+                    responseJson = await response.json()
+                    if "scenes" in responseJson:
+                        scenes = responseJson["scenes"]
+                        return scenes
+                return []
+
+    async def async_execute_scene(self, sid: int):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.post(
+                f"http://{self.host}/scenes/{sid}/actions",
+                json={ "request_type": "EXECUTESCENE", "trigger_event": "TRIGGER_SCENE_MANUALLY_EVT" }
+            ) as response:
+                return await response.json()
+
     @property
     def host(self):
         return self._host
