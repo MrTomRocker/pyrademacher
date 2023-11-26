@@ -10,6 +10,7 @@ from .thermostat import HomePilotThermostat
 from .actuator import HomePilotActuator
 from .api import HomePilotApi, AuthError
 from .wallcontroller import HomePilotWallController
+from .scenes import HomePilotScene
 
 from .device import HomePilotDevice
 
@@ -19,6 +20,7 @@ _LOGGER = logging.getLogger(__name__)
 class HomePilotManager:
     _api: HomePilotApi
     _devices: Dict[str, HomePilotDevice]
+    _scenes: Dict[str, HomePilotScene]
 
     def __init__(self, api: HomePilotApi) -> None:
         self._api = api
@@ -35,6 +37,14 @@ class HomePilotManager:
             for id_type in await manager.get_device_ids_types()
             if id_type["type"] in ["-1", "1", "2", "3", "4", "5", "8", "10"]
         }
+        try:
+            manager.scenes = {
+                scene["id"]: HomePilotScene(manager.api, scene["id"], scene["name"], scene["description"])
+                for scene in await manager.api.async_get_scenes()
+                if scene["is_manual_executable"] == 1
+            }
+        except Exception():
+            manager.scenes = {}
         return manager
 
     @staticmethod
