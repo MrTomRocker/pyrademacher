@@ -21,7 +21,7 @@ class HomePilotScene:
         self._description = description
 
     async def async_execute_scene(self) -> None:
-        await self._api.async_execute_scene(self.sid)
+        await self._api.async_execute_scene(self._sid)
 
     @property
     def name(self):
