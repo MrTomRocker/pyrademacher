@@ -29,7 +29,7 @@ class HomePilotApi:
     _authenticated: bool = False
     _cookie_jar: Any = None
 
-    def __init__(self, host, password, api_version) -> None:
+    def __init__(self, host, password, api_version = 1) -> None:
         self._host = host
         self._password = password
         self._api_version = api_version
