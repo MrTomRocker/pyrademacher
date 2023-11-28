@@ -24,12 +24,16 @@ from .const import (
 class HomePilotApi:
     _host: str
     _password: str
+    _api_version: int
+    _base_path: str
     _authenticated: bool = False
     _cookie_jar: Any = None
 
-    def __init__(self, host, password) -> None:
+    def __init__(self, host, password, api_version = 1) -> None:
         self._host = host
         self._password = password
+        self._api_version = api_version
+        self._base_path = "/hp" if api_version == 2 else ""
 
     @staticmethod
     async def test_connection(host: str) -> str:
@@ -82,7 +86,7 @@ class HomePilotApi:
     async def get_devices(self):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
-            async with session.get(f"http://{self.host}/devices") as response:
+            async with session.get(f"http://{self._host}{self._base_path}/devices") as response:
                 if response.status == 401:
                     raise AuthError()
                 response = await response.json()
@@ -96,7 +100,7 @@ class HomePilotApi:
     async def get_device(self, did):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
-            async with session.get(f"http://{self.host}/devices/{did}") as response:
+            async with session.get(f"http://{self._host}{self._base_path}/devices/{did}") as response:
                 response = await response.json()
                 if response["error_code"] != 0:
                     return []
@@ -109,7 +113,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/service/system-update-image/status"
+                f"http://{self._host}{self._base_path}/service/system-update-image/status"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -120,7 +124,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/service/system/networkmgr/v1/interfaces"
+                f"http://{self._host}{self._base_path}/service/system/networkmgr/v1/interfaces"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -131,7 +135,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/service/system-update-image/version"
+                f"http://{self._host}{self._base_path}/service/system-update-image/version"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -142,7 +146,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/service/system/networkmgr/v1/nodename"
+                f"http://{self._host}{self._base_path}/service/system/networkmgr/v1/nodename"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -153,7 +157,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/service/system/leds/status"
+                f"http://{self._host}{self._base_path}/service/system/leds/status"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -164,7 +168,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/v4/devices/{did}"
+                f"http://{self._host}{self._base_path}/v4/devices/{did}"
             ) as response:
                 response = await response.json()
                 if response["response"] != "get_device":
@@ -180,7 +184,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/v4/devices?devtype=Actuator"
+                f"http://{self._host}{self._base_path}/v4/devices?devtype=Actuator"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -194,7 +198,7 @@ class HomePilotApi:
                     else:
                         actuators = {}
             async with session.get(
-                f"http://{self.host}/v4/devices?devtype=Sensor"
+                f"http://{self._host}{self._base_path}/v4/devices?devtype=Sensor"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -208,7 +212,7 @@ class HomePilotApi:
                     else:
                         sensors = {}
             async with session.get(
-                f"http://{self.host}/v4/devices?devtype=Transmitter"
+                f"http://{self._host}{self._base_path}/v4/devices?devtype=Transmitter"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -227,7 +231,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": APICAP_PING_CMD}
+                f"http://{self._host}{self._base_path}/devices/{did}", json={"name": APICAP_PING_CMD}
             ) as response:
                 return await response.json()
 
@@ -235,7 +239,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": APICAP_POS_UP_CMD}
+                f"http://{self._host}{self._base_path}/devices/{did}", json={"name": APICAP_POS_UP_CMD}
             ) as response:
                 return await response.json()
 
@@ -243,7 +247,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": APICAP_POS_DOWN_CMD}
+                f"http://{self._host}{self._base_path}/devices/{did}", json={"name": APICAP_POS_DOWN_CMD}
             ) as response:
                 return await response.json()
 
@@ -251,7 +255,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": APICAP_STOP_CMD}
+                f"http://{self._host}{self._base_path}/devices/{did}", json={"name": APICAP_STOP_CMD}
             ) as response:
                 return await response.json()
 
@@ -259,7 +263,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_GOTO_POS_CMD, "value": position},
             ) as response:
                 return await response.json()
@@ -268,7 +272,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_SET_SLAT_POS_CMD, "value": 0},
             ) as response:
                 return await response.json()
@@ -277,7 +281,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_SET_SLAT_POS_CMD, "value": 100},
             ) as response:
                 return await response.json()
@@ -286,7 +290,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_SET_SLAT_POS_CMD, "value": position},
             ) as response:
                 return await response.json()
@@ -295,7 +299,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_STOP_SLAT_CMD},
             ) as response:
                 return await response.json()
@@ -304,7 +308,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_VENTIL_POS_MODE_CFG, "value": mode},
             ) as response:
                 return await response.json()
@@ -313,7 +317,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_VENTIL_POS_CFG, "value": str(int(position))},
             ) as response:
                 return await response.json()
@@ -322,7 +326,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": APICAP_TURN_ON_CMD}
+                f"http://{self._host}{self._base_path}/devices/{did}", json={"name": APICAP_TURN_ON_CMD}
             ) as response:
                 return await response.json()
 
@@ -330,7 +334,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}", json={"name": APICAP_TURN_OFF_CMD}
+                f"http://{self._host}{self._base_path}/devices/{did}", json={"name": APICAP_TURN_OFF_CMD}
             ) as response:
                 return await response.json()
 
@@ -338,7 +342,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_TARGET_TEMPERATURE_CFG, "value": temperature},
             ) as response:
                 return await response.json()
@@ -347,7 +351,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": APICAP_AUTO_MODE_CFG, "value": auto_mode},
             ) as response:
                 return await response.json()
@@ -356,7 +360,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/devices/{did}",
+                f"http://{self._host}{self._base_path}/devices/{did}",
                 json={"name": f"TEMPERATURE_THRESH_{thresh_number}_CFG", "value": temperature},
             ) as response:
                 return await response.json()
@@ -365,7 +369,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.post(
-                f"http://{self.host}/service/system/leds/enable"
+                f"http://{self._host}{self._base_path}/service/system/leds/enable"
             ) as response:
                 return await response.json()
 
@@ -373,7 +377,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.post(
-                f"http://{self.host}/service/system/leds/disable"
+                f"http://{self._host}{self._base_path}/service/system/leds/disable"
             ) as response:
                 return await response.json()
 
@@ -381,7 +385,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/service/system-update-image/auto_update",
+                f"http://{self._host}{self._base_path}/service/system-update-image/auto_update",
                 json={"auto_update": True},
             ) as response:
                 return await response.json()
@@ -390,7 +394,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
-                f"http://{self.host}/service/system-update-image/auto_update",
+                f"http://{self._host}{self._base_path}/service/system-update-image/auto_update",
                 json={"auto_update": False},
             ) as response:
                 return await response.json()
@@ -399,7 +403,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.post(
-                f"http://{self.host}/service/system-update-image/startupdate"
+                f"http://{self._host}{self._base_path}/service/system-update-image/startupdate"
             ) as response:
                 return await response.json()
 
@@ -408,7 +412,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/scenes"
+                f"http://{self._host}{self._base_path}/scenes"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -423,7 +427,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.get(
-                f"http://{self.host}/v4/scenes"
+                f"http://{self._host}{self._base_path}/v4/scenes"
             ) as response:
                 if response.status == 401:
                     raise AuthError()
@@ -438,7 +442,7 @@ class HomePilotApi:
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.post(
-                f"http://{self.host}/scenes/{sid}/actions",
+                f"http://{self._host}{self._base_path}/scenes/{sid}/actions",
                 json={ "request_type": "EXECUTESCENE", "trigger_event": "TRIGGER_SCENE_MANUALLY_EVT" }
             ) as response:
                 return await response.json()
@@ -450,6 +454,10 @@ class HomePilotApi:
     @property
     def password(self):
         return self._password
+
+    @property
+    def api_version(self):
+        return self._api_version
 
     @property
     def authenticated(self):
