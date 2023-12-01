@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrademacher",
-    version="0.13.1",
+    version="0.13.2",
     author="Pedro Ribeiro",
     author_email="pedroeusebio@gmail.com",
     description="Control devices connected to your Rademacher Homepilot "
@@ -26,6 +26,6 @@ setuptools.setup(
     ],
     package_dir={"": "."},
     packages=setuptools.find_packages(where="."),
-    python_requires=">=3.6",
-    install_requires=["aiohttp~=3.8.1"]
+    python_requires=">=3.8",
+    install_requires=["aiohttp>=3.8.1"]
 )
