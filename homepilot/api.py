@@ -100,7 +100,7 @@ class HomePilotApi:
 
     async def authenticate(self):
         if not self.authenticated and self.password != "":
-            self.cookie_jar = await HomePilotApi.test_auth(self.host, self.password, self._base_path)
+            self.cookie_jar = await HomePilotApi.test_auth(self.host, self.password, self.api_version)
             self._authenticated = True
 
     async def get_devices(self):
