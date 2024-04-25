@@ -43,23 +43,35 @@ class HomePilotApi:
                 if response.status != 200:
                     response = await session.get(f"http://{host}/hp/devices/0")
                     if response.status != 200:
-                        return "error"
-                    return "ok_v2"
+                        if response.status != 401:
+                            return "error"
+                        # Otherwise try for login requirements
+                    else:
+                        return "ok_v2"
+
                 response = await session.post(
                     f"http://{host}/authentication/password_salt"
                 )
                 if response.status == 500:
                     return "ok"
                 else:
+                    if response.status == 401:
+                        response = await session.post(
+                            f"http://{host}/hp/authentication/password_salt"
+                        )
+                        if response.status == 200:
+                            return "auth_required_v2"
+                        else:
+                            return "error"
                     return "auth_required"
             except ClientConnectorError:
                 return "error"
 
     @staticmethod
-    async def test_auth(host: str, password: str) -> AbstractCookieJar:
+    async def test_auth(host: str, password: str, base_path: str = "") -> AbstractCookieJar:
         cookie_jar = aiohttp.CookieJar(unsafe=True)
         async with aiohttp.ClientSession(cookie_jar=cookie_jar) as session:
-            response = await session.post(f"http://{host}/authentication/password_salt")
+            response = await session.post(f"http://{host}{base_path}/authentication/password_salt")
             response_data = await response.json()
             if response.status == 500 and response_data["error_code"] == 5007:
                 raise AuthError()
@@ -71,7 +83,7 @@ class HomePilotApi:
                 f"{salt}{hashed_password}".encode("utf-8")
             ).hexdigest()
             response = await session.post(
-                f"http://{host}/authentication/login",
+                f"http://{host}{base_path}/authentication/login",
                 json={"password": salted_password, "password_salt": salt},
             )
             if response.status != 200:
@@ -80,7 +92,7 @@ class HomePilotApi:
 
     async def authenticate(self):
         if not self.authenticated and self.password != "":
-            self.cookie_jar = await HomePilotApi.test_auth(self.host, self.password)
+            self.cookie_jar = await HomePilotApi.test_auth(self.host, self.password, self._base_path)
             self._authenticated = True
 
     async def get_devices(self):
