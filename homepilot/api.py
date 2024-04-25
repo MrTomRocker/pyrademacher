@@ -33,7 +33,7 @@ class HomePilotApi:
         self._host = host
         self._password = password
         self._api_version = api_version
-        self._base_path = "/hp" if api_version == 2 else ""
+        self._base_path = HomePilotApi.get_base_path(api_version)
 
     @staticmethod
     async def test_connection(host: str) -> str:
@@ -68,8 +68,16 @@ class HomePilotApi:
                 return "error"
 
     @staticmethod
-    async def test_auth(host: str, password: str, base_path: str = "") -> AbstractCookieJar:
+    def get_base_path(api_version) -> str:
+        if api_version == 2:
+            return "/hp"
+        else:
+            return ""
+
+    @staticmethod
+    async def test_auth(host: str, password: str, api_version: int = 1) -> AbstractCookieJar:
         cookie_jar = aiohttp.CookieJar(unsafe=True)
+        base_path = HomePilotApi.get_base_path(api_version)
         async with aiohttp.ClientSession(cookie_jar=cookie_jar) as session:
             response = await session.post(f"http://{host}{base_path}/authentication/password_salt")
             response_data = await response.json()
