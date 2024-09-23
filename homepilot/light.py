@@ -164,7 +164,7 @@ class HomePilotLight(HomePilotDevice):
 
     @color_mode_value.setter
     def color_mode_value(self, color_mode_value):
-        self._color_mode_value = color_mode_value
+        self.color_mode_value = color_mode_value
 
     async def async_turn_on(self) -> None:
         await self.api.async_turn_on(self.did)
