@@ -92,9 +92,9 @@ class HomePilotLight(HomePilotDevice):
         self.is_on = state["statusesMap"]["Position"] != 0
         self.brightness = state["statusesMap"]["Position"]
         if self.has_rgb:
-            self.r_value: int = int(["statusesMap"]["rgb"][2:4], 16)
-            self.g_value: int = int(["statusesMap"]["rgb"][4:6], 16)
-            self.b_value: int = int(["statusesMap"]["rgb"][6:8], 16)
+            self.r_value: int = int(state["statusesMap"]["rgb"][2:4], 16)
+            self.g_value: int = int(state["statusesMap"]["rgb"][4:6], 16)
+            self.b_value: int = int(state["statusesMap"]["rgb"][6:8], 16)
         self.color_temp_value = state["statusesMap"]["colortemperature"] if self.has_color_temp else 0
         self.color_mode_value = state["statusesMap"]["colormode"] if self.has_color_mode else 0
 
