@@ -25,9 +25,9 @@ class TestHomePilotCover:
         func_stop_cover = asyncio.Future(loop=event_loop)
         func_stop_cover.set_result(None)
         api.async_stop_cover.return_value = func_stop_cover
-        func_set_cover_position = asyncio.Future(loop=event_loop)
-        func_set_cover_position.set_result(None)
-        api.async_set_cover_position.return_value = func_set_cover_position
+        func_set_position = asyncio.Future(loop=event_loop)
+        func_set_position.set_result(None)
+        api.async_set_position.return_value = func_set_position
         func_ping = asyncio.Future(loop=event_loop)
         func_ping.set_result(None)
         api.async_ping.return_value = func_ping
@@ -99,7 +99,7 @@ class TestHomePilotCover:
     async def test_async_set_cover_position(self, mocked_api):
         cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
         await cover.async_set_cover_position(40)
-        mocked_api.async_set_cover_position.assert_called_with('1', 60)
+        mocked_api.async_set_position.assert_called_with('1', 60)
 
     @pytest.mark.asyncio
     async def test_async_ping(self, mocked_api):

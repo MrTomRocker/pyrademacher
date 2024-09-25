@@ -129,8 +129,8 @@ class HomePilotCover(HomePilotDevice):
 
     async def async_set_cover_position(self, new_position) -> None:
         if self.can_set_position:
-            await self.api.async_set_cover_position(self.did,
-                                                    100 - new_position)
+            await self.api.async_set_position(self.did,
+                                              100 - new_position)
 
     async def async_stop_cover(self) -> None:
         await self.api.async_stop_cover(self.did)

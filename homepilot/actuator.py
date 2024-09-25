@@ -95,7 +95,7 @@ class HomePilotActuator(HomePilotDevice):
         await self.api.async_turn_off(self.did)
 
     async def async_set_brightness(self, new_brightness) -> None:
-        await self.api.async_set_cover_position(self.did, new_brightness)
+        await self.api.async_set_position(self.did, new_brightness)
 
     async def async_toggle(self) -> None:
         if self.is_on:
