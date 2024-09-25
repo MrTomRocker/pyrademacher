@@ -1,10 +1,12 @@
 import asyncio
 from enum import Enum
 from .const import (
+    APICAP_BLOCK_DET_EVT,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_GOTO_POS_CMD,
     APICAP_ID_DEVICE_LOC,
     APICAP_NAME_DEVICE_LOC,
+    APICAP_OBSTACLE_DET_EVT,
     APICAP_PING_CMD,
     APICAP_PROD_CODE_DEVICE_LOC,
     APICAP_PROT_ID_DEVICE_LOC,
@@ -36,6 +38,10 @@ class HomePilotCover(HomePilotDevice):
     _has_ventilation_position_config: bool
     _ventilation_position_mode: bool
     _ventilation_position: int
+    _has_blocking_detection: bool
+    _blocking_detection_status: bool
+    _has_obstacle_detection: bool
+    _obstacle_detection_status: bool
 
     def __init__(
         self,
@@ -53,6 +59,8 @@ class HomePilotCover(HomePilotDevice):
         has_tilt: bool = False,
         can_set_tilt_position: bool = False,
         has_ventilation_position_config: bool = False,
+        has_blocking_detection: bool = False,
+        has_obstacle_detection: bool = False,
     ) -> None:
         super().__init__(
             api=api,
@@ -70,6 +78,8 @@ class HomePilotCover(HomePilotDevice):
         self._has_tilt = has_tilt
         self._can_set_tilt_position = can_set_tilt_position
         self._has_ventilation_position_config = has_ventilation_position_config
+        self._has_blocking_detection = has_blocking_detection
+        self._has_obstacle_detection = has_obstacle_detection
 
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
@@ -100,6 +110,8 @@ class HomePilotCover(HomePilotDevice):
             has_tilt=APICAP_SET_SLAT_POS_CMD in device_map,
             can_set_tilt_position=APICAP_SET_SLAT_POS_CMD in device_map,
             has_ventilation_position_config=APICAP_VENTIL_POS_MODE_CFG in device_map,
+            has_blocking_detection=APICAP_BLOCK_DET_EVT in device_map,
+            has_obstacle_detection=APICAP_OBSTACLE_DET_EVT in device_map,
         )
 
     async def update_state(self, state, api):
@@ -115,11 +127,15 @@ class HomePilotCover(HomePilotDevice):
         self.is_closed = self.cover_position == 0
         self.is_closing = False
         self.is_opening = False
+        device = await api.get_device(self.did)
+        device_map = HomePilotDevice.get_capabilities_map(device)
         if self.has_ventilation_position_config:
-            device = await api.get_device(self.did)
-            device_map = HomePilotDevice.get_capabilities_map(device)
             self.ventilation_position_mode = device_map[APICAP_VENTIL_POS_MODE_CFG]["value"] == "true"
             self.ventilation_position = 100 - int(device_map[APICAP_VENTIL_POS_CFG]["value"])
+        if self.has_blocking_detection:
+            self.blocking_detection_status = device_map[APICAP_BLOCK_DET_EVT]["value"] == "true"
+        if self.has_obstacle_detection:
+            self.obstacle_detection_status = device_map[APICAP_OBSTACLE_DET_EVT]["value"] == "true"
 
     async def async_open_cover(self) -> None:
         await self.api.async_open_cover(self.did)
@@ -247,3 +263,27 @@ class HomePilotCover(HomePilotDevice):
     @ventilation_position.setter
     def ventilation_position(self, ventilation_position):
         self._ventilation_position = ventilation_position
+
+    @property
+    def has_blocking_detection(self) -> bool:
+        return self._has_blocking_detection
+    
+    @property
+    def blocking_detection_status(self) -> bool:
+        return self._blocking_detection_status
+
+    @blocking_detection_status.setter
+    def blocking_detection_status(self, blocking_detection_status):
+        self._blocking_detection_status = blocking_detection_status
+
+    @property
+    def has_obstacle_detection(self) -> bool:
+        return self._has_obstacle_detection
+    
+    @property
+    def obstacle_detection_status(self) -> bool:
+        return self._obstacle_detection_status
+
+    @obstacle_detection_status.setter
+    def obstacle_detection_status(self, obstacle_detection_status):
+        self._obstacle_detection_status = obstacle_detection_status

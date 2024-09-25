@@ -45,6 +45,8 @@ class TestHomePilotCover:
         assert cover.model == "RolloTron radio beltwinder"
         assert cover.has_ping_cmd is True
         assert cover.can_set_position is True
+        assert cover.has_blocking_detection is True
+        assert cover.has_obstacle_detection is True
 
     @pytest.mark.asyncio
     async def test_update_state(self, mocked_api):
@@ -62,6 +64,8 @@ class TestHomePilotCover:
         assert cover.is_closing is False
         assert cover.is_opening is False
         assert cover.available is True
+        assert cover.blocking_detection_status is False
+        assert cover.obstacle_detection_status is False
 
         await cover.update_state({
             "statusesMap": {
@@ -76,6 +80,8 @@ class TestHomePilotCover:
         assert cover.is_closing is False
         assert cover.is_opening is False
         assert cover.available is False
+        assert cover.blocking_detection_status is False
+        assert cover.obstacle_detection_status is False
 
     @pytest.mark.asyncio
     async def test_async_open_cover(self, mocked_api):
