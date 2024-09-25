@@ -92,9 +92,9 @@ class HomePilotLight(HomePilotDevice):
         self.is_on = state["statusesMap"]["Position"] != 0
         self.brightness = state["statusesMap"]["Position"]
         if self.has_rgb:
-            self.r_value: int = int(state["statusesMap"]["rgb"][2:4], 16)
-            self.g_value: int = int(state["statusesMap"]["rgb"][4:6], 16)
-            self.b_value: int = int(state["statusesMap"]["rgb"][6:8], 16)
+            self.r_value: int = int(state["statusesMap"]["rgb"].lower()[2:4], 16)
+            self.g_value: int = int(state["statusesMap"]["rgb"].lower()[4:6], 16)
+            self.b_value: int = int(state["statusesMap"]["rgb"].lower()[6:8], 16)
         self.color_temp_value = state["statusesMap"]["colortemperature"] if self.has_color_temp else 0
         self.color_mode_value = state["statusesMap"]["colormode"] if self.has_color_mode else 0
 
@@ -176,7 +176,7 @@ class HomePilotLight(HomePilotDevice):
         await self.api.async_set_position(self.did, new_brightness)
 
     async def async_set_rgb(self, r, g, b) -> None:
-        new_rgb: str = "0x%0.6X" % (r * (2,16) + g * pow(2,8) + b)
+        new_rgb: str = f"0x{(r * pow(2,16) + g * pow(2,8) + b):06X}"
         await self.api.async_set_rgb(self.did, new_rgb)
 
     async def async_set_color_temp(self, new_color_temp) -> None:
