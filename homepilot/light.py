@@ -173,7 +173,7 @@ class HomePilotLight(HomePilotDevice):
         await self.api.async_turn_off(self.did)
 
     async def async_set_brightness(self, new_brightness) -> None:
-        await self.api.async_set_cover_position(self.did, new_brightness)
+        await self.api.async_set_position(self.did, new_brightness)
 
     async def async_set_rgb(self, r, g, b) -> None:
         new_rgb: str = "0x%0.6X" % (r * (2,16) + g * pow(2,8) + b)
@@ -181,9 +181,6 @@ class HomePilotLight(HomePilotDevice):
 
     async def async_set_color_temp(self, new_color_temp) -> None:
         await self.api.async_set_color_temp(self.did, new_color_temp)
-
-    async def async_set_color_mode(self, new_color_mode) -> None:
-        await self.api.async_set_color_mode(self.did, new_color_mode)
 
     async def async_toggle(self) -> None:
         if self.is_on:

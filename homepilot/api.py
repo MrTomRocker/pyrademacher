@@ -18,9 +18,8 @@ from .const import (
     APICAP_STOP_SLAT_CMD,
     APICAP_VENTIL_POS_CFG,
     APICAP_VENTIL_POS_MODE_CFG,
-    APICAP_RGB_CFG,
-    APICAP_COLOR_TEMP_CFG,
-    APICAP_COLOR_MODE_CFG,
+    APICAP_SET_RGB_CMD,
+    APICAP_SET_COLOR_TEMP_CMD,
 )
 
 
@@ -282,7 +281,7 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
-    async def async_set_cover_position(self, did, position):
+    async def async_set_position(self, did, position):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
@@ -393,7 +392,7 @@ class HomePilotApi:
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
                 f"http://{self._host}{self._base_path}/devices/{did}",
-                json={"name": APICAP_RGB_CFG, "value": rgb_value},
+                json={"name": APICAP_SET_RGB_CMD, "value": rgb_value},
             ) as response:
                 return await response.json()
 
@@ -402,16 +401,7 @@ class HomePilotApi:
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
                 f"http://{self._host}{self._base_path}/devices/{did}",
-                json={"name": APICAP_COLOR_TEMP_CFG, "value": color_temp_value},
-            ) as response:
-                return await response.json()
-
-    async def async_set_color_temp(self, did, color_mode_value):
-        await self.authenticate()
-        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
-            async with session.put(
-                f"http://{self._host}{self._base_path}/devices/{did}",
-                json={"name": APICAP_COLOR_MODE_CFG, "value": color_mode_value},
+                json={"name": APICAP_SET_COLOR_TEMP_CMD, "value": color_temp_value},
             ) as response:
                 return await response.json()
 

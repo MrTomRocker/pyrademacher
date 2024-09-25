@@ -289,7 +289,7 @@ class TestHomePilotApi:
         )
 
     @pytest.mark.asyncio
-    async def test_async_set_cover_position(self):
+    async def test_async_set_position(self):
         did = "1234"
         position = 40
         with aioresponses() as mocked:
@@ -299,7 +299,7 @@ class TestHomePilotApi:
                 status=200,
                 callback=self.callback_goto_pos
             )
-            assert (await instance.async_set_cover_position(did, position))[
+            assert (await instance.async_set_position(did, position))[
                 "error_code"] == 0
 
     def callback_turn_on(self, url, **kwargs):
