@@ -23,6 +23,12 @@ class HomePilotScene:
     async def async_execute_scene(self) -> None:
         await self._api.async_execute_scene(self._sid)
 
+    async def async_activate_scene(self) -> None:
+        await self._api.async_activate_scene(self._sid)
+
+    async def async_deactivate_scene(self) -> None:
+        await self._api.async_deactivate_scene(self._sid)
+
     @property
     def name(self):
         return self._name
