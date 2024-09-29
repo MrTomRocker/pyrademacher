@@ -487,6 +487,24 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
+    async def async_activate_scene(self, sid: int):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.post(
+                f"http://{self._host}{self._base_path}/scenes/{sid}/actions",
+                json={ "request_type": "SWITCHSCENE", "trigger_event": "SCENE_MODE_CMD", "value": True }
+            ) as response:
+                return await response.json()
+
+    async def async_deactivate_scene(self, sid: int):
+        await self.authenticate()
+        async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
+            async with session.post(
+                f"http://{self._host}{self._base_path}/scenes/{sid}/actions",
+                json={ "request_type": "EXECUTESCENE", "trigger_event": "SCENE_MODE_CMD", "value": False }
+            ) as response:
+                return await response.json()
+
     @property
     def host(self):
         return self._host
