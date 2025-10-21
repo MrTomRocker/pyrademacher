@@ -22,17 +22,19 @@ class HomePilotManager:
     _api: HomePilotApi
     _devices: Dict[str, HomePilotDevice]
     _scenes: Dict[str, HomePilotScene]
+    _include_non_manual_executable: bool
 
-    def __init__(self, api: HomePilotApi) -> None:
+    def __init__(self, api: HomePilotApi, include_non_manual_executable: bool = False) -> None:
         self._api = api
+        self._include_non_manual_executable = include_non_manual_executable
 
     @staticmethod
-    def build_manager(api: HomePilotApi):
-        return asyncio.run(HomePilotManager.async_build_manager(api))
+    def build_manager(api: HomePilotApi, include_non_manual_executable: bool = False):
+        return asyncio.run(HomePilotManager.async_build_manager(api, include_non_manual_executable))
 
     @staticmethod
-    async def async_build_manager(api: HomePilotApi):
-        manager = HomePilotManager(api)
+    async def async_build_manager(api: HomePilotApi, include_non_manual_executable: bool = False):
+        manager = HomePilotManager(api, include_non_manual_executable)
         manager.devices = {
             id_type["did"]: await HomePilotManager.async_build_device(manager.api, id_type)
             for id_type in await manager.get_device_ids_types()
@@ -40,9 +42,9 @@ class HomePilotManager:
         }
         try:
             manager.scenes = {
-                scene["id"]: HomePilotScene(manager.api, scene["id"], scene["name"], scene["description"])
+                scene["id"]: await HomePilotScene.async_build_scene(manager.api, scene)
                 for scene in await manager.api.async_get_scenes()
-                if scene["is_manual_executable"] == 1
+                if include_non_manual_executable or scene.get("is_manual_executable", 0) == 1
             }
         except Exception():
             manager.scenes = {}
@@ -134,6 +136,26 @@ class HomePilotManager:
 
         return self.devices
 
+    async def async_update_scenes(self):        
+        try:
+            scenes = await self.api.async_get_scenes()            
+        except AuthError:
+            raise
+        except Exception:
+            for sid in self.scenes:
+                scene: HomePilotScene = self.scenes[sid]
+                scene.available = False
+            raise
+
+        for sid in self.scenes:
+            scene: HomePilotScene = self.scenes[sid]
+            if sid in scenes:
+                await scene.async_update_scene(scenes[sid])
+                scene.available = True
+            else:
+                scene.available = False
+        return self.scenes
+
     async def get_device_ids_types(self):
         devices = await self.api.get_devices()
         devices.append(HomePilotHub.get_capabilities())
@@ -150,3 +172,15 @@ class HomePilotManager:
     @devices.setter
     def devices(self, devices: Dict[str, HomePilotDevice]):
         self._devices = devices
+
+    @property
+    def scenes(self) -> Dict[str, HomePilotScene]:
+        return self._scenes
+
+    @scenes.setter
+    def scenes(self, scenes: Dict[str, HomePilotScene]):
+        self._scenes = scenes
+
+    @property
+    def include_non_manual_executable(self) -> bool:
+        return self._include_non_manual_executable

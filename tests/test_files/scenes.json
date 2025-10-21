@@ -1,0 +1,25 @@
+{
+  "scenes": [
+    {
+      "id": 1,
+      "name": "Morning Scene",
+      "description": "Opens blinds and turns on lights",
+      "is_enabled": 1,
+      "is_manual_executable": 1
+    },
+    {
+      "id": 2,
+      "name": "Evening Scene", 
+      "description": "Closes blinds and dims lights",
+      "is_enabled": 1,
+      "is_manual_executable": 1
+    },
+    {
+      "id": 3,
+      "name": "Auto Scene",
+      "description": "Automatic scene not manually executable",
+      "is_enabled": 0,
+      "is_manual_executable": 0
+    }
+  ]
+}
