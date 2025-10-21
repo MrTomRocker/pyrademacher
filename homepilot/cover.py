@@ -22,6 +22,7 @@ from .device import HomePilotDevice, HomePilotAutoConfigDevice
 
 
 class CoverType(Enum):
+    SHUTTER = 2
     COVER = 2
     GARAGE = 8
 
