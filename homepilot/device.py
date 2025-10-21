@@ -1,5 +1,6 @@
 """ This class represents a device in HomePilot GW """
 
+from typing import Optional, Dict, Any
 from .api import HomePilotApi
 
 from .const import (
@@ -144,7 +145,7 @@ class HomePilotDevice:
     def extra_attributes(self):
         return None
 
-class AutoConfigHomePilotDevice(HomePilotDevice): 
+class HomePilotAutoConfigDevice(HomePilotDevice): 
     _has_auto_mode: bool
     _auto_mode_value: bool
     _has_time_auto_mode: bool
@@ -173,7 +174,7 @@ class AutoConfigHomePilotDevice(HomePilotDevice):
         fw_version: str,
         device_group: int,
         has_ping_cmd: bool = False,
-        device_map=None,
+        device_map: Optional[Dict[str, Any]] = None,
      ) -> None:        
         super().__init__(
             api=api,
@@ -186,36 +187,38 @@ class AutoConfigHomePilotDevice(HomePilotDevice):
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,            
         )        
-        self._has_auto_mode=APICAP_AUTO_MODE_CFG in device_map,
-        self._has_time_auto_mode=APICAP_TIME_AUTO_CFG in device_map,
-        self._has_contact_auto_mode=APICAP_CONTACT_AUTO_CFG in device_map
-        self._has_wind_auto_mode=APICAP_WIND_AUTO_CFG in device_map
-        self._has_dawn_auto_mode=APICAP_DAWN_AUTO_CFG in device_map
-        self._has_dusk_auto_mode=APICAP_DUSK_AUTO_CFG in device_map
-        self._has_rain_auto_mode=APICAP_RAIN_AUTO_CFG in device_map
-        self._has_sun_auto_mode=APICAP_SUN_AUTO_CFG in device_map
+        device_map = device_map or {}
+        self._has_auto_mode = APICAP_AUTO_MODE_CFG in device_map
+        self._has_time_auto_mode = APICAP_TIME_AUTO_CFG in device_map
+        self._has_contact_auto_mode = APICAP_CONTACT_AUTO_CFG in device_map
+        self._has_wind_auto_mode = APICAP_WIND_AUTO_CFG in device_map
+        self._has_dawn_auto_mode = APICAP_DAWN_AUTO_CFG in device_map
+        self._has_dusk_auto_mode = APICAP_DUSK_AUTO_CFG in device_map
+        self._has_rain_auto_mode = APICAP_RAIN_AUTO_CFG in device_map
+        self._has_sun_auto_mode = APICAP_SUN_AUTO_CFG in device_map
 
-    async def update_device_state(self, state, device_map):
+    async def update_device_state(self, state: Dict[str, Any], device_map: Optional[Dict[str, Any]]) -> None:
         if self.has_auto_mode:
             self.auto_mode_value = (
                 state["statusesMap"]["Manuellbetrieb"] == 0
                 if "Manuellbetrieb" in state["statusesMap"]
                 else False
             )
-        if(self.has_time_auto_mode):
-            self.time_auto_mode_value = device_map[APICAP_TIME_AUTO_CFG]["value"] == "true"
-        if(self.has_contact_auto_mode):
-            self.contact_auto_mode_value = device_map[APICAP_CONTACT_AUTO_CFG]["value"] == "true"              
-        if(self.has_wind_auto_mode):
-            self.wind_auto_mode_value = device_map[APICAP_WIND_AUTO_CFG]["value"] == "true"  
-        if(self.has_dawn_auto_mode):
-            self.dawn_auto_mode_value = device_map[APICAP_DAWN_AUTO_CFG]["value"] == "true"
-        if(self.has_dusk_auto_mode):
-            self.dusk_auto_mode_value = device_map[APICAP_DUSK_AUTO_CFG]["value"] == "true"                          
-        if(self.has_rain_auto_mode):
-            self.rain_auto_mode_value = device_map[APICAP_RAIN_AUTO_CFG]["value"] == "true"
-        if(self.has_sun_auto_mode):
-            self.sun_auto_mode_value = device_map[APICAP_SUN_AUTO_CFG]["value"] == "true"            
+        device_map = device_map or {}
+        if self.has_time_auto_mode:
+            self.time_auto_mode_value = device_map.get(APICAP_TIME_AUTO_CFG, {}).get("value", "false") == "true"
+        if self.has_contact_auto_mode:
+            self.contact_auto_mode_value = device_map.get(APICAP_CONTACT_AUTO_CFG, {}).get("value", "false") == "true"              
+        if self.has_wind_auto_mode:
+            self.wind_auto_mode_value = device_map.get(APICAP_WIND_AUTO_CFG, {}).get("value", "false") == "true"  
+        if self.has_dawn_auto_mode:
+            self.dawn_auto_mode_value = device_map.get(APICAP_DAWN_AUTO_CFG, {}).get("value", "false") == "true"
+        if self.has_dusk_auto_mode:
+            self.dusk_auto_mode_value = device_map.get(APICAP_DUSK_AUTO_CFG, {}).get("value", "false") == "true"                          
+        if self.has_rain_auto_mode:
+            self.rain_auto_mode_value = device_map.get(APICAP_RAIN_AUTO_CFG, {}).get("value", "false") == "true"
+        if self.has_sun_auto_mode:
+            self.sun_auto_mode_value = device_map.get(APICAP_SUN_AUTO_CFG, {}).get("value", "false") == "true"            
 
     async def async_set_auto_mode(self, auto_mode) -> None:
         await self.api.async_set_auto_mode(self.did, auto_mode)
@@ -240,10 +243,6 @@ class AutoConfigHomePilotDevice(HomePilotDevice):
 
     async def async_set_sun_auto_mode(self, auto_mode) -> None:
         await self.api.async_send_device_command(self.did, APICAP_SUN_AUTO_CFG, auto_mode)
-
-    @property
-    def has_temperature(self) -> bool:
-        return self._has_temperature
 
     @property
     def has_auto_mode(self) -> bool:

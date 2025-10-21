@@ -1,5 +1,6 @@
 import asyncio
 from enum import Enum
+from typing import Optional, Dict, Any
 from .const import (
     APICAP_BLOCK_DET_EVT,
     APICAP_DEVICE_TYPE_LOC,
@@ -17,15 +18,15 @@ from .const import (
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
-from .device import HomePilotDevice, AutoConfigHomePilotDevice
+from .device import HomePilotDevice, HomePilotAutoConfigDevice
 
 
 class CoverType(Enum):
-    SHUTTER = 2
+    COVER = 2
     GARAGE = 8
 
 
-class HomePilotCover(AutoConfigHomePilotDevice):
+class HomePilotCover(HomePilotAutoConfigDevice):
     _can_set_position: bool
     _cover_type: int
     _has_tilt: bool
@@ -61,7 +62,7 @@ class HomePilotCover(AutoConfigHomePilotDevice):
         has_ventilation_position_config: bool = False,
         has_blocking_detection: bool = False,
         has_obstacle_detection: bool = False,
-        device_map=None,
+        device_map: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(
             api=api,

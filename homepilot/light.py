@@ -1,4 +1,5 @@
 import asyncio
+from typing import Optional, Dict, Any
 from .const import (
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC,
@@ -13,9 +14,9 @@ from .const import (
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
-from .device import HomePilotDevice, AutoConfigHomePilotDevice
+from .device import HomePilotDevice, HomePilotAutoConfigDevice
 
-class HomePilotLight(AutoConfigHomePilotDevice):
+class HomePilotLight(HomePilotAutoConfigDevice):
     _is_on: bool
     _brightness: int
     _has_rgb: bool
@@ -41,7 +42,7 @@ class HomePilotLight(AutoConfigHomePilotDevice):
         has_rgb: bool = False,
         has_color_temp: bool = False,
         has_color_mode: bool = False,
-        device_map=None,
+        device_map: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(
             api=api,

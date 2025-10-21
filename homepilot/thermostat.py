@@ -1,5 +1,5 @@
 import asyncio
-from typing import List
+from typing import List, Optional, Dict, Any
 from .const import (
     APICAP_BATT_VALUE_EVT,
     APICAP_DEVICE_TYPE_LOC,
@@ -15,9 +15,9 @@ from .const import (
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
-from .device import AutoConfigHomePilotDevice, HomePilotDevice
+from .device import HomePilotAutoConfigDevice, HomePilotDevice
 
-class HomePilotThermostat(AutoConfigHomePilotDevice):
+class HomePilotThermostat(HomePilotAutoConfigDevice):
     _has_temperature: bool
     _min_temperature: float
     _max_temperature: float
@@ -59,7 +59,7 @@ class HomePilotThermostat(AutoConfigHomePilotDevice):
         step_target_temperature: float = None,
         has_battery_level: bool = False,
         has_relais_status: bool = False,
-        device_map=None,
+        device_map: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(
             api=api,
@@ -172,6 +172,10 @@ class HomePilotThermostat(AutoConfigHomePilotDevice):
     async def async_set_temperature_thresh_cfg(self, thresh_number, temperature) -> None:
         await self.api.async_set_temperature_thresh_cfg(self.did, thresh_number, temperature)
     
+    @property
+    def has_temperature(self) -> bool:
+        return self._has_temperature
+        
     @property
     def min_temperature(self) -> bool:
         return self._min_temperature
