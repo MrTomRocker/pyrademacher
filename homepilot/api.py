@@ -369,15 +369,18 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
-    async def async_set_auto_mode(self, did, auto_mode):
+    async def async_send_device_command(self, did, command, value):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
             async with session.put(
                 f"http://{self._host}{self._base_path}/devices/{did}",
-                json={"name": APICAP_AUTO_MODE_CFG, "value": auto_mode},
+                json={"name": command, "value": value},
             ) as response:
                 return await response.json()
-
+            
+    async def async_set_auto_mode(self, did, auto_mode):
+        return await self.async_send_device_command(did, APICAP_AUTO_MODE_CFG, auto_mode)
+            
     async def async_set_temperature_thresh_cfg(self, did, thresh_number, temperature):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:

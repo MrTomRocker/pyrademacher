@@ -1,7 +1,6 @@
 import asyncio
 from typing import List
 from .const import (
-    APICAP_AUTO_MODE_CFG,
     APICAP_BATT_VALUE_EVT,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC,
@@ -16,12 +15,9 @@ from .const import (
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
-from .device import HomePilotDevice
+from .device import AutoConfigHomePilotDevice, HomePilotDevice
 
-
-class HomePilotThermostat(HomePilotDevice):
-    _has_auto_mode: bool
-    _auto_mode_value: bool
+class HomePilotThermostat(AutoConfigHomePilotDevice):
     _has_temperature: bool
     _min_temperature: float
     _max_temperature: float
@@ -53,7 +49,6 @@ class HomePilotThermostat(HomePilotDevice):
         fw_version: str,
         device_group: int,
         has_ping_cmd: bool = False,
-        has_auto_mode: bool = False,
         has_temperature: bool = False,
         min_temperature: float = None,
         max_temperature: float = None,
@@ -64,7 +59,7 @@ class HomePilotThermostat(HomePilotDevice):
         step_target_temperature: float = None,
         has_battery_level: bool = False,
         has_relais_status: bool = False,
-        capabilities=None,
+        device_map=None,
     ) -> None:
         super().__init__(
             api=api,
@@ -76,8 +71,8 @@ class HomePilotThermostat(HomePilotDevice):
             fw_version=fw_version,
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,
+            device_map = device_map
         )
-        self._has_auto_mode = has_auto_mode
         self._has_temperature = has_temperature
         self._min_temperature = min_temperature
         self._max_temperature = max_temperature
@@ -94,12 +89,12 @@ class HomePilotThermostat(HomePilotDevice):
         self._temperature_thresh_cfg_max = [None] * 4
         self._temperature_thresh_cfg_step = [None] * 4
         for i in range(1, 5):
-            if capabilities is not None and f"TEMPERATURE_THRESH_{i}_CFG" in capabilities \
-            and capabilities[f"TEMPERATURE_THRESH_{i}_CFG"] is not None:
+            if device_map is not None and f"TEMPERATURE_THRESH_{i}_CFG" in device_map \
+            and device_map[f"TEMPERATURE_THRESH_{i}_CFG"] is not None:
                 self._has_temperature_thresh_cfg[i-1] = True
-                self._temperature_thresh_cfg_min[i-1] = float(capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["min_value"])
-                self._temperature_thresh_cfg_max[i-1] = float(capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["max_value"])
-                self._temperature_thresh_cfg_step[i-1] = float(capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["step_size"])
+                self._temperature_thresh_cfg_min[i-1] = float(device_map[f"TEMPERATURE_THRESH_{i}_CFG"]["min_value"])
+                self._temperature_thresh_cfg_max[i-1] = float(device_map[f"TEMPERATURE_THRESH_{i}_CFG"]["max_value"])
+                self._temperature_thresh_cfg_step[i-1] = float(device_map[f"TEMPERATURE_THRESH_{i}_CFG"]["step_size"])
             else:
                 self._has_temperature_thresh_cfg[i-1] = False
 
@@ -127,7 +122,6 @@ class HomePilotThermostat(HomePilotDevice):
             if APICAP_VERSION_CFG in device_map else "",
             device_group=device_map[APICAP_DEVICE_TYPE_LOC]["value"],
             has_ping_cmd=APICAP_PING_CMD in device_map,
-            has_auto_mode=APICAP_AUTO_MODE_CFG in device_map,
             has_temperature=APICAP_TEMPERATURE_INT_CFG in device_map,
             min_temperature=float(
                 device_map[APICAP_TEMPERATURE_INT_CFG]["min_value"]
@@ -153,7 +147,7 @@ class HomePilotThermostat(HomePilotDevice):
             and device_map[APICAP_TARGET_TEMPERATURE_CFG]["step_size"] is not None else None,
             has_battery_level=APICAP_BATT_VALUE_EVT in device_map,
             has_relais_status=APICAP_RELAIS_STATE_CFG in device_map,
-            capabilities=device_map,
+            device_map=device_map,
         )
 
     async def update_state(self, state, api):
@@ -161,39 +155,23 @@ class HomePilotThermostat(HomePilotDevice):
         if self.has_temperature:
             self.temperature_value = state["statusesMap"]["acttemperatur"] / 10
         if self.has_target_temperature:
-            self.target_temperature_value = state["statusesMap"]["Position"] / 10
-        if self.has_auto_mode:
-            self.auto_mode_value = (
-                state["statusesMap"]["Manuellbetrieb"] == 0
-                if "Manuellbetrieb" in state["statusesMap"]
-                else False
-            )
+            self.target_temperature_value = state["statusesMap"]["Position"] / 10        
         if self.has_battery_level and "batteryStatus" in state:
             self.battery_level_value = state["batteryStatus"]
         if self.has_relais_status:
             self.relais_status = state["statusesMap"]["relaisstatus"]
-        capabilities = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
+        device_map = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
+        await super().update_device_state(state, device_map)
         for i in range(1, 5):
             if self.has_temperature_thresh_cfg[i-1]:
-                self.temperature_thresh_cfg_value[i-1] = float(capabilities[f"TEMPERATURE_THRESH_{i}_CFG"]["value"])
+                self.temperature_thresh_cfg_value[i-1] = float(device_map[f"TEMPERATURE_THRESH_{i}_CFG"]["value"])
 
     async def async_set_target_temperature(self, temperature) -> None:
         await self.api.async_set_target_temperature(self.did, temperature)
 
-    async def async_set_auto_mode(self, auto_mode) -> None:
-        await self.api.async_set_auto_mode(self.did, auto_mode)
-
     async def async_set_temperature_thresh_cfg(self, thresh_number, temperature) -> None:
         await self.api.async_set_temperature_thresh_cfg(self.did, thresh_number, temperature)
-
-    @property
-    def has_temperature(self) -> bool:
-        return self._has_temperature
-
-    @property
-    def has_auto_mode(self) -> bool:
-        return self._has_auto_mode
-
+    
     @property
     def min_temperature(self) -> bool:
         return self._min_temperature
@@ -249,14 +227,6 @@ class HomePilotThermostat(HomePilotDevice):
     @property
     def step_target_temperature(self) -> bool:
         return self._step_target_temperature
-
-    @property
-    def auto_mode_value(self) -> bool:
-        return self._auto_mode_value
-
-    @auto_mode_value.setter
-    def auto_mode_value(self, auto_mode_value):
-        self._auto_mode_value = auto_mode_value
 
     @property
     def temperature_value(self) -> float:

@@ -17,7 +17,7 @@ from .const import (
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
-from .device import HomePilotDevice
+from .device import HomePilotDevice, AutoConfigHomePilotDevice
 
 
 class CoverType(Enum):
@@ -25,7 +25,7 @@ class CoverType(Enum):
     GARAGE = 8
 
 
-class HomePilotCover(HomePilotDevice):
+class HomePilotCover(AutoConfigHomePilotDevice):
     _can_set_position: bool
     _cover_type: int
     _has_tilt: bool
@@ -61,6 +61,7 @@ class HomePilotCover(HomePilotDevice):
         has_ventilation_position_config: bool = False,
         has_blocking_detection: bool = False,
         has_obstacle_detection: bool = False,
+        device_map=None,
     ) -> None:
         super().__init__(
             api=api,
@@ -72,6 +73,7 @@ class HomePilotCover(HomePilotDevice):
             fw_version=fw_version,
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,
+            device_map = device_map
         )
         self._can_set_position = can_set_position
         self._cover_type = cover_type
@@ -112,6 +114,7 @@ class HomePilotCover(HomePilotDevice):
             has_ventilation_position_config=APICAP_VENTIL_POS_MODE_CFG in device_map,
             has_blocking_detection=APICAP_BLOCK_DET_EVT in device_map,
             has_obstacle_detection=APICAP_OBSTACLE_DET_EVT in device_map,
+            device_map=device_map,
         )
 
     async def update_state(self, state, api):
@@ -129,6 +132,7 @@ class HomePilotCover(HomePilotDevice):
         self.is_opening = False
         device = await api.get_device(self.did)
         device_map = HomePilotDevice.get_capabilities_map(device)
+        await super().update_device_state(state, device_map)
         if self.has_ventilation_position_config:
             self.ventilation_position_mode = device_map[APICAP_VENTIL_POS_MODE_CFG]["value"] == "true"
             self.ventilation_position = 100 - int(device_map[APICAP_VENTIL_POS_CFG]["value"])

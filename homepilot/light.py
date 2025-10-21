@@ -13,9 +13,9 @@ from .const import (
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
-from .device import HomePilotDevice
+from .device import HomePilotDevice, AutoConfigHomePilotDevice
 
-class HomePilotLight(HomePilotDevice):
+class HomePilotLight(AutoConfigHomePilotDevice):
     _is_on: bool
     _brightness: int
     _has_rgb: bool
@@ -41,6 +41,7 @@ class HomePilotLight(HomePilotDevice):
         has_rgb: bool = False,
         has_color_temp: bool = False,
         has_color_mode: bool = False,
+        device_map=None,
     ) -> None:
         super().__init__(
             api=api,
@@ -52,6 +53,7 @@ class HomePilotLight(HomePilotDevice):
             fw_version=fw_version,
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,
+            device_map=device_map,
         )
         self._has_rgb = has_rgb
         self._has_color_temp = has_color_temp
@@ -85,6 +87,7 @@ class HomePilotLight(HomePilotDevice):
             has_rgb=APICAP_RGB_CFG in device_map,
             has_color_temp=APICAP_COLOR_TEMP_CFG in device_map,
             has_color_mode=APICAP_COLOR_MODE_CFG in device_map,
+            device_map=device_map,
         )
 
     async def update_state(self, state, api):
@@ -97,7 +100,9 @@ class HomePilotLight(HomePilotDevice):
             self.b_value: int = int(state["statusesMap"]["rgb"].lower()[6:8], 16)
         self.color_temp_value = state["statusesMap"]["colortemperature"] if self.has_color_temp else 0
         self.color_mode_value = state["statusesMap"]["colormode"] if self.has_color_mode else 0
-
+        device = await api.get_device(self.did)
+        device_map = HomePilotDevice.get_capabilities_map(device)
+        await super().update_device_state(state, device_map)
     @property
     def is_on(self) -> bool:
         return self._is_on
