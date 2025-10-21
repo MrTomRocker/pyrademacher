@@ -138,7 +138,7 @@ class HomePilotManager:
 
     async def async_update_scenes(self):        
         try:
-            scenes = await self.api.async_get_scenes()            
+            scenes_list = await self.api.async_get_scenes()            
         except AuthError:
             raise
         except Exception:
@@ -147,10 +147,13 @@ class HomePilotManager:
                 scene.available = False
             raise
 
+        # Convert list to dict for easier lookup
+        scenes_dict = {scene["id"]: scene for scene in scenes_list}
+
         for sid in self.scenes:
             scene: HomePilotScene = self.scenes[sid]
-            if sid in scenes:
-                await scene.async_update_scene(scenes[sid])
+            if sid in scenes_dict:
+                await scene.async_update_scene(scenes_dict[sid])
                 scene.available = True
             else:
                 scene.available = False

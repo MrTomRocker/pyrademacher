@@ -202,11 +202,11 @@ class TestHomePilotManager:
                 scene = await HomePilotScene.async_build_scene(api, scene_data)
                 manager.scenes[scene_data["id"]] = scene
         
-        # Mock updated scenes data as dictionary (what the manager expects)
-        updated_scenes_data = {
-            1: {"id": 1, "name": "Updated Morning Scene", "description": "Updated description", "is_enabled": 0, "is_manual_executable": 1},
-            2: {"id": 2, "name": "Updated Evening Scene", "description": "Updated evening description", "is_enabled": 1, "is_manual_executable": 1}
-        }
+        # Mock updated scenes data as LIST (what the API actually returns)
+        updated_scenes_data = [
+            {"id": 1, "name": "Updated Morning Scene", "description": "Updated description", "is_enabled": 0, "is_manual_executable": 1},
+            {"id": 2, "name": "Updated Evening Scene", "description": "Updated evening description", "is_enabled": 1, "is_manual_executable": 1}
+        ]
         
         # Create new mock for update call
         updated_func_get_scenes = asyncio.Future()
@@ -242,11 +242,11 @@ class TestHomePilotManager:
             scene = await HomePilotScene.async_build_scene(api, scene_data)
             manager.scenes[scene_data["id"]] = scene
         
-        # Mock updated scenes data with missing scene ID 2 as dictionary
-        updated_scenes_data = {
-            1: {"id": 1, "name": "Updated Morning Scene", "description": "Updated description", "is_enabled": 0, "is_manual_executable": 1}
-            # Scene 2 is missing
-        }
+        # Mock updated scenes data with missing scene ID 2 as LIST (what API returns)
+        updated_scenes_data = [
+            {"id": 1, "name": "Updated Morning Scene", "description": "Updated description", "is_enabled": 0, "is_manual_executable": 1}
+            # Scene 2 is missing from the list
+        ]
         
         updated_func_get_scenes = asyncio.Future()
         updated_func_get_scenes.set_result(updated_scenes_data)
