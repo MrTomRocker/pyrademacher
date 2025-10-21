@@ -9,17 +9,17 @@ from homepilot.thermostat import HomePilotThermostat
 
 class TestHomePilotThermostat:
     @pytest.fixture
-    def mocked_api(self, event_loop):
+    def mocked_api(self):
         f = open("tests/test_files/device_thermostat.json")
         j = json.load(f)
         api = MagicMock()
-        func_get_device = asyncio.Future(loop=event_loop)
+        func_get_device = asyncio.Future()
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
-        func_set_target_temperature = asyncio.Future(loop=event_loop)
+        func_set_target_temperature = asyncio.Future()
         func_set_target_temperature.set_result(None)
         api.async_set_target_temperature.return_value = func_set_target_temperature
-        func_set_auto_mode = asyncio.Future(loop=event_loop)
+        func_set_auto_mode = asyncio.Future()
         func_set_auto_mode.set_result(None)
         api.async_set_auto_mode.return_value = func_set_auto_mode
         yield api

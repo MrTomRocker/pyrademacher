@@ -16,41 +16,47 @@ TEST_HOST = "test_host"
 
 class TestHomePilotManager:
     @pytest.fixture
-    def mocked_api(self, event_loop):
+    def mocked_api(self):
         api = MagicMock(HomePilotApi)
 
         f = open("tests/test_files/devices.json")
         devices = json.load(f)
-        func_get_devices = asyncio.Future(loop=event_loop)
+        func_get_devices = asyncio.Future()
         func_get_devices.set_result(devices["payload"]["devices"])
         api.get_devices.return_value = yield from func_get_devices
 
         f1 = open("tests/test_files/device_cover.json")
         device1 = json.load(f1)
-        func_get_device1 = asyncio.Future(loop=event_loop)
+        func_get_device1 = asyncio.Future()
         func_get_device1.set_result(device1["payload"]["device"])
 
         f2 = open("tests/test_files/device_env_sensor.json")
         device2 = json.load(f2)
-        func_get_device2 = asyncio.Future(loop=event_loop)
+        func_get_device2 = asyncio.Future()
         func_get_device2.set_result(device2["payload"]["device"])
 
         f3 = open("tests/test_files/device_switch.json")
         device3 = json.load(f3)
-        func_get_device3 = asyncio.Future(loop=event_loop)
+        func_get_device3 = asyncio.Future()
         func_get_device3.set_result(device3["payload"]["device"])
 
         f4 = open("tests/test_files/device_contact_sensor.json")
         device4 = json.load(f4)
-        func_get_device4 = asyncio.Future(loop=event_loop)
+        func_get_device4 = asyncio.Future()
         func_get_device4.set_result(device4["payload"]["device"])
 
+        # Need to provide more responses since update_state methods now call get_device
         api.get_device.side_effect = [
-            (yield from func_get_device1),
-            (yield from func_get_device2),
-            (yield from func_get_device3),
-            (yield from func_get_device4),
-            (yield from func_get_device1),
+            (yield from func_get_device1),  # Initial build: cover
+            (yield from func_get_device2),  # Initial build: env sensor  
+            (yield from func_get_device3),  # Initial build: switch
+            (yield from func_get_device4),  # Initial build: contact sensor
+            (yield from func_get_device1),  # Initial build: hub (uses cover device)
+            (yield from func_get_device1),  # Update state: cover
+            (yield from func_get_device2),  # Update state: env sensor
+            (yield from func_get_device3),  # Update state: switch
+            (yield from func_get_device4),  # Update state: contact sensor
+            (yield from func_get_device1),  # Update state: hub
         ]
 
         f_actuators = open("tests/test_files/actuators.json")
@@ -61,12 +67,12 @@ class TestHomePilotManager:
         sensors_response = json.load(f_actuators)
         sensors = {str(device["did"]): device for device in sensors_response[
             "meters"]}
-        func_get_devices_state = asyncio.Future(loop=event_loop)
+        func_get_devices_state = asyncio.Future()
         func_get_devices_state.set_result({**actuators, **sensors})
         api.async_get_devices_state.return_value = \
             yield from func_get_devices_state
 
-        func_get_fw_version = asyncio.Future(loop=event_loop)
+        func_get_fw_version = asyncio.Future()
         func_get_fw_version.set_result({
             "hw_platform": "ampere",
             "sw_platform": "bridge",
@@ -74,7 +80,7 @@ class TestHomePilotManager:
             "df_stick_version": "2.0"
         })
         api.async_get_fw_version.return_value = yield from func_get_fw_version
-        func_get_fw_status = asyncio.Future(loop=event_loop)
+        func_get_fw_status = asyncio.Future()
         func_get_fw_status.set_result({
             "version": "5.4.9",
             "update_channel": "manifest-ampere-5.4.0",
@@ -82,7 +88,7 @@ class TestHomePilotManager:
             "update_status": "UPDATE_AVAILABLE"
         })
         api.async_get_fw_status.return_value = yield from func_get_fw_status
-        func_get_led_status = asyncio.Future(loop=event_loop)
+        func_get_led_status = asyncio.Future()
         func_get_led_status.set_result({"status": "disabled"})
         api.async_get_led_status.return_value = yield from func_get_led_status
 

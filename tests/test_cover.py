@@ -9,26 +9,26 @@ from homepilot.cover import HomePilotCover
 
 class TestHomePilotCover:
     @pytest.fixture
-    def mocked_api(self, event_loop):
+    def mocked_api(self):
         f = open("tests/test_files/device_cover.json")
         j = json.load(f)
         api = MagicMock()
-        func_get_device = asyncio.Future(loop=event_loop)
+        func_get_device = asyncio.Future()
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
-        func_open_cover = asyncio.Future(loop=event_loop)
+        func_open_cover = asyncio.Future()
         func_open_cover.set_result(None)
         api.async_open_cover.return_value = func_open_cover
-        func_close_cover = asyncio.Future(loop=event_loop)
+        func_close_cover = asyncio.Future()
         func_close_cover.set_result(None)
         api.async_close_cover.return_value = func_close_cover
-        func_stop_cover = asyncio.Future(loop=event_loop)
+        func_stop_cover = asyncio.Future()
         func_stop_cover.set_result(None)
         api.async_stop_cover.return_value = func_stop_cover
-        func_set_position = asyncio.Future(loop=event_loop)
+        func_set_position = asyncio.Future()
         func_set_position.set_result(None)
         api.async_set_position.return_value = func_set_position
-        func_ping = asyncio.Future(loop=event_loop)
+        func_ping = asyncio.Future()
         func_ping.set_result(None)
         api.async_ping.return_value = func_ping
         yield api
