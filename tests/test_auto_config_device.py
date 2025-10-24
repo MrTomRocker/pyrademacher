@@ -60,6 +60,35 @@ class TestHomePilotAutoConfigDevice:
         future_command.set_result(None)
         api.async_send_device_command.return_value = future_command
         
+        # Mock new specific auto mode methods
+        future_time_auto = asyncio.Future()
+        future_time_auto.set_result(None)
+        api.async_set_time_auto_mode.return_value = future_time_auto
+        
+        future_contact_auto = asyncio.Future()
+        future_contact_auto.set_result(None)
+        api.async_set_contact_auto_mode.return_value = future_contact_auto
+        
+        future_wind_auto = asyncio.Future()
+        future_wind_auto.set_result(None)
+        api.async_set_wind_auto_mode.return_value = future_wind_auto
+        
+        future_dawn_auto = asyncio.Future()
+        future_dawn_auto.set_result(None)
+        api.async_set_dawn_auto_mode.return_value = future_dawn_auto
+        
+        future_dusk_auto = asyncio.Future()
+        future_dusk_auto.set_result(None)
+        api.async_set_dusk_auto_mode.return_value = future_dusk_auto
+        
+        future_rain_auto = asyncio.Future()
+        future_rain_auto.set_result(None)
+        api.async_set_rain_auto_mode.return_value = future_rain_auto
+        
+        future_sun_auto = asyncio.Future()
+        future_sun_auto.set_result(None)
+        api.async_set_sun_auto_mode.return_value = future_sun_auto
+        
         return api
 
     @pytest.fixture
@@ -314,7 +343,7 @@ class TestHomePilotAutoConfigDevice:
         
         await device.async_set_time_auto_mode(False)
         
-        mocked_api.async_send_device_command.assert_called_once_with(123, APICAP_TIME_AUTO_CFG, False)
+        mocked_api.async_set_time_auto_mode.assert_called_once_with(123, False)
 
     @pytest.mark.asyncio
     async def test_async_set_contact_auto_mode(self, mocked_api, device_data, full_device_map):
@@ -327,7 +356,7 @@ class TestHomePilotAutoConfigDevice:
         
         await device.async_set_contact_auto_mode(True)
         
-        mocked_api.async_send_device_command.assert_called_once_with(123, APICAP_CONTACT_AUTO_CFG, True)
+        mocked_api.async_set_contact_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
     async def test_async_set_wind_auto_mode(self, mocked_api, device_data, full_device_map):
@@ -340,7 +369,7 @@ class TestHomePilotAutoConfigDevice:
         
         await device.async_set_wind_auto_mode(True)
         
-        mocked_api.async_send_device_command.assert_called_once_with(123, APICAP_WIND_AUTO_CFG, True)
+        mocked_api.async_set_wind_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
     async def test_async_set_dawn_auto_mode(self, mocked_api, device_data, full_device_map):
@@ -353,7 +382,7 @@ class TestHomePilotAutoConfigDevice:
         
         await device.async_set_dawn_auto_mode(False)
         
-        mocked_api.async_send_device_command.assert_called_once_with(123, APICAP_DAWN_AUTO_CFG, False)
+        mocked_api.async_set_dawn_auto_mode.assert_called_once_with(123, False)
 
     @pytest.mark.asyncio
     async def test_async_set_dusk_auto_mode(self, mocked_api, device_data, full_device_map):
@@ -366,7 +395,7 @@ class TestHomePilotAutoConfigDevice:
         
         await device.async_set_dusk_auto_mode(True)
         
-        mocked_api.async_send_device_command.assert_called_once_with(123, APICAP_DUSK_AUTO_CFG, True)
+        mocked_api.async_set_dusk_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
     async def test_async_set_rain_auto_mode(self, mocked_api, device_data, full_device_map):
@@ -379,7 +408,7 @@ class TestHomePilotAutoConfigDevice:
         
         await device.async_set_rain_auto_mode(True)
         
-        mocked_api.async_send_device_command.assert_called_once_with(123, APICAP_RAIN_AUTO_CFG, True)
+        mocked_api.async_set_rain_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
     async def test_async_set_sun_auto_mode(self, mocked_api, device_data, full_device_map):
@@ -392,7 +421,7 @@ class TestHomePilotAutoConfigDevice:
         
         await device.async_set_sun_auto_mode(False)
         
-        mocked_api.async_send_device_command.assert_called_once_with(123, APICAP_SUN_AUTO_CFG, False)
+        mocked_api.async_set_sun_auto_mode.assert_called_once_with(123, False)
 
     def test_auto_mode_value_property_getters_setters(self, mocked_api, device_data, full_device_map):
         """Test all auto mode value property getters and setters"""
@@ -698,7 +727,8 @@ class TestAutoConfigChildClasses:
         
         # Verify API calls were made
         mocked_api.async_set_auto_mode.assert_called_with(123, True)
-        assert mocked_api.async_send_device_command.call_count == 2  # time and wind auto modes
+        mocked_api.async_set_time_auto_mode.assert_called_with(123, False)
+        mocked_api.async_set_wind_auto_mode.assert_called_with(123, True)
 
     @pytest.mark.asyncio
     async def test_child_classes_can_update_auto_state(self, mocked_api, device_map_with_auto_modes):

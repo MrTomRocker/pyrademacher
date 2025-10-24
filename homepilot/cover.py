@@ -15,6 +15,17 @@ from .const import (
     APICAP_VERSION_CFG,
     APICAP_VENTIL_POS_CFG,
     APICAP_VENTIL_POS_MODE_CFG,
+    APICAP_SUN_START_CMD,
+    APICAP_SUN_STOP_CMD,
+    APICAP_WIND_START_CMD,
+    APICAP_WIND_STOP_CMD,
+    APICAP_RAIN_START_CMD,
+    APICAP_RAIN_STOP_CMD,
+    APICAP_GOTO_DAWN_POS_CMD,
+    APICAP_GOTO_DUSK_POS_CMD,
+    APICAP_SUN_PROG_ACTIVE_EVT,
+    APICAP_WIND_PROG_ACTIVE_EVT,
+    APICAP_RAIN_PROG_ACTIVE_EVT,
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
@@ -44,6 +55,13 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     _blocking_detection_status: bool
     _has_obstacle_detection: bool
     _obstacle_detection_status: bool
+    # New program active properties
+    _has_sun_prog_active: bool
+    _sun_prog_active_value: bool
+    _has_wind_prog_active: bool
+    _wind_prog_active_value: bool
+    _has_rain_prog_active: bool
+    _rain_prog_active_value: bool
 
     def __init__(
         self,
@@ -63,6 +81,9 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         has_ventilation_position_config: bool = False,
         has_blocking_detection: bool = False,
         has_obstacle_detection: bool = False,
+        has_sun_prog_active: bool = False,
+        has_wind_prog_active: bool = False,
+        has_rain_prog_active: bool = False,
         device_map: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(
@@ -83,7 +104,10 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         self._can_set_tilt_position = can_set_tilt_position
         self._has_ventilation_position_config = has_ventilation_position_config
         self._has_blocking_detection = has_blocking_detection
-        self._has_obstacle_detection = has_obstacle_detection
+        self._has_obstacle_detection = has_obstacle_detection        
+        self._has_sun_prog_active = has_sun_prog_active
+        self._has_wind_prog_active = has_wind_prog_active
+        self._has_rain_prog_active = has_rain_prog_active
 
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
@@ -116,6 +140,9 @@ class HomePilotCover(HomePilotAutoConfigDevice):
             has_ventilation_position_config=APICAP_VENTIL_POS_MODE_CFG in device_map,
             has_blocking_detection=APICAP_BLOCK_DET_EVT in device_map,
             has_obstacle_detection=APICAP_OBSTACLE_DET_EVT in device_map,
+            has_sun_prog_active=APICAP_SUN_PROG_ACTIVE_EVT in device_map,
+            has_wind_prog_active=APICAP_WIND_PROG_ACTIVE_EVT in device_map,
+            has_rain_prog_active=APICAP_RAIN_PROG_ACTIVE_EVT in device_map,
             device_map=device_map,
         )
 
@@ -142,6 +169,13 @@ class HomePilotCover(HomePilotAutoConfigDevice):
             self.blocking_detection_status = device_map[APICAP_BLOCK_DET_EVT]["value"] == "true"
         if self.has_obstacle_detection:
             self.obstacle_detection_status = device_map[APICAP_OBSTACLE_DET_EVT]["value"] == "true"
+        # Update new program active properties
+        if self.has_sun_prog_active:
+            self.sun_prog_active_value = device_map[APICAP_SUN_PROG_ACTIVE_EVT]["value"] == "true"
+        if self.has_wind_prog_active:
+            self.wind_prog_active_value = device_map[APICAP_WIND_PROG_ACTIVE_EVT]["value"] == "true"
+        if self.has_rain_prog_active:
+            self.rain_prog_active_value = device_map[APICAP_RAIN_PROG_ACTIVE_EVT]["value"] == "true"
 
     async def async_open_cover(self) -> None:
         await self.api.async_open_cover(self.did)
@@ -173,6 +207,31 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     async def async_stop_cover_tilt(self) -> None:
         if self.has_tilt:
             await self.api.async_stop_cover_tilt(self.did)
+
+    # New weather program commands
+    async def async_sun_start_cmd(self) -> None:
+        await self.api.async_sun_start_cmd(self.did)
+
+    async def async_sun_stop_cmd(self) -> None:
+        await self.api.async_sun_stop_cmd(self.did)
+
+    async def async_wind_start_cmd(self) -> None:
+        await self.api.async_wind_start_cmd(self.did)
+
+    async def async_wind_stop_cmd(self) -> None:
+        await self.api.async_wind_stop_cmd(self.did)
+
+    async def async_rain_start_cmd(self) -> None:
+        await self.api.async_rain_start_cmd(self.did)
+
+    async def async_rain_stop_cmd(self) -> None:
+        await self.api.async_rain_stop_cmd(self.did)
+
+    async def async_goto_dawn_pos_cmd(self) -> None:
+        await self.api.async_goto_dawn_pos_cmd(self.did)
+
+    async def async_goto_dusk_pos_cmd(self) -> None:
+        await self.api.async_goto_dusk_pos_cmd(self.did)
 
     async def async_set_ventilation_position_mode(self, mode) -> None:
         if self.has_ventilation_position_config:
@@ -293,3 +352,40 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     @obstacle_detection_status.setter
     def obstacle_detection_status(self, obstacle_detection_status):
         self._obstacle_detection_status = obstacle_detection_status
+
+    # New program active properties
+    @property
+    def has_sun_prog_active(self) -> bool:
+        return self._has_sun_prog_active
+
+    @property
+    def sun_prog_active_value(self) -> bool:
+        return self._sun_prog_active_value
+
+    @sun_prog_active_value.setter
+    def sun_prog_active_value(self, sun_prog_active_value):
+        self._sun_prog_active_value = sun_prog_active_value
+
+    @property
+    def has_wind_prog_active(self) -> bool:
+        return self._has_wind_prog_active
+
+    @property
+    def wind_prog_active_value(self) -> bool:
+        return self._wind_prog_active_value
+
+    @wind_prog_active_value.setter
+    def wind_prog_active_value(self, wind_prog_active_value):
+        self._wind_prog_active_value = wind_prog_active_value
+
+    @property
+    def has_rain_prog_active(self) -> bool:
+        return self._has_rain_prog_active
+
+    @property
+    def rain_prog_active_value(self) -> bool:
+        return self._rain_prog_active_value
+
+    @rain_prog_active_value.setter
+    def rain_prog_active_value(self, rain_prog_active_value):
+        self._rain_prog_active_value = rain_prog_active_value

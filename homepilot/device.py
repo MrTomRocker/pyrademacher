@@ -224,25 +224,25 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
         await self.api.async_set_auto_mode(self.did, auto_mode)
 
     async def async_set_time_auto_mode(self, auto_mode) -> None:
-        await self.api.async_send_device_command(self.did, APICAP_TIME_AUTO_CFG, auto_mode)
+        await self.api.async_set_time_auto_mode(self.did, auto_mode)
 
     async def async_set_contact_auto_mode(self, auto_mode) -> None:
-        await self.api.async_send_device_command(self.did, APICAP_CONTACT_AUTO_CFG, auto_mode)
+        await self.api.async_set_contact_auto_mode(self.did, auto_mode)
     
     async def async_set_wind_auto_mode(self, auto_mode) -> None:
-        await self.api.async_send_device_command(self.did, APICAP_WIND_AUTO_CFG, auto_mode)
+        await self.api.async_set_wind_auto_mode(self.did, auto_mode)
 
     async def async_set_dawn_auto_mode(self, auto_mode) -> None:
-        await self.api.async_send_device_command(self.did, APICAP_DAWN_AUTO_CFG, auto_mode)
+        await self.api.async_set_dawn_auto_mode(self.did, auto_mode)
 
     async def async_set_dusk_auto_mode(self, auto_mode) -> None:
-        await self.api.async_send_device_command(self.did, APICAP_DUSK_AUTO_CFG, auto_mode)
+        await self.api.async_set_dusk_auto_mode(self.did, auto_mode)
 
     async def async_set_rain_auto_mode(self, auto_mode) -> None:
-        await self.api.async_send_device_command(self.did, APICAP_RAIN_AUTO_CFG, auto_mode)
+        await self.api.async_set_rain_auto_mode(self.did, auto_mode)
 
     async def async_set_sun_auto_mode(self, auto_mode) -> None:
-        await self.api.async_send_device_command(self.did, APICAP_SUN_AUTO_CFG, auto_mode)
+        await self.api.async_set_sun_auto_mode(self.did, auto_mode)
 
     @property
     def has_auto_mode(self) -> bool:
