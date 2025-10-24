@@ -18,6 +18,12 @@ from .const import (
     APICAP_BOOST_ACTIVE_CFG,
     APICAP_CONTACT_OPEN_CMD,
     APICAP_CONTACT_CLOSE_CMD,
+    APICAP_EXT_OPEN_WINDOW_DETECT_EVT,
+    APICAP_INT_OPEN_WINDOW_DETECT_EVT,
+    APICAP_BOOST_TIME_CFG,
+    APICAP_BOOST_ACTIVE_CFG,
+    APICAP_CONTACT_OPEN_CMD,
+    APICAP_CONTACT_CLOSE_CMD,
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
@@ -204,9 +210,19 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
             self.ext_open_window_detect_value = device_map[APICAP_EXT_OPEN_WINDOW_DETECT_EVT]["value"] == "true"
         if self.has_int_open_window_detect:
             self.int_open_window_detect_value = device_map[APICAP_INT_OPEN_WINDOW_DETECT_EVT]["value"] == "true"
+        # Update new window detection and boost properties from device_map
+        if self.has_ext_open_window_detect:
+            self.ext_open_window_detect_value = device_map[APICAP_EXT_OPEN_WINDOW_DETECT_EVT]["value"] == "true"
+        if self.has_int_open_window_detect:
+            self.int_open_window_detect_value = device_map[APICAP_INT_OPEN_WINDOW_DETECT_EVT]["value"] == "true"
         for i in range(1, 5):
             if self.has_temperature_thresh_cfg[i-1]:
                 self.temperature_thresh_cfg_value[i-1] = float(device_map[f"TEMPERATURE_THRESH_{i}_CFG"]["value"])
+        # Update boost properties from device_map
+        if self.has_boost_time:
+            self.boost_time_value = float(device_map[APICAP_BOOST_TIME_CFG]["value"])
+        if self.has_boost_active:
+            self.boost_active_value = device_map[APICAP_BOOST_ACTIVE_CFG]["value"] == "true"
         # Update boost properties from device_map
         if self.has_boost_time:
             self.boost_time_value = float(device_map[APICAP_BOOST_TIME_CFG]["value"])
