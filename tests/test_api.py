@@ -365,3 +365,61 @@ class TestHomePilotApi:
                 body=json.dumps(response)
             )
             assert (await instance.async_turn_led_off())["error_code"] == 0
+
+    @pytest.mark.asyncio
+    async def test_async_contact_open_cmd(self):
+        did = "1"
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        with aioresponses() as mocked:
+            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
+            mocked.put(
+                f"http://{TEST_HOST}/devices/{did}",
+                status=200,
+                body=json.dumps(response)
+            )
+            result = await instance.async_contact_open_cmd(did)
+            assert result["error_code"] == 0
+
+    @pytest.mark.asyncio
+    async def test_async_contact_close_cmd(self):
+        did = "1"
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        with aioresponses() as mocked:
+            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
+            mocked.put(
+                f"http://{TEST_HOST}/devices/{did}",
+                status=200,
+                body=json.dumps(response)
+            )
+            result = await instance.async_contact_close_cmd(did)
+            assert result["error_code"] == 0
+
+    @pytest.mark.asyncio
+    async def test_async_set_boost_active_cfg(self):
+        did = "1"
+        boost_active = True
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        with aioresponses() as mocked:
+            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
+            mocked.put(
+                f"http://{TEST_HOST}/devices/{did}",
+                status=200,
+                body=json.dumps(response)
+            )
+            result = await instance.async_set_boost_active_cfg(did, boost_active)
+            assert result["error_code"] == 0
+
+    @pytest.mark.asyncio
+    async def test_async_set_boost_time_cfg(self):
+        did = "1"
+        boost_time = 60.0
+        response = {"error_code": 0, "error_description": "OK", "payload": {}}
+        with aioresponses() as mocked:
+            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
+            mocked.put(
+                f"http://{TEST_HOST}/devices/{did}",
+                status=200,
+                body=json.dumps(response)
+            )
+            result = await instance.async_set_boost_time_cfg(did, boost_time)
+            assert result["error_code"] == 0

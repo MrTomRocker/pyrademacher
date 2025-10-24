@@ -185,6 +185,18 @@
 					"timestamp": 1641742084
 				},
 				{
+					"name": "WIND_PROG_ACTIVE_EVT",
+					"value": "true",
+					"read_only": true,
+					"timestamp": 1641742084
+				},
+				{
+					"name": "RAIN_PROG_ACTIVE_EVT",
+					"value": "false",
+					"read_only": true,
+					"timestamp": 1641742084
+				},
+				{
 					"name": "GOTO_DUSK_POS_CMD",
 					"read_only": false,
 					"timestamp": -1

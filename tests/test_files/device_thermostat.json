@@ -199,6 +199,33 @@
           "read_only": false,
           "timestamp": 1644563763
         },
+        {
+          "name": "EXT_OPEN_WINDOW_DETECT_EVT",
+          "value": "false",
+          "read_only": true,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "INT_OPEN_WINDOW_DETECT_EVT",
+          "value": "true",
+          "read_only": true,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "BOOST_TIME_CFG",
+          "value": "30.0",
+          "min_value": "0.0",
+          "max_value": "120.0",
+          "step_size": "1.0",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
+        {
+          "name": "BOOST_ACTIVE_CFG",
+          "value": "false",
+          "read_only": false,
+          "timestamp": 1644563763
+        },
         { "name": "PING_CMD", "read_only": false, "timestamp": -1 },
         { "name": "DEC_CMD", "read_only": false, "timestamp": -1 }
       ],

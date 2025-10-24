@@ -12,6 +12,12 @@ from .const import (
     APICAP_TARGET_TEMPERATURE_CFG,
     APICAP_TEMPERATURE_INT_CFG,
     APICAP_VERSION_CFG,
+    APICAP_EXT_OPEN_WINDOW_DETECT_EVT,
+    APICAP_INT_OPEN_WINDOW_DETECT_EVT,
+    APICAP_BOOST_TIME_CFG,
+    APICAP_BOOST_ACTIVE_CFG,
+    APICAP_CONTACT_OPEN_CMD,
+    APICAP_CONTACT_CLOSE_CMD,
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
@@ -37,6 +43,15 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
     _temperature_thresh_cfg_min: List[float | None]
     _temperature_thresh_cfg_max: List[float | None]
     _temperature_thresh_cfg_step: List[float | None]
+    # New window detection and boost properties
+    _has_ext_open_window_detect: bool
+    _ext_open_window_detect_value: bool
+    _has_int_open_window_detect: bool
+    _int_open_window_detect_value: bool
+    _has_boost_time: bool
+    _boost_time_value: float
+    _has_boost_active: bool
+    _boost_active_value: bool
 
     def __init__(
         self,
@@ -59,6 +74,10 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
         step_target_temperature: float = None,
         has_battery_level: bool = False,
         has_relais_status: bool = False,
+        has_ext_open_window_detect: bool = False,
+        has_int_open_window_detect: bool = False,
+        has_boost_time: bool = False,
+        has_boost_active: bool = False,
         device_map: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(
@@ -83,6 +102,11 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
         self._step_target_temperature = step_target_temperature
         self._has_battery_level = has_battery_level
         self._has_relais_status = has_relais_status
+        # Initialize new window detection and boost properties
+        self._has_ext_open_window_detect = has_ext_open_window_detect
+        self._has_int_open_window_detect = has_int_open_window_detect
+        self._has_boost_time = has_boost_time
+        self._has_boost_active = has_boost_active
         self._has_temperature_thresh_cfg = [None] * 4
         self._temperature_thresh_cfg_value = [None] * 4
         self._temperature_thresh_cfg_min = [None] * 4
@@ -147,6 +171,10 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
             and device_map[APICAP_TARGET_TEMPERATURE_CFG]["step_size"] is not None else None,
             has_battery_level=APICAP_BATT_VALUE_EVT in device_map,
             has_relais_status=APICAP_RELAIS_STATE_CFG in device_map,
+            has_ext_open_window_detect=APICAP_EXT_OPEN_WINDOW_DETECT_EVT in device_map,
+            has_int_open_window_detect=APICAP_INT_OPEN_WINDOW_DETECT_EVT in device_map,
+            has_boost_time=APICAP_BOOST_TIME_CFG in device_map,
+            has_boost_active=APICAP_BOOST_ACTIVE_CFG in device_map,
             device_map=device_map,
         )
 
@@ -162,15 +190,37 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
             self.relais_status = state["statusesMap"]["relaisstatus"]
         device_map = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
         await super().update_device_state(state, device_map)
+        # Update new window detection and boost properties from device_map
+        if self.has_ext_open_window_detect:
+            self.ext_open_window_detect_value = device_map[APICAP_EXT_OPEN_WINDOW_DETECT_EVT]["value"] == "true"
+        if self.has_int_open_window_detect:
+            self.int_open_window_detect_value = device_map[APICAP_INT_OPEN_WINDOW_DETECT_EVT]["value"] == "true"
         for i in range(1, 5):
             if self.has_temperature_thresh_cfg[i-1]:
                 self.temperature_thresh_cfg_value[i-1] = float(device_map[f"TEMPERATURE_THRESH_{i}_CFG"]["value"])
+        # Update boost properties from device_map
+        if self.has_boost_time:
+            self.boost_time_value = float(device_map[APICAP_BOOST_TIME_CFG]["value"])
+        if self.has_boost_active:
+            self.boost_active_value = device_map[APICAP_BOOST_ACTIVE_CFG]["value"] == "true"
 
     async def async_set_target_temperature(self, temperature) -> None:
         await self.api.async_set_target_temperature(self.did, temperature)
 
     async def async_set_temperature_thresh_cfg(self, thresh_number, temperature) -> None:
         await self.api.async_set_temperature_thresh_cfg(self.did, thresh_number, temperature)
+
+    async def async_contact_open_cmd(self) -> None:
+        await self.api.async_contact_open_cmd(self.did)
+
+    async def async_contact_close_cmd(self) -> None:
+        await self.api.async_contact_close_cmd(self.did)
+
+    async def async_set_boost_active_cfg(self, boost_active) -> None:
+        await self.api.async_set_boost_active_cfg(self.did, boost_active)
+
+    async def async_set_boost_time_cfg(self, boost_time) -> None:
+        await self.api.async_set_boost_time_cfg(self.did, boost_time)
     
     @property
     def has_temperature(self) -> bool:
@@ -263,3 +313,52 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
     @relais_status.setter
     def relais_status(self, relais_status):
         self._relais_status = relais_status
+
+    # New window detection and boost properties
+    @property
+    def has_ext_open_window_detect(self) -> bool:
+        return self._has_ext_open_window_detect
+
+    @property
+    def ext_open_window_detect_value(self) -> bool:
+        return self._ext_open_window_detect_value
+
+    @ext_open_window_detect_value.setter
+    def ext_open_window_detect_value(self, ext_open_window_detect_value):
+        self._ext_open_window_detect_value = ext_open_window_detect_value
+
+    @property
+    def has_int_open_window_detect(self) -> bool:
+        return self._has_int_open_window_detect
+
+    @property
+    def int_open_window_detect_value(self) -> bool:
+        return self._int_open_window_detect_value
+
+    @int_open_window_detect_value.setter
+    def int_open_window_detect_value(self, int_open_window_detect_value):
+        self._int_open_window_detect_value = int_open_window_detect_value
+
+    @property
+    def has_boost_time(self) -> bool:
+        return self._has_boost_time
+
+    @property
+    def boost_time_value(self) -> float:
+        return self._boost_time_value
+
+    @boost_time_value.setter
+    def boost_time_value(self, boost_time_value):
+        self._boost_time_value = boost_time_value
+
+    @property
+    def has_boost_active(self) -> bool:
+        return self._has_boost_active
+
+    @property
+    def boost_active_value(self) -> bool:
+        return self._boost_active_value
+
+    @boost_active_value.setter
+    def boost_active_value(self, boost_active_value):
+        self._boost_active_value = boost_active_value

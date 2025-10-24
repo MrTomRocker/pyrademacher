@@ -20,6 +20,25 @@ from .const import (
     APICAP_VENTIL_POS_MODE_CFG,
     APICAP_SET_RGB_CMD,
     APICAP_SET_COLOR_TEMP_CMD,
+    APICAP_TIME_AUTO_CFG,
+    APICAP_CONTACT_AUTO_CFG,
+    APICAP_WIND_AUTO_CFG,
+    APICAP_DAWN_AUTO_CFG,
+    APICAP_DUSK_AUTO_CFG,
+    APICAP_RAIN_AUTO_CFG,
+    APICAP_SUN_AUTO_CFG,
+    APICAP_BOOST_TIME_CFG,
+    APICAP_BOOST_ACTIVE_CFG,
+    APICAP_CONTACT_OPEN_CMD,
+    APICAP_CONTACT_CLOSE_CMD,
+    APICAP_SUN_START_CMD,
+    APICAP_SUN_STOP_CMD,
+    APICAP_WIND_START_CMD,
+    APICAP_WIND_STOP_CMD,
+    APICAP_RAIN_START_CMD,
+    APICAP_RAIN_STOP_CMD,
+    APICAP_GOTO_DAWN_POS_CMD,
+    APICAP_GOTO_DUSK_POS_CMD,
 )
 
 
@@ -508,6 +527,63 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
+    async def async_set_time_auto_mode(self, did, auto_mode):        
+        await self.async_send_device_command(did, APICAP_TIME_AUTO_CFG, auto_mode)
+
+    async def async_set_contact_auto_mode(self, did, auto_mode):        
+        await self.async_send_device_command(did, APICAP_CONTACT_AUTO_CFG, auto_mode)
+
+    async def async_set_wind_auto_mode(self, did, auto_mode):        
+        await self.async_send_device_command(did, APICAP_WIND_AUTO_CFG, auto_mode)
+
+    async def async_set_dawn_auto_mode(self, did, auto_mode):        
+        await self.async_send_device_command(did, APICAP_DAWN_AUTO_CFG, auto_mode)
+
+    async def async_set_dusk_auto_mode(self, did, auto_mode):        
+        await self.async_send_device_command(did, APICAP_DUSK_AUTO_CFG, auto_mode)
+
+    async def async_set_rain_auto_mode(self, did, auto_mode):        
+        await self.async_send_device_command(did, APICAP_RAIN_AUTO_CFG, auto_mode)
+
+    async def async_set_sun_auto_mode(self, did, auto_mode):        
+        await self.async_send_device_command(did, APICAP_SUN_AUTO_CFG, auto_mode)
+
+    async def async_contact_open_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_CONTACT_OPEN_CMD, None)
+
+    async def async_contact_close_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_CONTACT_CLOSE_CMD, None)
+
+    async def async_set_boost_active_cfg(self, did, boost_active):
+        return await self.async_send_device_command(did, APICAP_BOOST_ACTIVE_CFG, boost_active)
+
+    async def async_set_boost_time_cfg(self, did, boost_time):
+        return await self.async_send_device_command(did, APICAP_BOOST_TIME_CFG, boost_time)
+
+    async def async_sun_start_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_SUN_START_CMD, None)
+
+    async def async_sun_stop_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_SUN_STOP_CMD, None)
+
+    async def async_wind_start_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_WIND_START_CMD, None)
+
+    async def async_wind_stop_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_WIND_STOP_CMD, None)
+
+    async def async_rain_start_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_RAIN_START_CMD, None)
+
+    async def async_rain_stop_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_RAIN_STOP_CMD, None)
+
+    async def async_goto_dawn_pos_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_GOTO_DAWN_POS_CMD, None)
+
+    async def async_goto_dusk_pos_cmd(self, did):
+        return await self.async_send_device_command(did, APICAP_GOTO_DUSK_POS_CMD, None)
+    
     @property
     def host(self):
         return self._host
@@ -531,7 +607,6 @@ class HomePilotApi:
     @cookie_jar.setter
     def cookie_jar(self, cookie_jar):
         self._cookie_jar = cookie_jar
-
 
 class CannotConnect(BaseException):
     """Error to indicate we cannot connect."""

@@ -22,6 +22,18 @@ class TestHomePilotThermostat:
         func_set_auto_mode = asyncio.Future()
         func_set_auto_mode.set_result(None)
         api.async_set_auto_mode.return_value = func_set_auto_mode
+        func_contact_open_cmd = asyncio.Future()
+        func_contact_open_cmd.set_result(None)
+        api.async_contact_open_cmd.return_value = func_contact_open_cmd
+        func_contact_close_cmd = asyncio.Future()
+        func_contact_close_cmd.set_result(None)
+        api.async_contact_close_cmd.return_value = func_contact_close_cmd
+        func_set_boost_active_cfg = asyncio.Future()
+        func_set_boost_active_cfg.set_result(None)
+        api.async_set_boost_active_cfg.return_value = func_set_boost_active_cfg
+        func_set_boost_time_cfg = asyncio.Future()
+        func_set_boost_time_cfg.set_result(None)
+        api.async_set_boost_time_cfg.return_value = func_set_boost_time_cfg
         yield api
 
     @pytest.mark.asyncio
@@ -44,6 +56,10 @@ class TestHomePilotThermostat:
         assert thermostat.max_target_temperature == 40.0
         assert thermostat.step_target_temperature == 0.5
         assert thermostat.has_relais_status is True
+        assert thermostat.has_ext_open_window_detect is True
+        assert thermostat.has_int_open_window_detect is True
+        assert thermostat.has_boost_time is True
+        assert thermostat.has_boost_active is True
 
     @pytest.mark.asyncio
     async def test_update_state(self, mocked_api):
@@ -62,6 +78,10 @@ class TestHomePilotThermostat:
         assert thermostat.temperature_value == 21.2
         assert thermostat.target_temperature_value == 24.0
         assert thermostat.relais_status == 1
+        assert thermostat.ext_open_window_detect_value is False
+        assert thermostat.int_open_window_detect_value is True
+        assert thermostat.boost_time_value == 30.0
+        assert thermostat.boost_active_value is False
 
     @pytest.mark.asyncio
     async def test_async_set_target_temperature(self, mocked_api):
@@ -74,3 +94,27 @@ class TestHomePilotThermostat:
         thermostat = await HomePilotThermostat.async_build_from_api(mocked_api, 1)
         await thermostat.async_set_auto_mode(True)
         mocked_api.async_set_auto_mode.assert_called_with('1010014', True)
+
+    @pytest.mark.asyncio
+    async def test_async_contact_open_cmd(self, mocked_api):
+        thermostat = await HomePilotThermostat.async_build_from_api(mocked_api, 1)
+        await thermostat.async_contact_open_cmd()
+        mocked_api.async_contact_open_cmd.assert_called_with('1010014')
+
+    @pytest.mark.asyncio
+    async def test_async_contact_close_cmd(self, mocked_api):
+        thermostat = await HomePilotThermostat.async_build_from_api(mocked_api, 1)
+        await thermostat.async_contact_close_cmd()
+        mocked_api.async_contact_close_cmd.assert_called_with('1010014')
+
+    @pytest.mark.asyncio
+    async def test_async_set_boost_active_cfg(self, mocked_api):
+        thermostat = await HomePilotThermostat.async_build_from_api(mocked_api, 1)
+        await thermostat.async_set_boost_active_cfg(True)
+        mocked_api.async_set_boost_active_cfg.assert_called_with('1010014', True)
+
+    @pytest.mark.asyncio
+    async def test_async_set_boost_time_cfg(self, mocked_api):
+        thermostat = await HomePilotThermostat.async_build_from_api(mocked_api, 1)
+        await thermostat.async_set_boost_time_cfg(60.0)
+        mocked_api.async_set_boost_time_cfg.assert_called_with('1010014', 60.0)
