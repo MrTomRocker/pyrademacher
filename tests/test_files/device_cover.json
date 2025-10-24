@@ -220,6 +220,31 @@
 					"timestamp": -1
 				},
 				{
+					"name": "WIND_START_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "WIND_STOP_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "RAIN_START_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "RAIN_STOP_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
+					"name": "GOTO_DUSK_POS_CMD",
+					"read_only": false,
+					"timestamp": -1
+				},
+				{
 					"name": "STOP_CMD",
 					"value": "false",
 					"read_only": false,

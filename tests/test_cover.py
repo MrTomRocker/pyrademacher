@@ -72,6 +72,14 @@ class TestHomePilotCover:
         assert cover.can_set_position is True
         assert cover.has_blocking_detection is True
         assert cover.has_obstacle_detection is True
+        assert cover.has_sun_start_cmd is True
+        assert cover.has_sun_stop_cmd is True
+        assert cover.has_wind_start_cmd is True
+        assert cover.has_wind_stop_cmd is True
+        assert cover.has_rain_start_cmd is True
+        assert cover.has_rain_stop_cmd is True
+        assert cover.has_goto_dawn_pos_cmd is True
+        assert cover.has_goto_dusk_pos_cmd is True
         assert cover.has_sun_prog_active is True
         assert cover.has_wind_prog_active is True
         assert cover.has_rain_prog_active is True

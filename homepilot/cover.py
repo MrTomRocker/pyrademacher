@@ -54,8 +54,15 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     _has_blocking_detection: bool
     _blocking_detection_status: bool
     _has_obstacle_detection: bool
-    _obstacle_detection_status: bool
-    # New program active properties
+    _obstacle_detection_status: bool    
+    _has_sun_start_cmd: bool
+    _has_sun_stop_cmd: bool
+    _has_wind_start_cmd: bool
+    _has_wind_stop_cmd: bool
+    _has_rain_start_cmd: bool
+    _has_rain_stop_cmd: bool
+    _has_goto_dawn_pos_cmd: bool
+    _has_goto_dusk_pos_cmd: bool    
     _has_sun_prog_active: bool
     _sun_prog_active_value: bool
     _has_wind_prog_active: bool
@@ -81,6 +88,14 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         has_ventilation_position_config: bool = False,
         has_blocking_detection: bool = False,
         has_obstacle_detection: bool = False,
+        has_sun_start_cmd: bool = False,
+        has_sun_stop_cmd: bool = False,
+        has_wind_start_cmd: bool = False,
+        has_wind_stop_cmd: bool = False,
+        has_rain_start_cmd: bool = False,
+        has_rain_stop_cmd: bool = False,
+        has_goto_dawn_pos_cmd: bool = False,
+        has_goto_dusk_pos_cmd: bool = False,
         has_sun_prog_active: bool = False,
         has_wind_prog_active: bool = False,
         has_rain_prog_active: bool = False,
@@ -105,6 +120,14 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         self._has_ventilation_position_config = has_ventilation_position_config
         self._has_blocking_detection = has_blocking_detection
         self._has_obstacle_detection = has_obstacle_detection        
+        self._has_sun_start_cmd = has_sun_start_cmd
+        self._has_sun_stop_cmd = has_sun_stop_cmd
+        self._has_wind_start_cmd = has_wind_start_cmd
+        self._has_wind_stop_cmd = has_wind_stop_cmd
+        self._has_rain_start_cmd = has_rain_start_cmd
+        self._has_rain_stop_cmd = has_rain_stop_cmd
+        self._has_goto_dawn_pos_cmd = has_goto_dawn_pos_cmd
+        self._has_goto_dusk_pos_cmd = has_goto_dusk_pos_cmd        
         self._has_sun_prog_active = has_sun_prog_active
         self._has_wind_prog_active = has_wind_prog_active
         self._has_rain_prog_active = has_rain_prog_active
@@ -140,6 +163,14 @@ class HomePilotCover(HomePilotAutoConfigDevice):
             has_ventilation_position_config=APICAP_VENTIL_POS_MODE_CFG in device_map,
             has_blocking_detection=APICAP_BLOCK_DET_EVT in device_map,
             has_obstacle_detection=APICAP_OBSTACLE_DET_EVT in device_map,
+            has_sun_start_cmd=APICAP_SUN_START_CMD in device_map,
+            has_sun_stop_cmd=APICAP_SUN_STOP_CMD in device_map,
+            has_wind_start_cmd=APICAP_WIND_START_CMD in device_map,
+            has_wind_stop_cmd=APICAP_WIND_STOP_CMD in device_map,
+            has_rain_start_cmd=APICAP_RAIN_START_CMD in device_map,
+            has_rain_stop_cmd=APICAP_RAIN_STOP_CMD in device_map,
+            has_goto_dawn_pos_cmd=APICAP_GOTO_DAWN_POS_CMD in device_map,
+            has_goto_dusk_pos_cmd=APICAP_GOTO_DUSK_POS_CMD in device_map,
             has_sun_prog_active=APICAP_SUN_PROG_ACTIVE_EVT in device_map,
             has_wind_prog_active=APICAP_WIND_PROG_ACTIVE_EVT in device_map,
             has_rain_prog_active=APICAP_RAIN_PROG_ACTIVE_EVT in device_map,
@@ -210,28 +241,36 @@ class HomePilotCover(HomePilotAutoConfigDevice):
 
     # New weather program commands
     async def async_sun_start_cmd(self) -> None:
-        await self.api.async_sun_start_cmd(self.did)
+        if self.has_sun_start_cmd:
+            await self.api.async_sun_start_cmd(self.did)
 
     async def async_sun_stop_cmd(self) -> None:
-        await self.api.async_sun_stop_cmd(self.did)
+        if self.has_sun_stop_cmd:
+            await self.api.async_sun_stop_cmd(self.did)
 
     async def async_wind_start_cmd(self) -> None:
-        await self.api.async_wind_start_cmd(self.did)
+        if self.has_wind_start_cmd:
+            await self.api.async_wind_start_cmd(self.did)
 
     async def async_wind_stop_cmd(self) -> None:
-        await self.api.async_wind_stop_cmd(self.did)
+        if self.has_wind_stop_cmd:
+            await self.api.async_wind_stop_cmd(self.did)
 
     async def async_rain_start_cmd(self) -> None:
-        await self.api.async_rain_start_cmd(self.did)
+        if self.has_rain_start_cmd:
+            await self.api.async_rain_start_cmd(self.did)
 
     async def async_rain_stop_cmd(self) -> None:
-        await self.api.async_rain_stop_cmd(self.did)
+        if self.has_rain_stop_cmd:
+            await self.api.async_rain_stop_cmd(self.did)
 
     async def async_goto_dawn_pos_cmd(self) -> None:
-        await self.api.async_goto_dawn_pos_cmd(self.did)
+        if self.has_goto_dawn_pos_cmd:
+            await self.api.async_goto_dawn_pos_cmd(self.did)
 
     async def async_goto_dusk_pos_cmd(self) -> None:
-        await self.api.async_goto_dusk_pos_cmd(self.did)
+        if self.has_goto_dusk_pos_cmd:
+            await self.api.async_goto_dusk_pos_cmd(self.did)
 
     async def async_set_ventilation_position_mode(self, mode) -> None:
         if self.has_ventilation_position_config:
@@ -389,3 +428,36 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     @rain_prog_active_value.setter
     def rain_prog_active_value(self, rain_prog_active_value):
         self._rain_prog_active_value = rain_prog_active_value
+
+    # New command capability properties
+    @property
+    def has_sun_start_cmd(self) -> bool:
+        return self._has_sun_start_cmd
+
+    @property
+    def has_sun_stop_cmd(self) -> bool:
+        return self._has_sun_stop_cmd
+
+    @property
+    def has_wind_start_cmd(self) -> bool:
+        return self._has_wind_start_cmd
+
+    @property
+    def has_wind_stop_cmd(self) -> bool:
+        return self._has_wind_stop_cmd
+
+    @property
+    def has_rain_start_cmd(self) -> bool:
+        return self._has_rain_start_cmd
+
+    @property
+    def has_rain_stop_cmd(self) -> bool:
+        return self._has_rain_stop_cmd
+
+    @property
+    def has_goto_dawn_pos_cmd(self) -> bool:
+        return self._has_goto_dawn_pos_cmd
+
+    @property
+    def has_goto_dusk_pos_cmd(self) -> bool:
+        return self._has_goto_dusk_pos_cmd
