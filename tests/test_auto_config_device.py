@@ -6,7 +6,7 @@ It supports 8 different types of automatic modes:
 
 1. AUTO_MODE_CFG - General auto mode (based on Manuellbetrieb status)
 2. TIME_AUTO_CFG - Time-based automation
-3. CONTACT_AUTO_CFG - Contact sensor-based automation  
+3. CONTACT_AUTO_CFG - Contact sensor-based automation
 4. WIND_AUTO_CFG - Wind sensor-based automation
 5. DAWN_AUTO_CFG - Dawn/sunrise-based automation
 6. DUSK_AUTO_CFG - Dusk/sunset-based automation
@@ -46,49 +46,49 @@ from homepilot.const import (
 
 
 class TestHomePilotAutoConfigDevice:
-    
+
     @pytest.fixture
     def mocked_api(self):
         api = MagicMock(spec=HomePilotApi)
-        
+
         # Mock async methods
         future_auto_mode = asyncio.Future()
         future_auto_mode.set_result(None)
         api.async_set_auto_mode.return_value = future_auto_mode
-        
+
         future_command = asyncio.Future()
         future_command.set_result(None)
         api.async_send_device_command.return_value = future_command
-        
+
         # Mock new specific auto mode methods
         future_time_auto = asyncio.Future()
         future_time_auto.set_result(None)
         api.async_set_time_auto_mode.return_value = future_time_auto
-        
+
         future_contact_auto = asyncio.Future()
         future_contact_auto.set_result(None)
         api.async_set_contact_auto_mode.return_value = future_contact_auto
-        
+
         future_wind_auto = asyncio.Future()
         future_wind_auto.set_result(None)
         api.async_set_wind_auto_mode.return_value = future_wind_auto
-        
+
         future_dawn_auto = asyncio.Future()
         future_dawn_auto.set_result(None)
         api.async_set_dawn_auto_mode.return_value = future_dawn_auto
-        
+
         future_dusk_auto = asyncio.Future()
         future_dusk_auto.set_result(None)
         api.async_set_dusk_auto_mode.return_value = future_dusk_auto
-        
+
         future_rain_auto = asyncio.Future()
         future_rain_auto.set_result(None)
         api.async_set_rain_auto_mode.return_value = future_rain_auto
-        
+
         future_sun_auto = asyncio.Future()
         future_sun_auto.set_result(None)
         api.async_set_sun_auto_mode.return_value = future_sun_auto
-        
+
         return api
 
     @pytest.fixture
@@ -134,7 +134,7 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         # Test has_* properties
         assert device.has_auto_mode is True
         assert device.has_time_auto_mode is True
@@ -152,7 +152,7 @@ class TestHomePilotAutoConfigDevice:
             device_map=partial_device_map,
             **device_data
         )
-        
+
         # Test has_* properties
         assert device.has_auto_mode is True
         assert device.has_time_auto_mode is True
@@ -170,7 +170,7 @@ class TestHomePilotAutoConfigDevice:
             device_map=None,
             **device_data
         )
-        
+
         # Test has_* properties - all should be False
         assert device.has_auto_mode is False
         assert device.has_time_auto_mode is False
@@ -188,7 +188,7 @@ class TestHomePilotAutoConfigDevice:
             device_map={},
             **device_data
         )
-        
+
         # Test has_* properties - all should be False
         assert device.has_auto_mode is False
         assert device.has_time_auto_mode is False
@@ -207,18 +207,18 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         state = {
             "statusesMap": {
                 "Manuellbetrieb": 0  # 0 means auto mode is enabled
             }
         }
-        
+
         await device.update_device_state(state, full_device_map)
-        
+
         # Test auto mode value (inverted from Manuellbetrieb)
         assert device.auto_mode_value is True
-        
+
         # Test other auto mode values from device_map
         assert device.time_auto_mode_value is True
         assert device.contact_auto_mode_value is False
@@ -236,15 +236,15 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         state = {
             "statusesMap": {
                 "Manuellbetrieb": 1  # 1 means manual mode (auto mode disabled)
             }
         }
-        
+
         await device.update_device_state(state, full_device_map)
-        
+
         # Test auto mode value (inverted from Manuellbetrieb)
         assert device.auto_mode_value is False
 
@@ -256,13 +256,13 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         state = {
             "statusesMap": {}  # Missing Manuellbetrieb
         }
-        
+
         await device.update_device_state(state, full_device_map)
-        
+
         # Should default to False when missing
         assert device.auto_mode_value is False
 
@@ -274,18 +274,18 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         state = {
             "statusesMap": {
                 "Manuellbetrieb": 0
             }
         }
-        
+
         await device.update_device_state(state, None)
-        
+
         # Auto mode should still work from statusesMap
         assert device.auto_mode_value is True
-        
+
         # Other modes should default to False when device_map is None
         assert device.time_auto_mode_value is False
         assert device.contact_auto_mode_value is False
@@ -303,19 +303,19 @@ class TestHomePilotAutoConfigDevice:
             device_map={},  # No capabilities
             **device_data
         )
-        
+
         state = {
             "statusesMap": {
                 "Manuellbetrieb": 0
             }
         }
-        
+
         device_map = {
             APICAP_TIME_AUTO_CFG: {"value": "true"}
         }
-        
+
         await device.update_device_state(state, device_map)
-        
+
         # Since device doesn't have capabilities, values shouldn't be updated
         # (the properties won't be set because has_* methods return False)
 
@@ -327,9 +327,9 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         await device.async_set_auto_mode(True)
-        
+
         mocked_api.async_set_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
@@ -340,9 +340,9 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         await device.async_set_time_auto_mode(False)
-        
+
         mocked_api.async_set_time_auto_mode.assert_called_once_with(123, False)
 
     @pytest.mark.asyncio
@@ -353,9 +353,9 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         await device.async_set_contact_auto_mode(True)
-        
+
         mocked_api.async_set_contact_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
@@ -366,9 +366,9 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         await device.async_set_wind_auto_mode(True)
-        
+
         mocked_api.async_set_wind_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
@@ -379,9 +379,9 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         await device.async_set_dawn_auto_mode(False)
-        
+
         mocked_api.async_set_dawn_auto_mode.assert_called_once_with(123, False)
 
     @pytest.mark.asyncio
@@ -392,9 +392,9 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         await device.async_set_dusk_auto_mode(True)
-        
+
         mocked_api.async_set_dusk_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
@@ -405,9 +405,9 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         await device.async_set_rain_auto_mode(True)
-        
+
         mocked_api.async_set_rain_auto_mode.assert_called_once_with(123, True)
 
     @pytest.mark.asyncio
@@ -418,9 +418,9 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         await device.async_set_sun_auto_mode(False)
-        
+
         mocked_api.async_set_sun_auto_mode.assert_called_once_with(123, False)
 
     def test_auto_mode_value_property_getters_setters(self, mocked_api, device_data, full_device_map):
@@ -430,49 +430,49 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         # Test auto_mode_value
         device.auto_mode_value = True
         assert device.auto_mode_value is True
         device.auto_mode_value = False
         assert device.auto_mode_value is False
-        
+
         # Test time_auto_mode_value
         device.time_auto_mode_value = True
         assert device.time_auto_mode_value is True
         device.time_auto_mode_value = False
         assert device.time_auto_mode_value is False
-        
+
         # Test contact_auto_mode_value
         device.contact_auto_mode_value = True
         assert device.contact_auto_mode_value is True
         device.contact_auto_mode_value = False
         assert device.contact_auto_mode_value is False
-        
+
         # Test wind_auto_mode_value
         device.wind_auto_mode_value = True
         assert device.wind_auto_mode_value is True
         device.wind_auto_mode_value = False
         assert device.wind_auto_mode_value is False
-        
+
         # Test dawn_auto_mode_value
         device.dawn_auto_mode_value = True
         assert device.dawn_auto_mode_value is True
         device.dawn_auto_mode_value = False
         assert device.dawn_auto_mode_value is False
-        
+
         # Test dusk_auto_mode_value
         device.dusk_auto_mode_value = True
         assert device.dusk_auto_mode_value is True
         device.dusk_auto_mode_value = False
         assert device.dusk_auto_mode_value is False
-        
+
         # Test rain_auto_mode_value
         device.rain_auto_mode_value = True
         assert device.rain_auto_mode_value is True
         device.rain_auto_mode_value = False
         assert device.rain_auto_mode_value is False
-        
+
         # Test sun_auto_mode_value
         device.sun_auto_mode_value = True
         assert device.sun_auto_mode_value is True
@@ -486,7 +486,7 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         # Test inherited properties
         assert device.did == 123
         assert device.name == "Test Auto Device"
@@ -502,22 +502,22 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         # Test with incomplete device_map values
         incomplete_device_map = {
             APICAP_TIME_AUTO_CFG: {},  # Missing 'value' key
             APICAP_CONTACT_AUTO_CFG: {"value": "invalid"},  # Invalid value
             APICAP_WIND_AUTO_CFG: {"value": "false"},  # Valid value
         }
-        
+
         state = {
             "statusesMap": {
                 "Manuellbetrieb": 0
             }
         }
-        
+
         await device.update_device_state(state, incomplete_device_map)
-        
+
         # Should handle missing/invalid values gracefully
         assert device.time_auto_mode_value is False  # Missing value defaults to False
         assert device.contact_auto_mode_value is False  # Invalid value defaults to False
@@ -530,7 +530,7 @@ class TestHomePilotAutoConfigDevice:
             device_map=full_device_map,
             **device_data
         )
-        
+
         test_cases = [
             ("true", True),
             ("True", False),  # Case sensitive - only lowercase "true" is True
@@ -544,10 +544,10 @@ class TestHomePilotAutoConfigDevice:
             ("yes", False),
             ("no", False),
         ]
-        
+
         for test_value, expected in test_cases:
             device_map = {APICAP_TIME_AUTO_CFG: {"value": test_value}}
-            
+
             # Directly test the conversion logic
             result = device_map.get(APICAP_TIME_AUTO_CFG, {}).get("value", "false") == "true"
             assert result == expected, f"Expected {test_value} -> {expected}, got {result}"
@@ -555,17 +555,17 @@ class TestHomePilotAutoConfigDevice:
 
 class TestAutoConfigChildClasses:
     """Test that child classes properly inherit from HomePilotAutoConfigDevice"""
-    
+
     @pytest.fixture
     def mocked_api(self):
         api = MagicMock(spec=HomePilotApi)
-        
+
         # Mock async methods for all child classes
         future = asyncio.Future()
         future.set_result(None)
         api.async_set_auto_mode.return_value = future
         api.async_send_device_command.return_value = future
-        
+
         return api
 
     @pytest.fixture
@@ -596,7 +596,7 @@ class TestAutoConfigChildClasses:
             can_set_tilt_position=True,
             device_map=device_map_with_auto_modes
         )
-        
+
         # Test that cover inherits auto config capabilities
         assert isinstance(cover, HomePilotAutoConfigDevice)
         assert cover.has_auto_mode is True
@@ -604,7 +604,7 @@ class TestAutoConfigChildClasses:
         assert cover.has_wind_auto_mode is True
         assert cover.has_dusk_auto_mode is True
         assert cover.has_contact_auto_mode is False  # Not in device_map
-        
+
         # Test that cover retains its own functionality
         assert cover.can_set_position is True
         assert cover.has_tilt is True
@@ -625,14 +625,14 @@ class TestAutoConfigChildClasses:
             has_color_temp=True,
             device_map=device_map_with_auto_modes
         )
-        
+
         # Test that light inherits auto config capabilities
         assert isinstance(light, HomePilotAutoConfigDevice)
         assert light.has_auto_mode is True
         assert light.has_time_auto_mode is True
         assert light.has_wind_auto_mode is True
         assert light.has_dusk_auto_mode is True
-        
+
         # Test that light retains its own functionality
         assert light.has_rgb is True
         assert light.has_color_temp is True
@@ -651,7 +651,7 @@ class TestAutoConfigChildClasses:
             has_ping_cmd=True,
             device_map=device_map_with_auto_modes
         )
-        
+
         # Test that switch inherits auto config capabilities
         assert isinstance(switch, HomePilotAutoConfigDevice)
         assert switch.has_auto_mode is True
@@ -673,7 +673,7 @@ class TestAutoConfigChildClasses:
             has_ping_cmd=True,
             device_map=device_map_with_auto_modes
         )
-        
+
         # Test that thermostat inherits auto config capabilities
         assert isinstance(thermostat, HomePilotAutoConfigDevice)
         assert thermostat.has_auto_mode is True
@@ -695,7 +695,7 @@ class TestAutoConfigChildClasses:
             has_ping_cmd=True,
             device_map=device_map_with_auto_modes
         )
-        
+
         # Test that actuator inherits auto config capabilities
         assert isinstance(actuator, HomePilotAutoConfigDevice)
         assert actuator.has_auto_mode is True
@@ -719,12 +719,12 @@ class TestAutoConfigChildClasses:
             cover_type=1,
             device_map=device_map_with_auto_modes
         )
-        
+
         # Test that inherited methods work
         await cover.async_set_auto_mode(True)
         await cover.async_set_time_auto_mode(False)
         await cover.async_set_wind_auto_mode(True)
-        
+
         # Verify API calls were made
         mocked_api.async_set_auto_mode.assert_called_with(123, True)
         mocked_api.async_set_time_auto_mode.assert_called_with(123, False)
@@ -746,21 +746,21 @@ class TestAutoConfigChildClasses:
             has_color_temp=True,
             device_map=device_map_with_auto_modes
         )
-        
+
         # Simulate state update
         state = {
             "statusesMap": {
                 "Manuellbetrieb": 0  # Auto mode enabled
             }
         }
-        
+
         updated_device_map = {
             APICAP_TIME_AUTO_CFG: {"value": "true"},
             APICAP_WIND_AUTO_CFG: {"value": "false"},
         }
-        
+
         await light.update_device_state(state, updated_device_map)
-        
+
         # Test that auto mode values were updated correctly
         assert light.auto_mode_value is True  # Manuellbetrieb 0 = auto mode True
         assert light.time_auto_mode_value is True
@@ -773,7 +773,7 @@ class TestAutoConfigChildClasses:
             APICAP_DAWN_AUTO_CFG: {"value": "true"},
             APICAP_SUN_AUTO_CFG: {"value": "false"},
         }
-        
+
         # Test that device_map is properly passed through inheritance chain
         switch = HomePilotSwitch(
             api=mocked_api,
@@ -786,7 +786,7 @@ class TestAutoConfigChildClasses:
             device_group=3,
             device_map=device_map  # This should be passed to parent
         )
-        
+
         # Verify that capabilities were properly detected from device_map
         assert switch.has_auto_mode is True
         assert switch.has_dawn_auto_mode is True
@@ -810,7 +810,7 @@ class TestAutoConfigChildClasses:
             cover_type=1,
             device_map=None  # No auto capabilities
         )
-        
+
         # Should still work but with no auto capabilities
         assert cover.has_auto_mode is False
         assert cover.has_time_auto_mode is False
@@ -820,6 +820,6 @@ class TestAutoConfigChildClasses:
         assert cover.has_rain_auto_mode is False
         assert cover.has_sun_auto_mode is False
         assert cover.has_contact_auto_mode is False
-        
+
         # Cover-specific functionality should still work
         assert cover.can_set_position is True

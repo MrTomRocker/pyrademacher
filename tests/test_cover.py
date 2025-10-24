@@ -200,12 +200,12 @@ class TestHomePilotCover:
     @pytest.mark.asyncio
     async def test_new_prog_active_properties(self, mocked_api):
         cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
-        
+
         # Test initial capability detection
         assert cover.has_sun_prog_active is True
         assert cover.has_wind_prog_active is True
         assert cover.has_rain_prog_active is True
-        
+
         # Test state update for property values
         await cover.update_state({
             "statusesMap": {
@@ -215,18 +215,18 @@ class TestHomePilotCover:
             },
             "statusValid": True
         }, mocked_api)
-        
+
         # Verify values from device data
         assert cover.sun_prog_active_value is False
         assert cover.wind_prog_active_value is True
         assert cover.rain_prog_active_value is False
-        
+
         # Test property setters
         cover.sun_prog_active_value = True
         assert cover.sun_prog_active_value is True
-        
+
         cover.wind_prog_active_value = False
         assert cover.wind_prog_active_value is False
-        
+
         cover.rain_prog_active_value = True
         assert cover.rain_prog_active_value is True

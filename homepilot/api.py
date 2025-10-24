@@ -396,10 +396,10 @@ class HomePilotApi:
                 json={"name": command, "value": value},
             ) as response:
                 return await response.json()
-            
+
     async def async_set_auto_mode(self, did, auto_mode):
         return await self.async_send_device_command(did, APICAP_AUTO_MODE_CFG, auto_mode)
-            
+
     async def async_set_temperature_thresh_cfg(self, did, thresh_number, temperature):
         await self.authenticate()
         async with aiohttp.ClientSession(cookie_jar=self.cookie_jar) as session:
@@ -527,25 +527,25 @@ class HomePilotApi:
             ) as response:
                 return await response.json()
 
-    async def async_set_time_auto_mode(self, did, auto_mode):        
+    async def async_set_time_auto_mode(self, did, auto_mode):
         await self.async_send_device_command(did, APICAP_TIME_AUTO_CFG, auto_mode)
 
-    async def async_set_contact_auto_mode(self, did, auto_mode):        
+    async def async_set_contact_auto_mode(self, did, auto_mode):
         await self.async_send_device_command(did, APICAP_CONTACT_AUTO_CFG, auto_mode)
 
-    async def async_set_wind_auto_mode(self, did, auto_mode):        
+    async def async_set_wind_auto_mode(self, did, auto_mode):
         await self.async_send_device_command(did, APICAP_WIND_AUTO_CFG, auto_mode)
 
-    async def async_set_dawn_auto_mode(self, did, auto_mode):        
+    async def async_set_dawn_auto_mode(self, did, auto_mode):
         await self.async_send_device_command(did, APICAP_DAWN_AUTO_CFG, auto_mode)
 
-    async def async_set_dusk_auto_mode(self, did, auto_mode):        
+    async def async_set_dusk_auto_mode(self, did, auto_mode):
         await self.async_send_device_command(did, APICAP_DUSK_AUTO_CFG, auto_mode)
 
-    async def async_set_rain_auto_mode(self, did, auto_mode):        
+    async def async_set_rain_auto_mode(self, did, auto_mode):
         await self.async_send_device_command(did, APICAP_RAIN_AUTO_CFG, auto_mode)
 
-    async def async_set_sun_auto_mode(self, did, auto_mode):        
+    async def async_set_sun_auto_mode(self, did, auto_mode):
         await self.async_send_device_command(did, APICAP_SUN_AUTO_CFG, auto_mode)
 
     async def async_contact_open_cmd(self, did):
@@ -583,7 +583,7 @@ class HomePilotApi:
 
     async def async_goto_dusk_pos_cmd(self, did):
         return await self.async_send_device_command(did, APICAP_GOTO_DUSK_POS_CMD, None)
-    
+
     @property
     def host(self):
         return self._host

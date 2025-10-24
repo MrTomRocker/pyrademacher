@@ -198,7 +198,7 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
         if self.has_temperature:
             self.temperature_value = state["statusesMap"]["acttemperatur"] / 10
         if self.has_target_temperature:
-            self.target_temperature_value = state["statusesMap"]["Position"] / 10        
+            self.target_temperature_value = state["statusesMap"]["Position"] / 10
         if self.has_battery_level and "batteryStatus" in state:
             self.battery_level_value = state["batteryStatus"]
         if self.has_relais_status:
@@ -248,11 +248,11 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
 
     async def async_set_boost_time_cfg(self, boost_time) -> None:
         await self.api.async_set_boost_time_cfg(self.did, boost_time)
-    
+
     @property
     def has_temperature(self) -> bool:
         return self._has_temperature
-        
+
     @property
     def min_temperature(self) -> bool:
         return self._min_temperature

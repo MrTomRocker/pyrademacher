@@ -54,7 +54,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     _has_blocking_detection: bool
     _blocking_detection_status: bool
     _has_obstacle_detection: bool
-    _obstacle_detection_status: bool    
+    _obstacle_detection_status: bool
     _has_sun_start_cmd: bool
     _has_sun_stop_cmd: bool
     _has_wind_start_cmd: bool
@@ -62,7 +62,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     _has_rain_start_cmd: bool
     _has_rain_stop_cmd: bool
     _has_goto_dawn_pos_cmd: bool
-    _has_goto_dusk_pos_cmd: bool    
+    _has_goto_dusk_pos_cmd: bool
     _has_sun_prog_active: bool
     _sun_prog_active_value: bool
     _has_wind_prog_active: bool
@@ -119,7 +119,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         self._can_set_tilt_position = can_set_tilt_position
         self._has_ventilation_position_config = has_ventilation_position_config
         self._has_blocking_detection = has_blocking_detection
-        self._has_obstacle_detection = has_obstacle_detection        
+        self._has_obstacle_detection = has_obstacle_detection
         self._has_sun_start_cmd = has_sun_start_cmd
         self._has_sun_stop_cmd = has_sun_stop_cmd
         self._has_wind_start_cmd = has_wind_start_cmd
@@ -127,7 +127,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         self._has_rain_start_cmd = has_rain_start_cmd
         self._has_rain_stop_cmd = has_rain_stop_cmd
         self._has_goto_dawn_pos_cmd = has_goto_dawn_pos_cmd
-        self._has_goto_dusk_pos_cmd = has_goto_dusk_pos_cmd        
+        self._has_goto_dusk_pos_cmd = has_goto_dusk_pos_cmd
         self._has_sun_prog_active = has_sun_prog_active
         self._has_wind_prog_active = has_wind_prog_active
         self._has_rain_prog_active = has_rain_prog_active
@@ -371,7 +371,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     @property
     def has_blocking_detection(self) -> bool:
         return self._has_blocking_detection
-    
+
     @property
     def blocking_detection_status(self) -> bool:
         return self._blocking_detection_status
@@ -383,7 +383,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     @property
     def has_obstacle_detection(self) -> bool:
         return self._has_obstacle_detection
-    
+
     @property
     def obstacle_detection_status(self) -> bool:
         return self._obstacle_detection_status

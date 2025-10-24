@@ -10,10 +10,10 @@ from .const import (
     APICAP_WIND_AUTO_CFG,
     APICAP_DAWN_AUTO_CFG,
     APICAP_DUSK_AUTO_CFG,
-    APICAP_RAIN_AUTO_CFG,  
-    APICAP_SUN_AUTO_CFG,      
+    APICAP_RAIN_AUTO_CFG,
+    APICAP_SUN_AUTO_CFG,
     APICAP_DEVICE_TYPE_LOC,
-    APICAP_ID_DEVICE_LOC    
+    APICAP_ID_DEVICE_LOC
 )
 
 class HomePilotDevice:
@@ -145,23 +145,23 @@ class HomePilotDevice:
     def extra_attributes(self):
         return None
 
-class HomePilotAutoConfigDevice(HomePilotDevice): 
+class HomePilotAutoConfigDevice(HomePilotDevice):
     _has_auto_mode: bool
     _auto_mode_value: bool
     _has_time_auto_mode: bool
-    _time_auto_mode_value: bool    
+    _time_auto_mode_value: bool
     _has_contact_auto_mode: bool
-    _contact_auto_mode_value: bool    
+    _contact_auto_mode_value: bool
     _has_wind_auto_mode: bool
-    _wind_auto_mode_value: bool 
+    _wind_auto_mode_value: bool
     _has_dawn_auto_mode: bool
-    _dawn_auto_mode_value: bool 
+    _dawn_auto_mode_value: bool
     _has_dusk_auto_mode: bool
-    _dusk_auto_mode_value: bool     
+    _dusk_auto_mode_value: bool
     _has_rain_auto_mode: bool
-    _rain_auto_mode_value: bool     
+    _rain_auto_mode_value: bool
     _has_sun_auto_mode: bool
-    _sun_auto_mode_value: bool     
+    _sun_auto_mode_value: bool
 
     def __init__(
         self,
@@ -175,7 +175,7 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
         device_group: int,
         has_ping_cmd: bool = False,
         device_map: Optional[Dict[str, Any]] = None,
-     ) -> None:        
+     ) -> None:
         super().__init__(
             api=api,
             did=did,
@@ -185,8 +185,8 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
             model=model,
             fw_version=fw_version,
             device_group=device_group,
-            has_ping_cmd=has_ping_cmd,            
-        )        
+            has_ping_cmd=has_ping_cmd,
+        )
         device_map = device_map or {}
         self._has_auto_mode = APICAP_AUTO_MODE_CFG in device_map
         self._has_time_auto_mode = APICAP_TIME_AUTO_CFG in device_map
@@ -208,17 +208,17 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
         if self.has_time_auto_mode:
             self.time_auto_mode_value = device_map.get(APICAP_TIME_AUTO_CFG, {}).get("value", "false") == "true"
         if self.has_contact_auto_mode:
-            self.contact_auto_mode_value = device_map.get(APICAP_CONTACT_AUTO_CFG, {}).get("value", "false") == "true"              
+            self.contact_auto_mode_value = device_map.get(APICAP_CONTACT_AUTO_CFG, {}).get("value", "false") == "true"
         if self.has_wind_auto_mode:
-            self.wind_auto_mode_value = device_map.get(APICAP_WIND_AUTO_CFG, {}).get("value", "false") == "true"  
+            self.wind_auto_mode_value = device_map.get(APICAP_WIND_AUTO_CFG, {}).get("value", "false") == "true"
         if self.has_dawn_auto_mode:
             self.dawn_auto_mode_value = device_map.get(APICAP_DAWN_AUTO_CFG, {}).get("value", "false") == "true"
         if self.has_dusk_auto_mode:
-            self.dusk_auto_mode_value = device_map.get(APICAP_DUSK_AUTO_CFG, {}).get("value", "false") == "true"                          
+            self.dusk_auto_mode_value = device_map.get(APICAP_DUSK_AUTO_CFG, {}).get("value", "false") == "true"
         if self.has_rain_auto_mode:
             self.rain_auto_mode_value = device_map.get(APICAP_RAIN_AUTO_CFG, {}).get("value", "false") == "true"
         if self.has_sun_auto_mode:
-            self.sun_auto_mode_value = device_map.get(APICAP_SUN_AUTO_CFG, {}).get("value", "false") == "true"            
+            self.sun_auto_mode_value = device_map.get(APICAP_SUN_AUTO_CFG, {}).get("value", "false") == "true"
 
     async def async_set_auto_mode(self, auto_mode) -> None:
         await self.api.async_set_auto_mode(self.did, auto_mode)
@@ -228,7 +228,7 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
 
     async def async_set_contact_auto_mode(self, auto_mode) -> None:
         await self.api.async_set_contact_auto_mode(self.did, auto_mode)
-    
+
     async def async_set_wind_auto_mode(self, auto_mode) -> None:
         await self.api.async_set_wind_auto_mode(self.did, auto_mode)
 
@@ -251,31 +251,31 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
     @property
     def has_time_auto_mode(self) -> bool:
         return self._has_time_auto_mode
-    
+
     @property
     def has_contact_auto_mode(self) -> bool:
-        return self._has_contact_auto_mode  
+        return self._has_contact_auto_mode
 
     @property
     def has_wind_auto_mode(self) -> bool:
-        return self._has_wind_auto_mode  
+        return self._has_wind_auto_mode
 
     @property
     def has_dawn_auto_mode(self) -> bool:
-        return self._has_dawn_auto_mode  
+        return self._has_dawn_auto_mode
 
     @property
     def has_dusk_auto_mode(self) -> bool:
-        return self._has_dusk_auto_mode  
+        return self._has_dusk_auto_mode
 
     @property
     def has_rain_auto_mode(self) -> bool:
-        return self._has_rain_auto_mode  
-    
+        return self._has_rain_auto_mode
+
     @property
     def has_sun_auto_mode(self) -> bool:
-        return self._has_sun_auto_mode  
-        
+        return self._has_sun_auto_mode
+
     @property
     def auto_mode_value(self) -> bool:
         return self._auto_mode_value
@@ -298,7 +298,7 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
 
     @contact_auto_mode_value.setter
     def contact_auto_mode_value(self, contact_auto_mode_value):
-        self._contact_auto_mode_value = contact_auto_mode_value  
+        self._contact_auto_mode_value = contact_auto_mode_value
 
     @property
     def wind_auto_mode_value(self) -> bool:
@@ -306,7 +306,7 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
 
     @wind_auto_mode_value.setter
     def wind_auto_mode_value(self, wind_auto_mode_value):
-        self._wind_auto_mode_value = wind_auto_mode_value         
+        self._wind_auto_mode_value = wind_auto_mode_value
 
     @property
     def dawn_auto_mode_value(self) -> bool:
@@ -314,7 +314,7 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
 
     @dawn_auto_mode_value.setter
     def dawn_auto_mode_value(self, dawn_auto_mode_value):
-        self._dawn_auto_mode_value = dawn_auto_mode_value    
+        self._dawn_auto_mode_value = dawn_auto_mode_value
 
     @property
     def dusk_auto_mode_value(self) -> bool:
@@ -322,7 +322,7 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
 
     @dusk_auto_mode_value.setter
     def dusk_auto_mode_value(self, dusk_auto_mode_value):
-        self._dusk_auto_mode_value = dusk_auto_mode_value    
+        self._dusk_auto_mode_value = dusk_auto_mode_value
 
     @property
     def rain_auto_mode_value(self) -> bool:
@@ -330,7 +330,7 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
 
     @rain_auto_mode_value.setter
     def rain_auto_mode_value(self, rain_auto_mode_value):
-        self._rain_auto_mode_value = rain_auto_mode_value            
+        self._rain_auto_mode_value = rain_auto_mode_value
 
     @property
     def sun_auto_mode_value(self) -> bool:
@@ -338,6 +338,5 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
 
     @sun_auto_mode_value.setter
     def sun_auto_mode_value(self, sun_auto_mode_value):
-        self._sun_auto_mode_value = sun_auto_mode_value      
+        self._sun_auto_mode_value = sun_auto_mode_value
 
-        
