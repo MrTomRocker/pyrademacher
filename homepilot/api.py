@@ -57,11 +57,14 @@ class HomePilotApi:
         self._api_version = api_version
         self._base_path = HomePilotApi.get_base_path(api_version)
         self._session = None
+        self._cookie_jar = None 
 
     async def _get_session(self) -> aiohttp.ClientSession:
         """Get or create persistent session"""
         if self._session is None or self._session.closed:
-            self._session = aiohttp.ClientSession(cookie_jar=self.cookie_jar)
+            if self._cookie_jar is None:
+                self._cookie_jar = aiohttp.CookieJar(unsafe=True)
+            self._session = aiohttp.ClientSession(cookie_jar=self._cookie_jar)
         return self._session
 
     async def async_close(self):
@@ -69,7 +72,7 @@ class HomePilotApi:
         if self._session and not self._session.closed:
             await self._session.close()
             self._session = None
-
+        self._authenticated = False
     @staticmethod
     async def test_connection(host: str) -> str:
         async with aiohttp.ClientSession() as session:
@@ -110,32 +113,35 @@ class HomePilotApi:
             return ""
 
     @staticmethod
-    async def test_auth(host: str, password: str, api_version: int = 1) -> AbstractCookieJar:
-        cookie_jar = aiohttp.CookieJar(unsafe=True)
-        base_path = HomePilotApi.get_base_path(api_version)
-        async with aiohttp.ClientSession(cookie_jar=cookie_jar) as session:
-            response = await session.post(f"http://{host}{base_path}/authentication/password_salt")
-            response_data = await response.json()
-            if response.status == 500 and response_data["error_code"] == 5007:
-                raise AuthError()
-            if response.status != 200 or response_data["error_code"] != 0:
-                raise CannotConnect()
-            salt = response_data["password_salt"]
-            hashed_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
-            salted_password = hashlib.sha256(
-                f"{salt}{hashed_password}".encode("utf-8")
-            ).hexdigest()
-            response = await session.post(
-                f"http://{host}{base_path}/authentication/login",
-                json={"password": salted_password, "password_salt": salt},
-            )
-            if response.status != 200:
-                raise AuthError()
-            return session.cookie_jar
-
+    async def test_auth(host: str, password: str, api_version: int = 1, session_in: aiohttp.ClientSession = None) -> AbstractCookieJar:
+        session = session_in or aiohttp.ClientSession(cookie_jar=aiohttp.CookieJar(unsafe=True))
+        try:
+            base_path = HomePilotApi.get_base_path(api_version)
+            async with session.post(f"http://{host}{base_path}/authentication/password_salt") as response:
+                response_data = await response.json()
+                if response.status == 500 and response_data["error_code"] == 5007:
+                    raise AuthError()
+                if response.status != 200 or response_data["error_code"] != 0:
+                    raise CannotConnect()
+                salt = response_data["password_salt"]
+                hashed_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
+                salted_password = hashlib.sha256(
+                    f"{salt}{hashed_password}".encode("utf-8")
+                ).hexdigest()
+                response = await session.post(
+                    f"http://{host}{base_path}/authentication/login",
+                    json={"password": salted_password, "password_salt": salt},
+                )
+                if response.status != 200:
+                    raise AuthError()
+                return session.cookie_jar
+        finally:
+            if session_in is None:
+                await session.close()
+                
     async def authenticate(self):
         if not self.authenticated and self.password != "":
-            self.cookie_jar = await HomePilotApi.test_auth(self.host, self.password, self.api_version)
+            self.cookie_jar = await HomePilotApi.test_auth(self.host, self.password, self.api_version, await self._get_session())
             self._authenticated = True
 
     async def get_devices(self):
