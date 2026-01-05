@@ -9,28 +9,53 @@ from homepilot.cover import HomePilotCover
 
 class TestHomePilotCover:
     @pytest.fixture
-    def mocked_api(self, event_loop):
+    def mocked_api(self):
         f = open("tests/test_files/device_cover.json")
         j = json.load(f)
         api = MagicMock()
-        func_get_device = asyncio.Future(loop=event_loop)
+        func_get_device = asyncio.Future()
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
-        func_open_cover = asyncio.Future(loop=event_loop)
+        func_open_cover = asyncio.Future()
         func_open_cover.set_result(None)
         api.async_open_cover.return_value = func_open_cover
-        func_close_cover = asyncio.Future(loop=event_loop)
+        func_close_cover = asyncio.Future()
         func_close_cover.set_result(None)
         api.async_close_cover.return_value = func_close_cover
-        func_stop_cover = asyncio.Future(loop=event_loop)
+        func_stop_cover = asyncio.Future()
         func_stop_cover.set_result(None)
         api.async_stop_cover.return_value = func_stop_cover
-        func_set_position = asyncio.Future(loop=event_loop)
+        func_set_position = asyncio.Future()
         func_set_position.set_result(None)
         api.async_set_position.return_value = func_set_position
-        func_ping = asyncio.Future(loop=event_loop)
+        func_ping = asyncio.Future()
         func_ping.set_result(None)
         api.async_ping.return_value = func_ping
+        # Add mocks for new weather program commands
+        func_sun_start_cmd = asyncio.Future()
+        func_sun_start_cmd.set_result(None)
+        api.async_sun_start_cmd.return_value = func_sun_start_cmd
+        func_sun_stop_cmd = asyncio.Future()
+        func_sun_stop_cmd.set_result(None)
+        api.async_sun_stop_cmd.return_value = func_sun_stop_cmd
+        func_wind_start_cmd = asyncio.Future()
+        func_wind_start_cmd.set_result(None)
+        api.async_wind_start_cmd.return_value = func_wind_start_cmd
+        func_wind_stop_cmd = asyncio.Future()
+        func_wind_stop_cmd.set_result(None)
+        api.async_wind_stop_cmd.return_value = func_wind_stop_cmd
+        func_rain_start_cmd = asyncio.Future()
+        func_rain_start_cmd.set_result(None)
+        api.async_rain_start_cmd.return_value = func_rain_start_cmd
+        func_rain_stop_cmd = asyncio.Future()
+        func_rain_stop_cmd.set_result(None)
+        api.async_rain_stop_cmd.return_value = func_rain_stop_cmd
+        func_goto_dawn_pos_cmd = asyncio.Future()
+        func_goto_dawn_pos_cmd.set_result(None)
+        api.async_goto_dawn_pos_cmd.return_value = func_goto_dawn_pos_cmd
+        func_goto_dusk_pos_cmd = asyncio.Future()
+        func_goto_dusk_pos_cmd.set_result(None)
+        api.async_goto_dusk_pos_cmd.return_value = func_goto_dusk_pos_cmd
         yield api
 
     @pytest.mark.asyncio
@@ -47,6 +72,17 @@ class TestHomePilotCover:
         assert cover.can_set_position is True
         assert cover.has_blocking_detection is True
         assert cover.has_obstacle_detection is True
+        assert cover.has_sun_start_cmd is True
+        assert cover.has_sun_stop_cmd is True
+        assert cover.has_wind_start_cmd is True
+        assert cover.has_wind_stop_cmd is True
+        assert cover.has_rain_start_cmd is True
+        assert cover.has_rain_stop_cmd is True
+        assert cover.has_goto_dawn_pos_cmd is True
+        assert cover.has_goto_dusk_pos_cmd is True
+        assert cover.has_sun_prog_active is True
+        assert cover.has_wind_prog_active is True
+        assert cover.has_rain_prog_active is True
 
     @pytest.mark.asyncio
     async def test_update_state(self, mocked_api):
@@ -112,3 +148,85 @@ class TestHomePilotCover:
         cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
         await cover.async_ping()
         mocked_api.async_ping.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_async_sun_start_cmd(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_sun_start_cmd()
+        mocked_api.async_sun_start_cmd.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_async_sun_stop_cmd(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_sun_stop_cmd()
+        mocked_api.async_sun_stop_cmd.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_async_wind_start_cmd(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_wind_start_cmd()
+        mocked_api.async_wind_start_cmd.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_async_wind_stop_cmd(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_wind_stop_cmd()
+        mocked_api.async_wind_stop_cmd.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_async_rain_start_cmd(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_rain_start_cmd()
+        mocked_api.async_rain_start_cmd.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_async_rain_stop_cmd(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_rain_stop_cmd()
+        mocked_api.async_rain_stop_cmd.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_async_goto_dawn_pos_cmd(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_goto_dawn_pos_cmd()
+        mocked_api.async_goto_dawn_pos_cmd.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_async_goto_dusk_pos_cmd(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+        await cover.async_goto_dusk_pos_cmd()
+        mocked_api.async_goto_dusk_pos_cmd.assert_called_with('1')
+
+    @pytest.mark.asyncio
+    async def test_new_prog_active_properties(self, mocked_api):
+        cover = await HomePilotCover.async_build_from_api(mocked_api, 1)
+
+        # Test initial capability detection
+        assert cover.has_sun_prog_active is True
+        assert cover.has_wind_prog_active is True
+        assert cover.has_rain_prog_active is True
+
+        # Test state update for property values
+        await cover.update_state({
+            "statusesMap": {
+                "Position": 50,
+                "automaticvalue": 0,
+                "manualoverride": 0
+            },
+            "statusValid": True
+        }, mocked_api)
+
+        # Verify values from device data
+        assert cover.sun_prog_active_value is False
+        assert cover.wind_prog_active_value is True
+        assert cover.rain_prog_active_value is False
+
+        # Test property setters
+        cover.sun_prog_active_value = True
+        assert cover.sun_prog_active_value is True
+
+        cover.wind_prog_active_value = False
+        assert cover.wind_prog_active_value is False
+
+        cover.rain_prog_active_value = True
+        assert cover.rain_prog_active_value is True

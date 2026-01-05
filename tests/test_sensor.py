@@ -9,21 +9,21 @@ from homepilot.sensor import ContactState, HomePilotSensor
 
 class TestHomePilotCover:
     @pytest.fixture
-    def mocked_api_env_sensor(self, event_loop):
+    def mocked_api_env_sensor(self):
         f = open("tests/test_files/device_env_sensor.json")
         j = json.load(f)
         api = MagicMock()
-        func_get_device = asyncio.Future(loop=event_loop)
+        func_get_device = asyncio.Future()
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
         yield api
 
     @pytest.fixture
-    def mocked_api_contact_sensor(self, event_loop):
+    def mocked_api_contact_sensor(self):
         f = open("tests/test_files/device_contact_sensor.json")
         j = json.load(f)
         api = MagicMock()
-        func_get_device = asyncio.Future(loop=event_loop)
+        func_get_device = asyncio.Future()
         func_get_device.set_result(j["payload"]["device"])
         api.get_device.return_value = func_get_device
         yield api

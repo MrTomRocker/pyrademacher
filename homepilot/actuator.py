@@ -1,4 +1,5 @@
 import asyncio
+from typing import Optional, Dict, Any
 from .const import (
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC,
@@ -10,10 +11,10 @@ from .const import (
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
-from .device import HomePilotDevice
+from .device import HomePilotAutoConfigDevice, HomePilotDevice
 
 
-class HomePilotActuator(HomePilotDevice):
+class HomePilotActuator(HomePilotAutoConfigDevice):
     _is_on: bool
     _brightness: int
 
@@ -28,6 +29,7 @@ class HomePilotActuator(HomePilotDevice):
         fw_version: str,
         device_group: int,
         has_ping_cmd: bool = False,
+        device_map: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(
             api=api,
@@ -39,6 +41,7 @@ class HomePilotActuator(HomePilotDevice):
             fw_version=fw_version,
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,
+            device_map = device_map,
         )
 
     @staticmethod
@@ -65,12 +68,15 @@ class HomePilotActuator(HomePilotDevice):
             if APICAP_VERSION_CFG in device_map else "",
             device_group=device_map[APICAP_DEVICE_TYPE_LOC]["value"],
             has_ping_cmd=APICAP_PING_CMD in device_map,
+            device_map=device_map,
         )
 
     async def update_state(self, state, api):
         await super().update_state(state, api)
         self.is_on = state["statusesMap"]["Position"] != 0
         self.brightness = state["statusesMap"]["Position"]
+        device_map = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
+        await super().update_device_state(state, device_map)
 
     @property
     def is_on(self) -> bool:
