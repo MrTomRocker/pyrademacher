@@ -10,7 +10,7 @@ from homepilot.switch import HomePilotSwitch
 class TestHomePilotSwitch:
     @pytest.fixture
     def mocked_api(self):
-        f = open("tests/test_files/device_switch.json")
+        f = open("tests/test_files/device_switch.json", encoding="utf-8")
         j = json.load(f)
         api = MagicMock()
         func_get_device = asyncio.Future()
