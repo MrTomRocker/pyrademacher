@@ -75,6 +75,11 @@ These devices also support the auto modes (`has_*_auto_mode` / `*_auto_mode_valu
 `async_set_*_auto_mode(...)`) for `auto`, `time`, `contact`, `wind`, `dawn`, `dusk`,
 `rain` and `sun`.
 
+They additionally expose the read-only weather program "active" states for devices
+that advertise the corresponding event — `has_sun_prog_active` / `sun_prog_active_value`,
+`has_wind_prog_active` / `wind_prog_active_value` and `has_rain_prog_active` /
+`rain_prog_active_value` — updated on every state refresh.
+
 ### Scene Management
 
 The library supports managing HomePilot scenes with comprehensive functionality:

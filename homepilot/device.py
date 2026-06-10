@@ -22,6 +22,9 @@ from .const import (
     APICAP_GOTO_DUSK_POS_CMD,
     APICAP_CONTACT_OPEN_CMD,
     APICAP_CONTACT_CLOSE_CMD,
+    APICAP_SUN_PROG_ACTIVE_EVT,
+    APICAP_WIND_PROG_ACTIVE_EVT,
+    APICAP_RAIN_PROG_ACTIVE_EVT,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC
 )
@@ -182,6 +185,12 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
     _has_goto_dusk_pos_cmd: bool
     _has_contact_open_cmd: bool
     _has_contact_close_cmd: bool
+    _has_sun_prog_active: bool
+    _sun_prog_active_value: bool
+    _has_wind_prog_active: bool
+    _wind_prog_active_value: bool
+    _has_rain_prog_active: bool
+    _rain_prog_active_value: bool
 
     def __init__(
         self,
@@ -229,6 +238,10 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
         self._has_goto_dusk_pos_cmd = APICAP_GOTO_DUSK_POS_CMD in device_map
         self._has_contact_open_cmd = APICAP_CONTACT_OPEN_CMD in device_map
         self._has_contact_close_cmd = APICAP_CONTACT_CLOSE_CMD in device_map
+        # Weather program "active" events (read-only state)
+        self._has_sun_prog_active = APICAP_SUN_PROG_ACTIVE_EVT in device_map
+        self._has_wind_prog_active = APICAP_WIND_PROG_ACTIVE_EVT in device_map
+        self._has_rain_prog_active = APICAP_RAIN_PROG_ACTIVE_EVT in device_map
 
     async def update_device_state(self, state: Dict[str, Any], device_map: Optional[Dict[str, Any]]) -> None:
         if self.has_auto_mode:
@@ -252,6 +265,12 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
             self.rain_auto_mode_value = device_map.get(APICAP_RAIN_AUTO_CFG, {}).get("value", "false") == "true"
         if self.has_sun_auto_mode:
             self.sun_auto_mode_value = device_map.get(APICAP_SUN_AUTO_CFG, {}).get("value", "false") == "true"
+        if self.has_sun_prog_active:
+            self.sun_prog_active_value = device_map.get(APICAP_SUN_PROG_ACTIVE_EVT, {}).get("value", "false") == "true"
+        if self.has_wind_prog_active:
+            self.wind_prog_active_value = device_map.get(APICAP_WIND_PROG_ACTIVE_EVT, {}).get("value", "false") == "true"
+        if self.has_rain_prog_active:
+            self.rain_prog_active_value = device_map.get(APICAP_RAIN_PROG_ACTIVE_EVT, {}).get("value", "false") == "true"
 
     async def async_set_auto_mode(self, auto_mode) -> None:
         await self.api.async_set_auto_mode(self.did, auto_mode)
@@ -388,6 +407,42 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
     @property
     def has_contact_close_cmd(self) -> bool:
         return self._has_contact_close_cmd
+
+    @property
+    def has_sun_prog_active(self) -> bool:
+        return self._has_sun_prog_active
+
+    @property
+    def sun_prog_active_value(self) -> bool:
+        return self._sun_prog_active_value
+
+    @sun_prog_active_value.setter
+    def sun_prog_active_value(self, sun_prog_active_value):
+        self._sun_prog_active_value = sun_prog_active_value
+
+    @property
+    def has_wind_prog_active(self) -> bool:
+        return self._has_wind_prog_active
+
+    @property
+    def wind_prog_active_value(self) -> bool:
+        return self._wind_prog_active_value
+
+    @wind_prog_active_value.setter
+    def wind_prog_active_value(self, wind_prog_active_value):
+        self._wind_prog_active_value = wind_prog_active_value
+
+    @property
+    def has_rain_prog_active(self) -> bool:
+        return self._has_rain_prog_active
+
+    @property
+    def rain_prog_active_value(self) -> bool:
+        return self._rain_prog_active_value
+
+    @rain_prog_active_value.setter
+    def rain_prog_active_value(self, rain_prog_active_value):
+        self._rain_prog_active_value = rain_prog_active_value
 
     @property
     def auto_mode_value(self) -> bool:

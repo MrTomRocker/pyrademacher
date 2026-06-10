@@ -52,6 +52,9 @@ from homepilot.const import (
     APICAP_GOTO_DUSK_POS_CMD,
     APICAP_CONTACT_OPEN_CMD,
     APICAP_CONTACT_CLOSE_CMD,
+    APICAP_SUN_PROG_ACTIVE_EVT,
+    APICAP_WIND_PROG_ACTIVE_EVT,
+    APICAP_RAIN_PROG_ACTIVE_EVT,
 )
 
 
@@ -955,3 +958,79 @@ class TestAutoConfigDeviceCommands:
             assert getattr(switch, has_attr) is True, has_attr
             await getattr(switch, method)()
             getattr(mocked_api, method).assert_called_with(789)
+
+
+# (capability constant, has_*_prog_active property, *_prog_active_value property)
+PROG_ACTIVE_MATRIX = [
+    (APICAP_SUN_PROG_ACTIVE_EVT, "has_sun_prog_active", "sun_prog_active_value"),
+    (APICAP_WIND_PROG_ACTIVE_EVT, "has_wind_prog_active", "wind_prog_active_value"),
+    (APICAP_RAIN_PROG_ACTIVE_EVT, "has_rain_prog_active", "rain_prog_active_value"),
+]
+
+
+class TestAutoConfigDeviceProgActive:
+    """Test the weather program "active" events (sun/wind/rain) that are
+    provided by HomePilotAutoConfigDevice and therefore available to every
+    device type that inherits from it (cover, switch/actuator, ...)."""
+
+    @pytest.fixture
+    def mocked_api(self):
+        return MagicMock(spec=HomePilotApi)
+
+    @pytest.fixture
+    def device_data(self):
+        return {
+            "did": 123,
+            "uid": "test-uid-123",
+            "name": "Test Auto Device",
+            "device_number": "DEV001",
+            "model": "TestModel",
+            "fw_version": "1.0.0",
+            "device_group": 1,
+            "has_ping_cmd": True,
+        }
+
+    def test_prog_active_detected(self, mocked_api, device_data):
+        device = HomePilotAutoConfigDevice(
+            api=mocked_api,
+            device_map={cap: {"value": "false"} for cap, _, _ in PROG_ACTIVE_MATRIX},
+            **device_data,
+        )
+        for _, has_attr, _ in PROG_ACTIVE_MATRIX:
+            assert getattr(device, has_attr) is True, has_attr
+
+    def test_prog_active_absent(self, mocked_api, device_data):
+        device = HomePilotAutoConfigDevice(api=mocked_api, device_map={}, **device_data)
+        for _, has_attr, _ in PROG_ACTIVE_MATRIX:
+            assert getattr(device, has_attr) is False, has_attr
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("cap,has_attr,value_attr", PROG_ACTIVE_MATRIX)
+    async def test_prog_active_value_updates_from_state(
+        self, mocked_api, device_data, cap, has_attr, value_attr
+    ):
+        device = HomePilotAutoConfigDevice(
+            api=mocked_api, device_map={cap: {"value": "false"}}, **device_data
+        )
+        state = {"statusesMap": {}}
+        await device.update_device_state(state, {cap: {"value": "true"}})
+        assert getattr(device, value_attr) is True
+        await device.update_device_state(state, {cap: {"value": "false"}})
+        assert getattr(device, value_attr) is False
+
+    def test_switch_inherits_prog_active(self, mocked_api):
+        switch = HomePilotSwitch(
+            api=mocked_api,
+            did=789,
+            uid="switch-uid",
+            name="Test Switch",
+            device_number="SWI001",
+            model="TestSwitchModel",
+            fw_version="1.0.0",
+            device_group=3,
+            has_ping_cmd=True,
+            device_map={cap: {"value": "false"} for cap, _, _ in PROG_ACTIVE_MATRIX},
+        )
+        assert isinstance(switch, HomePilotAutoConfigDevice)
+        for _, has_attr, _ in PROG_ACTIVE_MATRIX:
+            assert getattr(switch, has_attr) is True, has_attr
