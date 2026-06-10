@@ -42,6 +42,16 @@ from homepilot.const import (
     APICAP_DUSK_AUTO_CFG,
     APICAP_RAIN_AUTO_CFG,
     APICAP_SUN_AUTO_CFG,
+    APICAP_SUN_START_CMD,
+    APICAP_SUN_STOP_CMD,
+    APICAP_WIND_START_CMD,
+    APICAP_WIND_STOP_CMD,
+    APICAP_RAIN_START_CMD,
+    APICAP_RAIN_STOP_CMD,
+    APICAP_GOTO_DAWN_POS_CMD,
+    APICAP_GOTO_DUSK_POS_CMD,
+    APICAP_CONTACT_OPEN_CMD,
+    APICAP_CONTACT_CLOSE_CMD,
 )
 
 
@@ -823,3 +833,125 @@ class TestAutoConfigChildClasses:
 
         # Cover-specific functionality should still work
         assert cover.can_set_position is True
+
+
+# (capability constant, has_*_cmd property, async_*_cmd method, api method)
+COMMAND_MATRIX = [
+    (APICAP_SUN_START_CMD, "has_sun_start_cmd", "async_sun_start_cmd"),
+    (APICAP_SUN_STOP_CMD, "has_sun_stop_cmd", "async_sun_stop_cmd"),
+    (APICAP_WIND_START_CMD, "has_wind_start_cmd", "async_wind_start_cmd"),
+    (APICAP_WIND_STOP_CMD, "has_wind_stop_cmd", "async_wind_stop_cmd"),
+    (APICAP_RAIN_START_CMD, "has_rain_start_cmd", "async_rain_start_cmd"),
+    (APICAP_RAIN_STOP_CMD, "has_rain_stop_cmd", "async_rain_stop_cmd"),
+    (APICAP_GOTO_DAWN_POS_CMD, "has_goto_dawn_pos_cmd", "async_goto_dawn_pos_cmd"),
+    (APICAP_GOTO_DUSK_POS_CMD, "has_goto_dusk_pos_cmd", "async_goto_dusk_pos_cmd"),
+    (APICAP_CONTACT_OPEN_CMD, "has_contact_open_cmd", "async_contact_open_cmd"),
+    (APICAP_CONTACT_CLOSE_CMD, "has_contact_close_cmd", "async_contact_close_cmd"),
+]
+
+
+class TestAutoConfigDeviceCommands:
+    """Test the weather/contact command capabilities (sun/wind/rain start-stop,
+    goto dawn/dusk position, contact open/close) that are provided by
+    HomePilotAutoConfigDevice and therefore available to every device type that
+    inherits from it (cover, switch/actuator, thermostat, light)."""
+
+    @pytest.fixture
+    def mocked_api(self):
+        api = MagicMock(spec=HomePilotApi)
+        for _, _, method in COMMAND_MATRIX:
+            future = asyncio.Future()
+            future.set_result(None)
+            getattr(api, method).return_value = future
+        return api
+
+    @pytest.fixture
+    def device_data(self):
+        return {
+            "did": 123,
+            "uid": "test-uid-123",
+            "name": "Test Auto Device",
+            "device_number": "DEV001",
+            "model": "TestModel",
+            "fw_version": "1.0.0",
+            "device_group": 1,
+            "has_ping_cmd": True,
+        }
+
+    @pytest.fixture
+    def full_command_map(self):
+        """Device map advertising every weather/contact command capability."""
+        return {cap: {"value": None} for cap, _, _ in COMMAND_MATRIX}
+
+    def test_command_capabilities_detected(self, mocked_api, device_data, full_command_map):
+        """All has_*_cmd properties are True when the capability is present."""
+        device = HomePilotAutoConfigDevice(
+            api=mocked_api, device_map=full_command_map, **device_data
+        )
+        for _, has_attr, _ in COMMAND_MATRIX:
+            assert getattr(device, has_attr) is True, has_attr
+
+    def test_command_capabilities_absent_empty_map(self, mocked_api, device_data):
+        """All has_*_cmd properties are False for an empty device map."""
+        device = HomePilotAutoConfigDevice(
+            api=mocked_api, device_map={}, **device_data
+        )
+        for _, has_attr, _ in COMMAND_MATRIX:
+            assert getattr(device, has_attr) is False, has_attr
+
+    def test_command_capabilities_absent_no_map(self, mocked_api, device_data):
+        """All has_*_cmd properties are False when device_map is None."""
+        device = HomePilotAutoConfigDevice(
+            api=mocked_api, device_map=None, **device_data
+        )
+        for _, has_attr, _ in COMMAND_MATRIX:
+            assert getattr(device, has_attr) is False, has_attr
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("cap,has_attr,method", COMMAND_MATRIX)
+    async def test_async_command_calls_api_with_did(
+        self, mocked_api, device_data, cap, has_attr, method
+    ):
+        """When the capability is present, the command forwards to the API
+        using the device id."""
+        device = HomePilotAutoConfigDevice(
+            api=mocked_api, device_map={cap: {"value": None}}, **device_data
+        )
+        assert getattr(device, has_attr) is True
+        await getattr(device, method)()
+        getattr(mocked_api, method).assert_called_once_with(123)
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("cap,has_attr,method", COMMAND_MATRIX)
+    async def test_async_command_noop_when_capability_absent(
+        self, mocked_api, device_data, cap, has_attr, method
+    ):
+        """Without the capability the command is a no-op and never hits the API."""
+        device = HomePilotAutoConfigDevice(
+            api=mocked_api, device_map={}, **device_data
+        )
+        assert getattr(device, has_attr) is False
+        await getattr(device, method)()
+        getattr(mocked_api, method).assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_switch_exposes_and_forwards_commands(self, mocked_api, full_command_map):
+        """A switch/actuator (which only inherits from HomePilotAutoConfigDevice)
+        now exposes the command capabilities and forwards them to the API."""
+        switch = HomePilotSwitch(
+            api=mocked_api,
+            did=789,
+            uid="switch-uid",
+            name="Test Switch",
+            device_number="SWI001",
+            model="TestSwitchModel",
+            fw_version="1.0.0",
+            device_group=3,
+            has_ping_cmd=True,
+            device_map=full_command_map,
+        )
+        assert isinstance(switch, HomePilotAutoConfigDevice)
+        for _, has_attr, method in COMMAND_MATRIX:
+            assert getattr(switch, has_attr) is True, has_attr
+            await getattr(switch, method)()
+            getattr(mocked_api, method).assert_called_with(789)

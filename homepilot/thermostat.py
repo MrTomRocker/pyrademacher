@@ -16,14 +16,6 @@ from .const import (
     APICAP_INT_OPEN_WINDOW_DETECT_EVT,
     APICAP_BOOST_TIME_CFG,
     APICAP_BOOST_ACTIVE_CFG,
-    APICAP_CONTACT_OPEN_CMD,
-    APICAP_CONTACT_CLOSE_CMD,
-    APICAP_EXT_OPEN_WINDOW_DETECT_EVT,
-    APICAP_INT_OPEN_WINDOW_DETECT_EVT,
-    APICAP_BOOST_TIME_CFG,
-    APICAP_BOOST_ACTIVE_CFG,
-    APICAP_CONTACT_OPEN_CMD,
-    APICAP_CONTACT_CLOSE_CMD,
     SUPPORTED_DEVICES,
 )
 from .api import HomePilotApi
@@ -58,8 +50,6 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
     _boost_time_value: float
     _has_boost_active: bool
     _boost_active_value: bool
-    _has_contact_open_cmd: bool
-    _has_contact_close_cmd: bool
 
     def __init__(
         self,
@@ -86,8 +76,6 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
         has_int_open_window_detect: bool = False,
         has_boost_time: bool = False,
         has_boost_active: bool = False,
-        has_contact_open_cmd: bool = False,
-        has_contact_close_cmd: bool = False,
         device_map: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(
@@ -117,9 +105,6 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
         self._has_int_open_window_detect = has_int_open_window_detect
         self._has_boost_time = has_boost_time
         self._has_boost_active = has_boost_active
-        # Initialize new contact command properties
-        self._has_contact_open_cmd = has_contact_open_cmd
-        self._has_contact_close_cmd = has_contact_close_cmd
         self._has_temperature_thresh_cfg = [None] * 4
         self._temperature_thresh_cfg_value = [None] * 4
         self._temperature_thresh_cfg_min = [None] * 4
@@ -188,8 +173,6 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
             has_int_open_window_detect=APICAP_INT_OPEN_WINDOW_DETECT_EVT in device_map,
             has_boost_time=APICAP_BOOST_TIME_CFG in device_map,
             has_boost_active=APICAP_BOOST_ACTIVE_CFG in device_map,
-            has_contact_open_cmd=APICAP_CONTACT_OPEN_CMD in device_map,
-            has_contact_close_cmd=APICAP_CONTACT_CLOSE_CMD in device_map,
             device_map=device_map,
         )
 
@@ -234,14 +217,6 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
 
     async def async_set_temperature_thresh_cfg(self, thresh_number, temperature) -> None:
         await self.api.async_set_temperature_thresh_cfg(self.did, thresh_number, temperature)
-
-    async def async_contact_open_cmd(self) -> None:
-        if self.has_contact_open_cmd:
-            await self.api.async_contact_open_cmd(self.did)
-
-    async def async_contact_close_cmd(self) -> None:
-        if self.has_contact_close_cmd:
-            await self.api.async_contact_close_cmd(self.did)
 
     async def async_set_boost_active_cfg(self, boost_active) -> None:
         await self.api.async_set_boost_active_cfg(self.did, boost_active)
@@ -389,11 +364,3 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
     @boost_active_value.setter
     def boost_active_value(self, boost_active_value):
         self._boost_active_value = boost_active_value
-
-    @property
-    def has_contact_open_cmd(self) -> bool:
-        return self._has_contact_open_cmd
-
-    @property
-    def has_contact_close_cmd(self) -> bool:
-        return self._has_contact_close_cmd
