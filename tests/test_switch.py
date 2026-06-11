@@ -36,7 +36,7 @@ class TestHomePilotSwitch:
         assert switch.device_number == "35000262"
         assert switch.device_group == "1"
         assert switch.fw_version == "4.7-1"
-        assert switch.model == "DuoFern Universal actuator 2-channel"
+        assert switch.model == "DuoFern switching actuator 2-channel"
         assert switch.has_ping_cmd is True
 
     @pytest.mark.asyncio

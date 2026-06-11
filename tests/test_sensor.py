@@ -37,7 +37,7 @@ class TestHomePilotCover:
         assert env_sensor.device_number == "32000064_S"
         assert env_sensor.device_group == "3"
         assert env_sensor.fw_version == "0.3-1"
-        assert env_sensor.model == "Sensor DuoFern Environmental sensor"
+        assert env_sensor.model == "DuoFern Environmental sensor"
         assert env_sensor.has_ping_cmd is False
         assert env_sensor.has_battery_level is False
         assert env_sensor.has_brightness is True
