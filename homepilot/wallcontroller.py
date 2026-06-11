@@ -17,6 +17,7 @@ from .device import HomePilotDevice
 import logging
 _LOGGER = logging.getLogger(__name__)
 
+
 class HomePilotWallController(HomePilotDevice):
     def __init__(
         self,
@@ -30,7 +31,7 @@ class HomePilotWallController(HomePilotDevice):
         device_group: int,
         has_ping_cmd: bool = False,
         has_battery_low: bool = False,
-        channels = None,
+        channels=None,
     ) -> None:
         super().__init__(
             api=api,
@@ -84,7 +85,7 @@ class HomePilotWallController(HomePilotDevice):
         await super().update_state(state, api)
         if self.has_battery_low and "batteryLow" in state:
             self.battery_low_value = state["batteryLow"]
-    
+
     async def update_channels(self):
         device_map = HomePilotDevice.get_capabilities_map(await self.api.get_device(self.did))
         for i in range(len(device_map)):

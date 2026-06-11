@@ -89,7 +89,7 @@ APICAP_COLOR_MODE_CFG = "COLOR_MODE_CFG"
 # Window Detection
 APICAP_EXT_OPEN_WINDOW_DETECT_EVT = "EXT_OPEN_WINDOW_DETECT_EVT"
 APICAP_INT_OPEN_WINDOW_DETECT_EVT = "INT_OPEN_WINDOW_DETECT_EVT"
-#Boost
+# Boost
 APICAP_BOOST_TIME_CFG = "BOOST_TIME_CFG"
 APICAP_BOOST_ACTIVE_CFG = "BOOST_ACTIVE_CFG"
 # Contact Commands
@@ -97,116 +97,228 @@ APICAP_CONTACT_OPEN_CMD = "CONTACT_OPEN_CMD"
 APICAP_CONTACT_CLOSE_CMD = "CONTACT_CLOSE_CMD"
 
 SUPPORTED_DEVICES = {
-    "10122345": { "name": "RolloTron smart flush-mounted belt winder pure", "type": COVER_TYPE },
-    "10142345": { "name": "RolloTron smart flush-mounted belt winder classic", "type": COVER_TYPE },
-    "10182345": { "name": "RolloTron smart flush-mounted belt winder premium", "type": COVER_TYPE },
-    "10236020": { "name": "Smart roller shutter motor premium", "type": COVER_TYPE },
-    "10251530": { "name": "RolloTron smart wall-mounted winder pure", "type": COVER_TYPE },
-    "10502001": { "name": "Smart programmable timer premium", "type": OTHER_TYPE },
-    "10502002": { "name": "Smart programmable timer classic", "type": OTHER_TYPE },
-    "10771001_A": { "name": "Smart weather sensor - roller shutter actuator", "type": OTHER_TYPE },
-    "10771001_S": { "name": "Smart weather sensor", "type": OTHER_TYPE },
-    "10771002": { "name": "Smart sun and wind sensor", "type": OTHER_TYPE },
-    "10771003": { "name": "Smart sun sensor", "type": OTHER_TYPE },
-    "10941001": { "name": "Smart flush-mounted roller shutter receiver", "type": OTHER_TYPE },
-    "11301001": { "name": "Smart plug", "type": OTHER_TYPE },
-    "11301002": { "name": "Zigbee Plug E", "type": OTHER_TYPE },
-    "11301003": { "name": "Zigbee Plug F", "type": OTHER_TYPE },
-    "11771001_A": { "name": "Smart motion detector", "type": OTHER_TYPE },
-    "11771001_S": { "name": "Smart motion detector - sensor", "type": OTHER_TYPE },
-    "11941001": { "name": "Smart light receiver 1-channel", "type": OTHER_TYPE },
-    "11941002": { "name": "Smart light receiver 2-channel", "type": OTHER_TYPE },
-    "11941003": { "name": "Smart dimmer", "type": OTHER_TYPE },
-    "12481001": { "name": "Smart remote control 6 groups", "type": OTHER_TYPE },
-    "12501001": { "name": "Smart wall switch 1 group", "type": OTHER_TYPE },
-    "12501006": { "name": "Smart wall switch 3 groups", "type": OTHER_TYPE },
-    "13501001_A": { "name": "Smart thermostat premium", "type": OTHER_TYPE },
-    "13501001_S": { "name": "Smart thermostat premium - Sensor", "type": OTHER_TYPE },
-    "13601001": { "name": "Smart radiator valve", "type": OTHER_TYPE },
-    "14234511": { "name": "RolloTron radio beltwinder", "type": COVER_TYPE },
-    "14236011": { "name": "RolloTron radio beltwinder", "type": COVER_TYPE },
-    "14771001": { "name": "Smart smoke alarm", "type": OTHER_TYPE },
-    "14771002": { "name": "Smart door and window contact", "type": OTHER_TYPE },
-    "14771003_A": { "name": "HP Smart Smoke Alarm - Siren", "type": OTHER_TYPE },
-    "14771003_S": { "name": "HP Smart Smoke Alarm - Sensor", "type": OTHER_TYPE },
-    "16234511_A": { "name": "RolloTron Comfort DuoFern", "type": COVER_TYPE },
-    "16234511_S": { "name": "Sun sensor RolloTron Comfort DuoFern", "type": SENSOR_TYPE },
-    "16901001": { "name": "Smart garage door opener premium", "type": OTHER_TYPE },
-    "23602075": { "name": "RolloTube S-line DuoFern", "type": COVER_TYPE },
-    "23782076": { "name": "RolloTube S-line Sun DuoFern", "type": COVER_TYPE },
-    "25782075": { "name": "RolloTube S-line Zip DuoFern", "type": COVER_TYPE },
-    "27601565": { "name": "DuoFern tubular motor", "type": COVER_TYPE },
-    "31500162": { "name": "DuoFern tubular motor control B50/B55", "type": COVER_TYPE },
-    "32000062": { "name": "DuoFern radio transmitter UP", "type": OTHER_TYPE },
-    "32000062_S": { "name": "Sensor DuoFern Radio transmitter UP", "type": OTHER_TYPE },
-    "32000064_A": { "name": "DuoFern tubular motor actuator environmental sensor", "type": COVER_TYPE },
-    "32000064_S": { "name": "DuoFern Environmental sensor", "type": SENSOR_TYPE },
-    "32000069": { "name": "DuoFern Sun Sensor", "type": OTHER_TYPE },
-    "32001464": { "name": "DuoFern Awning monitor", "type": OTHER_TYPE },
-    "32001664": { "name": "DuoFern Smoke Alarm Device", "type": SMOKE_SENSOR_TYPE },
-    "32002119": { "name": "Z-Wave window/door contact", "type": CONTACT_SENSOR_TYPE },
-    "32003164": { "name": "DuoFern Window/Door Contact", "type": CONTACT_SENSOR_TYPE },
-    "32004119": { "name": "IP Camera", "type": OTHER_TYPE },
-    "32004219": { "name": "HD Camera (Indoor)", "type": OTHER_TYPE },
-    "32004329": { "name": "HD Camera (Outdoor)", "type": OTHER_TYPE },
-    "32004464": { "name": "DuoFern Sun/Wind Sensor", "type": OTHER_TYPE },
-    "32010361": { "name": "DuoFern Standard manual transmitter 1 group 1 device", "type": OTHER_TYPE },
-    "32060366": { "name": "DuoFern Standard manual transmitter 1 group 6 devices", "type": OTHER_TYPE },
-    "32160211": { "name": "DuoFern Wall Controller", "type": OTHER_TYPE },
-    "32210069": { "name": "DuoFern Sun Sensor", "type": OTHER_TYPE },
-    "32231464": { "name": "DuoFern Awning Sensor", "type": OTHER_TYPE },
-    "32241664_A": { "name": "RDM Smart Smoke Alarm - Siren", "type": OTHER_TYPE },
-    "32241664_S": { "name": "RDM Smart Smoke Alarm - Sensor", "type": OTHER_TYPE },
-    "32320364": { "name": "DuoFern Standard manual transmitter 4 groups", "type": OTHER_TYPE },
-    "32480361": { "name": "DuoFern Standard manual transmitter 1 group 48 devices", "type": OTHER_TYPE },
-    "32480366": { "name": "DuoFern Standard manual transmitter 6 groups 48 devices", "type": OTHER_TYPE },
-    "32501371": { "name": "DuoFern HomeTimer", "type": OTHER_TYPE },
-    "32501772_A": { "name": "Actuator DuoFern Motion detector (indoor)", "type": OTHER_TYPE },
-    "32501772_S": { "name": "Sensor DuoFern Motion detector (indoor)", "type": OTHER_TYPE },
-    "32501812_A": { "name": "DuoFern Room Thermostat", "type": THERMOSTAT_TYPE },
-    "32501812_S": { "name": "Temperature sensor DuoFern Room thermostat", "type": SENSOR_TYPE },
-    "32501972_A": { "name": "Actuator DuoFern Multiple Wall Controller 230V", "type": OTHER_TYPE },
-    "32501972_S": { "name": "Sensor DuoFern Multiple Wall Controller 230V", "type": OTHER_TYPE },
-    "32501973": { "name": "DuoFern Wall Controller 1 channel", "type": OTHER_TYPE },
-    "32501974": { "name": "DuoFern Multiple Wall Controller BAT", "type": OTHER_TYPE },
-    "34810060": { "name": "DuoFern Central Operating Unit", "type": OTHER_TYPE },
-    "35000262": { "name": "DuoFern switching actuator 2-channel", "type": SWITCH_ACTUATOR_TYPE },
-    "35000462": { "name": "DuoFern Universal dimming actuator", "type": OTHER_TYPE },
-    "35000662": { "name": "DuoFern tubular motor actuator", "type": COVER_TYPE },
-    "35000864": { "name": "DuoFern Connect actuator", "type": OTHER_TYPE },
-    "35001164": { "name": "DuoFern Switch actuator", "type": SWITCH_ACTUATOR_TYPE },
-    "35002319": { "name": "Z-Wave radiator actuator", "type": OTHER_TYPE },
-    "35002414": { "name": "Z-Wave Repeater with switching function", "type": OTHER_TYPE },
-    "35003064": { "name": "DuoFern Radiator Actuator", "type": OTHER_TYPE },
-    "35003064_A": { "name": "DuoFern Radiator Actuator", "type": OTHER_TYPE },
-    "35003064_S": { "name": "Temperature sensor DuoFern Radiator Actuator", "type": SENSOR_TYPE },
-    "35104001": { "name": "addZ White + Colour LED GU10", "type": OTHER_TYPE },
-    "35140462": { "name": "DuoFern Universal dimmer", "type": OTHER_TYPE },
-    "35140662": { "name": "DuoFern tubular motor actuator", "type": COVER_TYPE },
-    "35144001": { "name": "addZ White + Colour LED E14", "type": OTHER_TYPE },
-    "35204011": { "name": "Rademacher Zigbee Plug type F", "type": OTHER_TYPE },
-    "35204012": { "name": "Rademacher Zigbee Plug type E", "type": OTHER_TYPE },
-    "35204013": { "name": "Rademacher Zigbee Plug type G", "type": OTHER_TYPE },
-    "35274001": { "name": "addZ White + Colour LED E27", "type": OTHER_TYPE },
-    "36500172": { "name": "Troll Basis DuoFern", "type": COVER_TYPE },
-    "36500572_A": { "name": "Troll Comfort DuoFern", "type": COVER_TYPE },
-    "36500572_S": { "name": "Sun sensor Troll Comfort DuoFern", "type": SENSOR_TYPE },
-    "36501512": { "name": "Troll Comfort DuoFern", "type": COVER_TYPE },
-    "45059071": { "name": "RolloPort SX5 DuoFern", "type": COVER_TYPE },
-    "99999700": { "name": "Smart programmable timer premium - (light mode)", "type": OTHER_TYPE },
-    "99999701": { "name": "RolloTron smart flush-mounted belt winder premium (slave)", "type": OTHER_TYPE },
-    "99999801": { "name": "X3D switch", "type": OTHER_TYPE },
-    "99999802": { "name": "X3D Dimmer", "type": OTHER_TYPE },
-    "99999803": { "name": "Smart thermostat pure/classic", "type": OTHER_TYPE },
-    "99999804": { "name": "X3D Blind / actuator", "type": COVER_TYPE },
-    "99999805": { "name": "X3D remote", "type": OTHER_TYPE },
-    "99999806": { "name": "X3D Tymoov Solar", "type": OTHER_TYPE },
-    "99999950": { "name": "ONVIF Camera", "type": OTHER_TYPE },
-    "99999960": { "name": "Zigbee Plug", "type": OTHER_TYPE },
-    "99999973": { "name": "Zigbee White LED", "type": OTHER_TYPE },
-    "99999974": { "name": "Zigbee tuneable white LED", "type": OTHER_TYPE },
-    "99999975": { "name": "Zigbee RGBW LED", "type": OTHER_TYPE },
-    "99999976": { "name": "Zigbee RGB LED", "type": OTHER_TYPE },
-    "99999998": { "name": "iOS Smartphone (GeoPilot)", "type": OTHER_TYPE },
-    "99999999": { "name": "Android Smartphone (GeoPilot)", "type": OTHER_TYPE },
+    "10122345":
+        {"name": "RolloTron smart flush-mounted belt winder pure", "type": COVER_TYPE},
+    "10142345":
+        {"name": "RolloTron smart flush-mounted belt winder classic", "type": COVER_TYPE},
+    "10182345":
+        {"name": "RolloTron smart flush-mounted belt winder premium", "type": COVER_TYPE},
+    "10236020":
+        {"name": "Smart roller shutter motor premium", "type": COVER_TYPE},
+    "10251530":
+        {"name": "RolloTron smart wall-mounted winder pure", "type": COVER_TYPE},
+    "10502001":
+        {"name": "Smart programmable timer premium", "type": OTHER_TYPE},
+    "10502002":
+        {"name": "Smart programmable timer classic", "type": OTHER_TYPE},
+    "10771001_A":
+        {"name": "Smart weather sensor - roller shutter actuator", "type": OTHER_TYPE},
+    "10771001_S":
+        {"name": "Smart weather sensor", "type": OTHER_TYPE},
+    "10771002":
+        {"name": "Smart sun and wind sensor", "type": OTHER_TYPE},
+    "10771003":
+        {"name": "Smart sun sensor", "type": OTHER_TYPE},
+    "10941001":
+        {"name": "Smart flush-mounted roller shutter receiver", "type": OTHER_TYPE},
+    "11301001":
+        {"name": "Smart plug", "type": OTHER_TYPE},
+    "11301002":
+        {"name": "Zigbee Plug E", "type": OTHER_TYPE},
+    "11301003":
+        {"name": "Zigbee Plug F", "type": OTHER_TYPE},
+    "11771001_A":
+        {"name": "Smart motion detector", "type": OTHER_TYPE},
+    "11771001_S":
+        {"name": "Smart motion detector - sensor", "type": OTHER_TYPE},
+    "11941001":
+        {"name": "Smart light receiver 1-channel", "type": OTHER_TYPE},
+    "11941002":
+        {"name": "Smart light receiver 2-channel", "type": OTHER_TYPE},
+    "11941003":
+        {"name": "Smart dimmer", "type": OTHER_TYPE},
+    "12481001":
+        {"name": "Smart remote control 6 groups", "type": OTHER_TYPE},
+    "12501001":
+        {"name": "Smart wall switch 1 group", "type": OTHER_TYPE},
+    "12501006":
+        {"name": "Smart wall switch 3 groups", "type": OTHER_TYPE},
+    "13501001_A":
+        {"name": "Smart thermostat premium", "type": OTHER_TYPE},
+    "13501001_S":
+        {"name": "Smart thermostat premium - Sensor", "type": OTHER_TYPE},
+    "13601001":
+        {"name": "Smart radiator valve", "type": OTHER_TYPE},
+    "14234511":
+        {"name": "RolloTron radio beltwinder", "type": COVER_TYPE},
+    "14236011":
+        {"name": "RolloTron radio beltwinder", "type": COVER_TYPE},
+    "14771001":
+        {"name": "Smart smoke alarm", "type": OTHER_TYPE},
+    "14771002":
+        {"name": "Smart door and window contact", "type": OTHER_TYPE},
+    "14771003_A":
+        {"name": "HP Smart Smoke Alarm - Siren", "type": OTHER_TYPE},
+    "14771003_S":
+        {"name": "HP Smart Smoke Alarm - Sensor", "type": OTHER_TYPE},
+    "16234511_A":
+        {"name": "RolloTron Comfort DuoFern", "type": COVER_TYPE},
+    "16234511_S":
+        {"name": "Sun sensor RolloTron Comfort DuoFern", "type": SENSOR_TYPE},
+    "16901001":
+        {"name": "Smart garage door opener premium", "type": OTHER_TYPE},
+    "23602075":
+        {"name": "RolloTube S-line DuoFern", "type": COVER_TYPE},
+    "23782076":
+        {"name": "RolloTube S-line Sun DuoFern", "type": COVER_TYPE},
+    "25782075":
+        {"name": "RolloTube S-line Zip DuoFern", "type": COVER_TYPE},
+    "27601565":
+        {"name": "DuoFern tubular motor", "type": COVER_TYPE},
+    "31500162":
+        {"name": "DuoFern tubular motor control B50/B55", "type": COVER_TYPE},
+    "32000062":
+        {"name": "DuoFern radio transmitter UP", "type": OTHER_TYPE},
+    "32000062_S":
+        {"name": "Sensor DuoFern Radio transmitter UP", "type": OTHER_TYPE},
+    "32000064_A":
+        {"name": "DuoFern tubular motor actuator environmental sensor", "type": COVER_TYPE},
+    "32000064_S":
+        {"name": "DuoFern Environmental sensor", "type": SENSOR_TYPE},
+    "32000069":
+        {"name": "DuoFern Sun Sensor", "type": OTHER_TYPE},
+    "32001464":
+        {"name": "DuoFern Awning monitor", "type": OTHER_TYPE},
+    "32001664":
+        {"name": "DuoFern Smoke Alarm Device", "type": SMOKE_SENSOR_TYPE},
+    "32002119":
+        {"name": "Z-Wave window/door contact", "type": CONTACT_SENSOR_TYPE},
+    "32003164":
+        {"name": "DuoFern Window/Door Contact", "type": CONTACT_SENSOR_TYPE},
+    "32004119":
+        {"name": "IP Camera", "type": OTHER_TYPE},
+    "32004219":
+        {"name": "HD Camera (Indoor)", "type": OTHER_TYPE},
+    "32004329":
+        {"name": "HD Camera (Outdoor)", "type": OTHER_TYPE},
+    "32004464":
+        {"name": "DuoFern Sun/Wind Sensor", "type": OTHER_TYPE},
+    "32010361":
+        {"name": "DuoFern Standard manual transmitter 1 group 1 device", "type": OTHER_TYPE},
+    "32060366":
+        {"name": "DuoFern Standard manual transmitter 1 group 6 devices", "type": OTHER_TYPE},
+    "32160211":
+        {"name": "DuoFern Wall Controller", "type": OTHER_TYPE},
+    "32210069":
+        {"name": "DuoFern Sun Sensor", "type": OTHER_TYPE},
+    "32231464":
+        {"name": "DuoFern Awning Sensor", "type": OTHER_TYPE},
+    "32241664_A":
+        {"name": "RDM Smart Smoke Alarm - Siren", "type": OTHER_TYPE},
+    "32241664_S":
+        {"name": "RDM Smart Smoke Alarm - Sensor", "type": OTHER_TYPE},
+    "32320364":
+        {"name": "DuoFern Standard manual transmitter 4 groups", "type": OTHER_TYPE},
+    "32480361":
+        {"name": "DuoFern Standard manual transmitter 1 group 48 devices", "type": OTHER_TYPE},
+    "32480366":
+        {"name": "DuoFern Standard manual transmitter 6 groups 48 devices", "type": OTHER_TYPE},
+    "32501371":
+        {"name": "DuoFern HomeTimer", "type": OTHER_TYPE},
+    "32501772_A":
+        {"name": "Actuator DuoFern Motion detector (indoor)", "type": OTHER_TYPE},
+    "32501772_S":
+        {"name": "Sensor DuoFern Motion detector (indoor)", "type": OTHER_TYPE},
+    "32501812_A":
+        {"name": "DuoFern Room Thermostat", "type": THERMOSTAT_TYPE},
+    "32501812_S":
+        {"name": "Temperature sensor DuoFern Room thermostat", "type": SENSOR_TYPE},
+    "32501972_A":
+        {"name": "Actuator DuoFern Multiple Wall Controller 230V", "type": OTHER_TYPE},
+    "32501972_S":
+        {"name": "Sensor DuoFern Multiple Wall Controller 230V", "type": OTHER_TYPE},
+    "32501973":
+        {"name": "DuoFern Wall Controller 1 channel", "type": OTHER_TYPE},
+    "32501974":
+        {"name": "DuoFern Multiple Wall Controller BAT", "type": OTHER_TYPE},
+    "34810060":
+        {"name": "DuoFern Central Operating Unit", "type": OTHER_TYPE},
+    "35000262":
+        {"name": "DuoFern switching actuator 2-channel", "type": SWITCH_ACTUATOR_TYPE},
+    "35000462":
+        {"name": "DuoFern Universal dimming actuator", "type": OTHER_TYPE},
+    "35000662":
+        {"name": "DuoFern tubular motor actuator", "type": COVER_TYPE},
+    "35000864":
+        {"name": "DuoFern Connect actuator", "type": OTHER_TYPE},
+    "35001164":
+        {"name": "DuoFern Switch actuator", "type": SWITCH_ACTUATOR_TYPE},
+    "35002319":
+        {"name": "Z-Wave radiator actuator", "type": OTHER_TYPE},
+    "35002414":
+        {"name": "Z-Wave Repeater with switching function", "type": OTHER_TYPE},
+    "35003064":
+        {"name": "DuoFern Radiator Actuator", "type": OTHER_TYPE},
+    "35003064_A":
+        {"name": "DuoFern Radiator Actuator", "type": OTHER_TYPE},
+    "35003064_S":
+        {"name": "Temperature sensor DuoFern Radiator Actuator", "type": SENSOR_TYPE},
+    "35104001":
+        {"name": "addZ White + Colour LED GU10", "type": OTHER_TYPE},
+    "35140462":
+        {"name": "DuoFern Universal dimmer", "type": OTHER_TYPE},
+    "35140662":
+        {"name": "DuoFern tubular motor actuator", "type": COVER_TYPE},
+    "35144001":
+        {"name": "addZ White + Colour LED E14", "type": OTHER_TYPE},
+    "35204011":
+        {"name": "Rademacher Zigbee Plug type F", "type": OTHER_TYPE},
+    "35204012":
+        {"name": "Rademacher Zigbee Plug type E", "type": OTHER_TYPE},
+    "35204013":
+        {"name": "Rademacher Zigbee Plug type G", "type": OTHER_TYPE},
+    "35274001":
+        {"name": "addZ White + Colour LED E27", "type": OTHER_TYPE},
+    "36500172":
+        {"name": "Troll Basis DuoFern", "type": COVER_TYPE},
+    "36500572_A":
+        {"name": "Troll Comfort DuoFern", "type": COVER_TYPE},
+    "36500572_S":
+        {"name": "Sun sensor Troll Comfort DuoFern", "type": SENSOR_TYPE},
+    "36501512":
+        {"name": "Troll Comfort DuoFern", "type": COVER_TYPE},
+    "45059071":
+        {"name": "RolloPort SX5 DuoFern", "type": COVER_TYPE},
+    "99999700":
+        {"name": "Smart programmable timer premium - (light mode)", "type": OTHER_TYPE},
+    "99999701":
+        {"name": "RolloTron smart flush-mounted belt winder premium (slave)", "type": OTHER_TYPE},
+    "99999801":
+        {"name": "X3D switch", "type": OTHER_TYPE},
+    "99999802":
+        {"name": "X3D Dimmer", "type": OTHER_TYPE},
+    "99999803":
+        {"name": "Smart thermostat pure/classic", "type": OTHER_TYPE},
+    "99999804":
+        {"name": "X3D Blind / actuator", "type": COVER_TYPE},
+    "99999805":
+        {"name": "X3D remote", "type": OTHER_TYPE},
+    "99999806":
+        {"name": "X3D Tymoov Solar", "type": OTHER_TYPE},
+    "99999950":
+        {"name": "ONVIF Camera", "type": OTHER_TYPE},
+    "99999960":
+        {"name": "Zigbee Plug", "type": OTHER_TYPE},
+    "99999973":
+        {"name": "Zigbee White LED", "type": OTHER_TYPE},
+    "99999974":
+        {"name": "Zigbee tuneable white LED", "type": OTHER_TYPE},
+    "99999975":
+        {"name": "Zigbee RGBW LED", "type": OTHER_TYPE},
+    "99999976":
+        {"name": "Zigbee RGB LED", "type": OTHER_TYPE},
+    "99999998":
+        {"name": "iOS Smartphone (GeoPilot)", "type": OTHER_TYPE},
+    "99999999":
+        {"name": "Android Smartphone (GeoPilot)", "type": OTHER_TYPE},
 }

@@ -51,13 +51,13 @@ class HomePilotApi:
     _cookie_jar: Any = None
     _session: aiohttp.ClientSession | None = None
 
-    def __init__(self, host, password, api_version = 1) -> None:
+    def __init__(self, host, password, api_version=1) -> None:
         self._host = host
         self._password = password
         self._api_version = api_version
         self._base_path = HomePilotApi.get_base_path(api_version)
         self._session = None
-        self._cookie_jar = None 
+        self._cookie_jar = None
 
     async def _get_session(self) -> aiohttp.ClientSession:
         """Get or create persistent session"""
@@ -73,6 +73,7 @@ class HomePilotApi:
             await self._session.close()
             self._session = None
         self._authenticated = False
+
     @staticmethod
     async def test_connection(host: str) -> str:
         async with aiohttp.ClientSession() as session:
@@ -113,7 +114,8 @@ class HomePilotApi:
             return ""
 
     @staticmethod
-    async def test_auth(host: str, password: str, api_version: int = 1, session_in: aiohttp.ClientSession = None) -> AbstractCookieJar:
+    async def test_auth(host: str, password: str, api_version: int = 1,
+                        session_in: aiohttp.ClientSession = None) -> AbstractCookieJar:
         session = session_in or aiohttp.ClientSession(cookie_jar=aiohttp.CookieJar(unsafe=True))
         try:
             base_path = HomePilotApi.get_base_path(api_version)
@@ -138,10 +140,11 @@ class HomePilotApi:
         finally:
             if session_in is None:
                 await session.close()
-                
+
     async def authenticate(self):
         if not self.authenticated and self.password != "":
-            self.cookie_jar = await HomePilotApi.test_auth(self.host, self.password, self.api_version, await self._get_session())
+            self.cookie_jar = await HomePilotApi.test_auth(
+                self.host, self.password, self.api_version, await self._get_session())
             self._authenticated = True
 
     async def get_devices(self):
@@ -525,7 +528,7 @@ class HomePilotApi:
         session = await self._get_session()
         async with session.post(
             f"http://{self._host}{self._base_path}/scenes/{sid}/actions",
-            json={ "request_type": "EXECUTESCENE", "trigger_event": "TRIGGER_SCENE_MANUALLY_EVT" }
+            json={"request_type": "EXECUTESCENE", "trigger_event": "TRIGGER_SCENE_MANUALLY_EVT"}
         ) as response:
             return await response.json()
 
@@ -534,7 +537,7 @@ class HomePilotApi:
         session = await self._get_session()
         async with session.post(
             f"http://{self._host}{self._base_path}/scenes/{sid}/actions",
-            json={ "request_type": "SWITCHSCENE", "trigger_event": "SCENE_MODE_CMD", "value": True }
+            json={"request_type": "SWITCHSCENE", "trigger_event": "SCENE_MODE_CMD", "value": True}
         ) as response:
             return await response.json()
 
@@ -543,7 +546,7 @@ class HomePilotApi:
         session = await self._get_session()
         async with session.post(
             f"http://{self._host}{self._base_path}/scenes/{sid}/actions",
-            json={ "request_type": "SWITCHSCENE", "trigger_event": "SCENE_MODE_CMD", "value": False }
+            json={"request_type": "SWITCHSCENE", "trigger_event": "SCENE_MODE_CMD", "value": False}
         ) as response:
             return await response.json()
 
@@ -627,6 +630,7 @@ class HomePilotApi:
     @cookie_jar.setter
     def cookie_jar(self, cookie_jar):
         self._cookie_jar = cookie_jar
+
 
 class CannotConnect(BaseException):
     """Error to indicate we cannot connect."""

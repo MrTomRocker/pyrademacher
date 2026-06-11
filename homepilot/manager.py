@@ -11,7 +11,7 @@ from .actuator import HomePilotActuator
 from .api import HomePilotApi, AuthError
 from .wallcontroller import HomePilotWallController
 from .scenes import HomePilotScene
-from .light import  HomePilotLight
+from .light import HomePilotLight
 
 from .device import HomePilotDevice
 
@@ -136,9 +136,9 @@ class HomePilotManager:
 
         return self.devices
 
-    async def async_update_scenes(self):        
+    async def async_update_scenes(self):
         try:
-            scenes_list = await self.api.async_get_scenes()            
+            scenes_list = await self.api.async_get_scenes()
         except AuthError:
             raise
         except Exception:

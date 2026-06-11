@@ -1,5 +1,5 @@
 import asyncio
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 from .api import HomePilotApi
 
 
@@ -23,6 +23,7 @@ class HomePilotScene:
     _is_enabled: bool
     _is_manual_executable: bool
     _available: bool
+
     def __init__(
         self,
         api: HomePilotApi,
@@ -56,11 +57,11 @@ class HomePilotScene:
             is_manual_executable=bool(scene_data.get("is_manual_executable", 0)),
         )
 
-    async def async_update_scene(self, scene) -> None:                
+    async def async_update_scene(self, scene) -> None:
         self.name = scene["name"]
         self.description = scene["description"]
         self.is_enabled = bool(scene["is_enabled"])
-        self.is_manual_executable = bool(scene["is_manual_executable"])        
+        self.is_manual_executable = bool(scene["is_manual_executable"])
 
     async def async_execute_scene(self) -> None:
         """Execute the scene manually. Requires scene to be available and manually executable."""

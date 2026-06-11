@@ -111,7 +111,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
             fw_version=fw_version,
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,
-            device_map = device_map
+            device_map=device_map
         )
         self._can_set_position = can_set_position
         self._cover_type = cover_type

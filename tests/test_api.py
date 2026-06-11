@@ -177,7 +177,7 @@ class TestHomePilotApi:
         response_sensors = {"response": "get_meters",
                             "meters": [{"did": "2", "name": "name2"}]}
         response_transmitters = {"response": "get_transmitters",
-                            "transmitters": [{"did": "3", "name": "name3"}]}
+                                 "transmitters": [{"did": "3", "name": "name3"}]}
         with aioresponses() as mocked:
             instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
             mocked.get(
