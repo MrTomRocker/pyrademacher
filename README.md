@@ -46,6 +46,40 @@ print(manager.devices["-1"].fw_version) # ID -1 is reserved for the hub itself
 ```
 Each device in manager.devices is an instance of the specific device class.
 
+### Auto Config Devices: Commands
+
+Every device that inherits from `HomePilotAutoConfigDevice` (covers, switches/actuators,
+thermostats, lights) exposes the weather and contact commands that the hub advertises for
+that device. Each command has a capability flag (`has_*_cmd`) and an awaitable method that
+is a no-op when the capability is missing:
+
+| Command | Capability flag | Method |
+| --- | --- | --- |
+| Sun start / stop | `has_sun_start_cmd` / `has_sun_stop_cmd` | `async_sun_start_cmd()` / `async_sun_stop_cmd()` |
+| Wind start / stop | `has_wind_start_cmd` / `has_wind_stop_cmd` | `async_wind_start_cmd()` / `async_wind_stop_cmd()` |
+| Rain start / stop | `has_rain_start_cmd` / `has_rain_stop_cmd` | `async_rain_start_cmd()` / `async_rain_stop_cmd()` |
+| Go to dawn / dusk position | `has_goto_dawn_pos_cmd` / `has_goto_dusk_pos_cmd` | `async_goto_dawn_pos_cmd()` / `async_goto_dusk_pos_cmd()` |
+| Contact open / close | `has_contact_open_cmd` / `has_contact_close_cmd` | `async_contact_open_cmd()` / `async_contact_close_cmd()` |
+
+```python
+device = manager.devices["1"]
+
+if device.has_sun_start_cmd:
+    await device.async_sun_start_cmd()   # trigger the sun command
+
+if device.has_contact_open_cmd:
+    await device.async_contact_open_cmd()
+```
+
+These devices also support the auto modes (`has_*_auto_mode` / `*_auto_mode_value` /
+`async_set_*_auto_mode(...)`) for `auto`, `time`, `contact`, `wind`, `dawn`, `dusk`,
+`rain` and `sun`.
+
+They additionally expose the read-only weather program "active" states for devices
+that advertise the corresponding event — `has_sun_prog_active` / `sun_prog_active_value`,
+`has_wind_prog_active` / `wind_prog_active_value` and `has_rain_prog_active` /
+`rain_prog_active_value` — updated on every state refresh.
+
 ### Scene Management
 
 The library supports managing HomePilot scenes with comprehensive functionality:

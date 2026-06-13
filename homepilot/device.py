@@ -12,6 +12,19 @@ from .const import (
     APICAP_DUSK_AUTO_CFG,
     APICAP_RAIN_AUTO_CFG,
     APICAP_SUN_AUTO_CFG,
+    APICAP_SUN_START_CMD,
+    APICAP_SUN_STOP_CMD,
+    APICAP_WIND_START_CMD,
+    APICAP_WIND_STOP_CMD,
+    APICAP_RAIN_START_CMD,
+    APICAP_RAIN_STOP_CMD,
+    APICAP_GOTO_DAWN_POS_CMD,
+    APICAP_GOTO_DUSK_POS_CMD,
+    APICAP_CONTACT_OPEN_CMD,
+    APICAP_CONTACT_CLOSE_CMD,
+    APICAP_SUN_PROG_ACTIVE_EVT,
+    APICAP_WIND_PROG_ACTIVE_EVT,
+    APICAP_RAIN_PROG_ACTIVE_EVT,
     APICAP_DEVICE_TYPE_LOC,
     APICAP_ID_DEVICE_LOC
 )
@@ -164,6 +177,22 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
     _rain_auto_mode_value: bool
     _has_sun_auto_mode: bool
     _sun_auto_mode_value: bool
+    _has_sun_start_cmd: bool
+    _has_sun_stop_cmd: bool
+    _has_wind_start_cmd: bool
+    _has_wind_stop_cmd: bool
+    _has_rain_start_cmd: bool
+    _has_rain_stop_cmd: bool
+    _has_goto_dawn_pos_cmd: bool
+    _has_goto_dusk_pos_cmd: bool
+    _has_contact_open_cmd: bool
+    _has_contact_close_cmd: bool
+    _has_sun_prog_active: bool
+    _sun_prog_active_value: bool
+    _has_wind_prog_active: bool
+    _wind_prog_active_value: bool
+    _has_rain_prog_active: bool
+    _rain_prog_active_value: bool
 
     def __init__(
         self,
@@ -198,6 +227,23 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
         self._has_dusk_auto_mode = APICAP_DUSK_AUTO_CFG in device_map
         self._has_rain_auto_mode = APICAP_RAIN_AUTO_CFG in device_map
         self._has_sun_auto_mode = APICAP_SUN_AUTO_CFG in device_map
+        # Weather/contact command capabilities. These are exposed by any
+        # auto config device (cover, switch/actuator, thermostat) that supports
+        # the corresponding command, not only covers/thermostats.
+        self._has_sun_start_cmd = APICAP_SUN_START_CMD in device_map
+        self._has_sun_stop_cmd = APICAP_SUN_STOP_CMD in device_map
+        self._has_wind_start_cmd = APICAP_WIND_START_CMD in device_map
+        self._has_wind_stop_cmd = APICAP_WIND_STOP_CMD in device_map
+        self._has_rain_start_cmd = APICAP_RAIN_START_CMD in device_map
+        self._has_rain_stop_cmd = APICAP_RAIN_STOP_CMD in device_map
+        self._has_goto_dawn_pos_cmd = APICAP_GOTO_DAWN_POS_CMD in device_map
+        self._has_goto_dusk_pos_cmd = APICAP_GOTO_DUSK_POS_CMD in device_map
+        self._has_contact_open_cmd = APICAP_CONTACT_OPEN_CMD in device_map
+        self._has_contact_close_cmd = APICAP_CONTACT_CLOSE_CMD in device_map
+        # Weather program "active" events (read-only state)
+        self._has_sun_prog_active = APICAP_SUN_PROG_ACTIVE_EVT in device_map
+        self._has_wind_prog_active = APICAP_WIND_PROG_ACTIVE_EVT in device_map
+        self._has_rain_prog_active = APICAP_RAIN_PROG_ACTIVE_EVT in device_map
 
     async def update_device_state(self, state: Dict[str, Any], device_map: Optional[Dict[str, Any]]) -> None:
         if self.has_auto_mode:
@@ -221,6 +267,12 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
             self.rain_auto_mode_value = device_map.get(APICAP_RAIN_AUTO_CFG, {}).get("value", "false") == "true"
         if self.has_sun_auto_mode:
             self.sun_auto_mode_value = device_map.get(APICAP_SUN_AUTO_CFG, {}).get("value", "false") == "true"
+        if self.has_sun_prog_active:
+            self.sun_prog_active_value = device_map.get(APICAP_SUN_PROG_ACTIVE_EVT, {}).get("value", "false") == "true"
+        if self.has_wind_prog_active:
+            self.wind_prog_active_value = device_map.get(APICAP_WIND_PROG_ACTIVE_EVT, {}).get("value", "false") == "true"
+        if self.has_rain_prog_active:
+            self.rain_prog_active_value = device_map.get(APICAP_RAIN_PROG_ACTIVE_EVT, {}).get("value", "false") == "true"
 
     async def async_set_auto_mode(self, auto_mode) -> None:
         await self.api.async_set_auto_mode(self.did, auto_mode)
@@ -245,6 +297,46 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
 
     async def async_set_sun_auto_mode(self, auto_mode) -> None:
         await self.api.async_set_sun_auto_mode(self.did, auto_mode)
+
+    async def async_sun_start_cmd(self) -> None:
+        if self.has_sun_start_cmd:
+            await self.api.async_sun_start_cmd(self.did)
+
+    async def async_sun_stop_cmd(self) -> None:
+        if self.has_sun_stop_cmd:
+            await self.api.async_sun_stop_cmd(self.did)
+
+    async def async_wind_start_cmd(self) -> None:
+        if self.has_wind_start_cmd:
+            await self.api.async_wind_start_cmd(self.did)
+
+    async def async_wind_stop_cmd(self) -> None:
+        if self.has_wind_stop_cmd:
+            await self.api.async_wind_stop_cmd(self.did)
+
+    async def async_rain_start_cmd(self) -> None:
+        if self.has_rain_start_cmd:
+            await self.api.async_rain_start_cmd(self.did)
+
+    async def async_rain_stop_cmd(self) -> None:
+        if self.has_rain_stop_cmd:
+            await self.api.async_rain_stop_cmd(self.did)
+
+    async def async_goto_dawn_pos_cmd(self) -> None:
+        if self.has_goto_dawn_pos_cmd:
+            await self.api.async_goto_dawn_pos_cmd(self.did)
+
+    async def async_goto_dusk_pos_cmd(self) -> None:
+        if self.has_goto_dusk_pos_cmd:
+            await self.api.async_goto_dusk_pos_cmd(self.did)
+
+    async def async_contact_open_cmd(self) -> None:
+        if self.has_contact_open_cmd:
+            await self.api.async_contact_open_cmd(self.did)
+
+    async def async_contact_close_cmd(self) -> None:
+        if self.has_contact_close_cmd:
+            await self.api.async_contact_close_cmd(self.did)
 
     @property
     def has_auto_mode(self) -> bool:
@@ -277,6 +369,82 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
     @property
     def has_sun_auto_mode(self) -> bool:
         return self._has_sun_auto_mode
+
+    @property
+    def has_sun_start_cmd(self) -> bool:
+        return self._has_sun_start_cmd
+
+    @property
+    def has_sun_stop_cmd(self) -> bool:
+        return self._has_sun_stop_cmd
+
+    @property
+    def has_wind_start_cmd(self) -> bool:
+        return self._has_wind_start_cmd
+
+    @property
+    def has_wind_stop_cmd(self) -> bool:
+        return self._has_wind_stop_cmd
+
+    @property
+    def has_rain_start_cmd(self) -> bool:
+        return self._has_rain_start_cmd
+
+    @property
+    def has_rain_stop_cmd(self) -> bool:
+        return self._has_rain_stop_cmd
+
+    @property
+    def has_goto_dawn_pos_cmd(self) -> bool:
+        return self._has_goto_dawn_pos_cmd
+
+    @property
+    def has_goto_dusk_pos_cmd(self) -> bool:
+        return self._has_goto_dusk_pos_cmd
+
+    @property
+    def has_contact_open_cmd(self) -> bool:
+        return self._has_contact_open_cmd
+
+    @property
+    def has_contact_close_cmd(self) -> bool:
+        return self._has_contact_close_cmd
+
+    @property
+    def has_sun_prog_active(self) -> bool:
+        return self._has_sun_prog_active
+
+    @property
+    def sun_prog_active_value(self) -> bool:
+        return self._sun_prog_active_value
+
+    @sun_prog_active_value.setter
+    def sun_prog_active_value(self, sun_prog_active_value):
+        self._sun_prog_active_value = sun_prog_active_value
+
+    @property
+    def has_wind_prog_active(self) -> bool:
+        return self._has_wind_prog_active
+
+    @property
+    def wind_prog_active_value(self) -> bool:
+        return self._wind_prog_active_value
+
+    @wind_prog_active_value.setter
+    def wind_prog_active_value(self, wind_prog_active_value):
+        self._wind_prog_active_value = wind_prog_active_value
+
+    @property
+    def has_rain_prog_active(self) -> bool:
+        return self._has_rain_prog_active
+
+    @property
+    def rain_prog_active_value(self) -> bool:
+        return self._rain_prog_active_value
+
+    @rain_prog_active_value.setter
+    def rain_prog_active_value(self, rain_prog_active_value):
+        self._rain_prog_active_value = rain_prog_active_value
 
     @property
     def auto_mode_value(self) -> bool:
