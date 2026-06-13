@@ -16,6 +16,7 @@ from .const import (
 from .api import HomePilotApi
 from .device import HomePilotDevice, HomePilotAutoConfigDevice
 
+
 class HomePilotLight(HomePilotAutoConfigDevice):
     _is_on: bool
     _brightness: int
@@ -60,7 +61,6 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         self._has_color_temp = has_color_temp
         self._has_color_mode = has_color_mode
 
-
     @staticmethod
     def build_from_api(api: HomePilotApi, did: str):
         return asyncio.run(HomePilotLight.async_build_from_api(api, did))
@@ -104,6 +104,7 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         device = await api.get_device(self.did)
         device_map = HomePilotDevice.get_capabilities_map(device)
         await super().update_device_state(state, device_map)
+
     @property
     def is_on(self) -> bool:
         return self._is_on
@@ -182,7 +183,7 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         await self.api.async_set_position(self.did, new_brightness)
 
     async def async_set_rgb(self, r, g, b) -> None:
-        new_rgb: str = f"0x{(r * pow(2,16) + g * pow(2,8) + b):06X}"
+        new_rgb: str = f"0x{(r * pow(2, 16) + g * pow(2, 8) + b):06X}"
         await self.api.async_set_rgb(self.did, new_rgb)
 
     async def async_set_color_temp(self, new_color_temp) -> None:

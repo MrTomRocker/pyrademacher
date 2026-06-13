@@ -51,7 +51,7 @@ class TestHomePilotScene:
         # Test the sync method with a mock API (avoiding asyncio.run in async context)
         from unittest.mock import MagicMock
         api = MagicMock()
-        
+
         # Test direct constructor instead of sync build method
         scene = HomePilotScene(
             api=api,
@@ -99,17 +99,17 @@ class TestHomePilotScene:
     @pytest.mark.asyncio
     async def test_async_update_scene(self, mocked_api, scene_data):
         scene = await HomePilotScene.async_build_scene(mocked_api, scene_data)
-        
+
         # Update with new data (using API format with integers)
         updated_data = {
             "name": "Updated Morning Scene",
-            "description": "Updated description", 
+            "description": "Updated description",
             "is_enabled": 0,  # API uses 0/1 not boolean
             "is_manual_executable": 0  # API uses 0/1 not boolean
         }
-        
+
         await scene.async_update_scene(updated_data)
-        
+
         assert scene.name == "Updated Morning Scene"
         assert scene.description == "Updated description"
         assert scene.is_enabled is False  # Now converted to boolean
@@ -136,7 +136,7 @@ class TestHomePilotScene:
     def test_scene_properties(self, scene_data):
         from unittest.mock import MagicMock
         api = MagicMock()
-        
+
         scene = HomePilotScene(
             api=api,
             sid=scene_data["id"],
@@ -145,7 +145,7 @@ class TestHomePilotScene:
             is_enabled=scene_data["is_enabled"],
             is_manual_executable=bool(scene_data["is_manual_executable"])
         )
-        
+
         # Test property getters
         assert scene.api == api
         assert scene.sid == 1
@@ -153,20 +153,20 @@ class TestHomePilotScene:
         assert scene.description == "Opens blinds and turns on lights"
         assert scene.is_enabled is True
         assert scene.is_manual_executable is True
-        
+
         # Test property setters
         scene.name = "New Name"
         assert scene.name == "New Name"
-        
+
         scene.description = "New Description"
         assert scene.description == "New Description"
-        
+
         scene.is_enabled = False
         assert scene.is_enabled is False
-        
+
         scene.is_manual_executable = False
         assert scene.is_manual_executable is False
-        
+
         scene.available = True
         assert scene.available is True
 
@@ -174,48 +174,49 @@ class TestHomePilotScene:
     async def test_async_execute_scene_validation_available_false(self, mocked_api, scene_data):
         scene = await HomePilotScene.async_build_scene(mocked_api, scene_data)
         scene.available = False
-        
+
         with pytest.raises(SceneNotAvailableError, match="Scene 'Morning Scene' \\(ID: 1\\) is not available"):
             await scene.async_execute_scene()
-    
+
     @pytest.mark.asyncio
     async def test_async_execute_scene_validation_not_manual_executable(self, mocked_api, scene_data):
         scene = await HomePilotScene.async_build_scene(mocked_api, scene_data)
         scene.is_manual_executable = False
-        
-        with pytest.raises(SceneNotManuallyExecutableError, match="Scene 'Morning Scene' \\(ID: 1\\) is not manually executable"):
+
+        with pytest.raises(SceneNotManuallyExecutableError,
+                           match="Scene 'Morning Scene' \\(ID: 1\\) is not manually executable"):
             await scene.async_execute_scene()
-    
+
     @pytest.mark.asyncio
     async def test_async_activate_scene_validation_available_false(self, mocked_api, scene_data):
         scene = await HomePilotScene.async_build_scene(mocked_api, scene_data)
         scene.available = False
-        
+
         with pytest.raises(SceneNotAvailableError, match="Scene 'Morning Scene' \\(ID: 1\\) is not available"):
             await scene.async_activate_scene()
-    
+
     @pytest.mark.asyncio
     async def test_async_deactivate_scene_validation_available_false(self, mocked_api, scene_data):
         scene = await HomePilotScene.async_build_scene(mocked_api, scene_data)
         scene.available = False
-        
+
         with pytest.raises(SceneNotAvailableError, match="Scene 'Morning Scene' \\(ID: 1\\) is not available"):
             await scene.async_deactivate_scene()
-    
+
     @pytest.mark.asyncio
     async def test_scene_operations_success_when_valid(self, mocked_api, scene_data):
         """Test that scene operations succeed when all conditions are met"""
         scene = await HomePilotScene.async_build_scene(mocked_api, scene_data)
-        
+
         # Ensure scene is in valid state
         scene.available = True
         scene.is_manual_executable = True
-        
+
         # These should not raise exceptions
         await scene.async_execute_scene()
-        await scene.async_activate_scene() 
+        await scene.async_activate_scene()
         await scene.async_deactivate_scene()
-        
+
         # Verify API calls were made
         mocked_api.async_execute_scene.assert_called_with(1)
         mocked_api.async_activate_scene.assert_called_with(1)

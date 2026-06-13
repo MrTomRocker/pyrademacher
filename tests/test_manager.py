@@ -49,7 +49,7 @@ class TestHomePilotManager:
         # Need to provide more responses since update_state methods now call get_device
         api.get_device.side_effect = [
             (yield from func_get_device1),  # Initial build: cover
-            (yield from func_get_device2),  # Initial build: env sensor  
+            (yield from func_get_device2),  # Initial build: env sensor
             (yield from func_get_device3),  # Initial build: switch
             (yield from func_get_device4),  # Initial build: contact sensor
             (yield from func_get_device1),  # Initial build: hub (uses cover device)
@@ -136,7 +136,7 @@ class TestHomePilotManager:
         assert 1 in manager.scenes
         assert 2 in manager.scenes
         assert 3 not in manager.scenes  # Not manual executable
-        
+
         # Check scene properties (API returns integers, but build method converts both to boolean)
         scene1 = manager.scenes[1]
         assert isinstance(scene1, HomePilotScene)
@@ -153,7 +153,7 @@ class TestHomePilotManager:
         assert 1 in manager.scenes
         assert 2 in manager.scenes
         assert 3 in manager.scenes  # Now included
-        
+
         # Check non-manual executable scene
         scene3 = manager.scenes[3]
         assert scene3.name == "Auto Scene"
@@ -162,10 +162,10 @@ class TestHomePilotManager:
     @pytest.mark.asyncio
     async def test_manager_scene_properties(self, mocked_api):
         manager = await HomePilotManager.async_build_manager(mocked_api)
-        
+
         # Test include_non_manual_executable property
         assert manager.include_non_manual_executable is False
-        
+
         manager_with_flag = await HomePilotManager.async_build_manager(mocked_api, include_non_manual_executable=True)
         assert manager_with_flag.include_non_manual_executable is True
 
@@ -174,48 +174,50 @@ class TestHomePilotManager:
         # Create a simpler test setup
         from unittest.mock import MagicMock
         api = MagicMock()
-        
+
         # Mock initial scenes (using API format with integers)
         initial_scenes_data = [
             {"id": 1, "name": "Morning Scene", "description": "Opens blinds", "is_enabled": 1, "is_manual_executable": 1},
             {"id": 2, "name": "Evening Scene", "description": "Closes blinds", "is_enabled": 1, "is_manual_executable": 1}
         ]
-        
+
         # Mock get_devices (empty for simplicity)
         func_get_devices = asyncio.Future()
         func_get_devices.set_result([])
         api.get_devices.return_value = func_get_devices
-        
+
         # Mock initial get_scenes
         func_get_scenes = asyncio.Future()
         func_get_scenes.set_result(initial_scenes_data)
         api.async_get_scenes.return_value = func_get_scenes
-        
+
         # Create manager
         manager = HomePilotManager(api)
         manager.devices = {}
-        
+
         # Build scenes manually
         manager.scenes = {}
         for scene_data in initial_scenes_data:
             if scene_data.get("is_manual_executable", 0) == 1:
                 scene = await HomePilotScene.async_build_scene(api, scene_data)
                 manager.scenes[scene_data["id"]] = scene
-        
+
         # Mock updated scenes data as LIST (what the API actually returns)
         updated_scenes_data = [
-            {"id": 1, "name": "Updated Morning Scene", "description": "Updated description", "is_enabled": 0, "is_manual_executable": 1},
-            {"id": 2, "name": "Updated Evening Scene", "description": "Updated evening description", "is_enabled": 1, "is_manual_executable": 1}
+            {"id": 1, "name": "Updated Morning Scene",
+             "description": "Updated description", "is_enabled": 0, "is_manual_executable": 1},
+            {"id": 2, "name": "Updated Evening Scene",
+             "description": "Updated evening description", "is_enabled": 1, "is_manual_executable": 1}
         ]
-        
+
         # Create new mock for update call
         updated_func_get_scenes = asyncio.Future()
         updated_func_get_scenes.set_result(updated_scenes_data)
         api.async_get_scenes.return_value = updated_func_get_scenes
-        
+
         # Update scenes
         await manager.async_update_scenes()
-        
+
         # Verify scenes were updated and marked as available
         assert manager.scenes[1].available is True
         assert manager.scenes[2].available is True
@@ -227,13 +229,13 @@ class TestHomePilotManager:
         # Create a simpler test setup
         from unittest.mock import MagicMock
         api = MagicMock()
-        
+
         # Mock initial scenes (using API format with integers)
         initial_scenes_data = [
             {"id": 1, "name": "Morning Scene", "description": "Opens blinds", "is_enabled": 1, "is_manual_executable": 1},
             {"id": 2, "name": "Evening Scene", "description": "Closes blinds", "is_enabled": 1, "is_manual_executable": 1}
         ]
-        
+
         # Create manager and build scenes manually
         manager = HomePilotManager(api)
         manager.devices = {}
@@ -241,19 +243,20 @@ class TestHomePilotManager:
         for scene_data in initial_scenes_data:
             scene = await HomePilotScene.async_build_scene(api, scene_data)
             manager.scenes[scene_data["id"]] = scene
-        
+
         # Mock updated scenes data with missing scene ID 2 as LIST (what API returns)
         updated_scenes_data = [
-            {"id": 1, "name": "Updated Morning Scene", "description": "Updated description", "is_enabled": 0, "is_manual_executable": 1}
+            {"id": 1, "name": "Updated Morning Scene",
+             "description": "Updated description", "is_enabled": 0, "is_manual_executable": 1}
             # Scene 2 is missing from the list
         ]
-        
+
         updated_func_get_scenes = asyncio.Future()
         updated_func_get_scenes.set_result(updated_scenes_data)
         api.async_get_scenes.return_value = updated_func_get_scenes
-        
+
         await manager.async_update_scenes()
-        
+
         # Scene 1 should be available and updated
         assert manager.scenes[1].available is True
         assert manager.scenes[1].name == "Updated Morning Scene"

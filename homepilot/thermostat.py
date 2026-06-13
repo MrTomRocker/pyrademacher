@@ -21,6 +21,7 @@ from .const import (
 from .api import HomePilotApi
 from .device import HomePilotAutoConfigDevice, HomePilotDevice
 
+
 class HomePilotThermostat(HomePilotAutoConfigDevice):
     _has_temperature: bool
     _min_temperature: float
@@ -88,7 +89,7 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
             fw_version=fw_version,
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,
-            device_map = device_map
+            device_map=device_map
         )
         self._has_temperature = has_temperature
         self._min_temperature = min_temperature
@@ -112,7 +113,7 @@ class HomePilotThermostat(HomePilotAutoConfigDevice):
         self._temperature_thresh_cfg_step = [None] * 4
         for i in range(1, 5):
             if device_map is not None and f"TEMPERATURE_THRESH_{i}_CFG" in device_map \
-            and device_map[f"TEMPERATURE_THRESH_{i}_CFG"] is not None:
+                    and device_map[f"TEMPERATURE_THRESH_{i}_CFG"] is not None:
                 self._has_temperature_thresh_cfg[i-1] = True
                 self._temperature_thresh_cfg_min[i-1] = float(device_map[f"TEMPERATURE_THRESH_{i}_CFG"]["min_value"])
                 self._temperature_thresh_cfg_max[i-1] = float(device_map[f"TEMPERATURE_THRESH_{i}_CFG"]["max_value"])

@@ -41,7 +41,7 @@ class HomePilotActuator(HomePilotAutoConfigDevice):
             fw_version=fw_version,
             device_group=device_group,
             has_ping_cmd=has_ping_cmd,
-            device_map = device_map,
+            device_map=device_map,
         )
 
     @staticmethod

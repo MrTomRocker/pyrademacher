@@ -29,6 +29,7 @@ from .const import (
     APICAP_ID_DEVICE_LOC
 )
 
+
 class HomePilotDevice:
     """HomePilot Device"""
 
@@ -157,6 +158,7 @@ class HomePilotDevice:
     @property
     def extra_attributes(self):
         return None
+
 
 class HomePilotAutoConfigDevice(HomePilotDevice):
     _has_auto_mode: bool
@@ -507,4 +509,3 @@ class HomePilotAutoConfigDevice(HomePilotDevice):
     @sun_auto_mode_value.setter
     def sun_auto_mode_value(self, sun_auto_mode_value):
         self._sun_auto_mode_value = sun_auto_mode_value
-
