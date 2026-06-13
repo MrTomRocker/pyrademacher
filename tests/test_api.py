@@ -1,8 +1,22 @@
+import pytest
+from aiohttp.client_reqrep import ClientResponse
 import json
 from aiohttp.cookiejar import CookieJar
 from aioresponses import CallbackResult, aioresponses
-import pytest
 from homepilot.api import AuthError, CannotConnect, HomePilotApi
+
+_orig_init = ClientResponse.__init__
+
+
+def _patched_init(self, method, url, *args, **kwargs):
+    if 'stream_writer' not in kwargs:
+        import unittest.mock
+        kwargs['stream_writer'] = unittest.mock.Mock()
+    _orig_init(self, method, url, *args, **kwargs)
+
+
+ClientResponse.__init__ = _patched_init
+
 
 TEST_HOST = "test_host"
 TEST_PASSWORD = "test_password"
@@ -161,14 +175,15 @@ class TestHomePilotApi:
     @pytest.mark.asyncio
     async def test_async_get_led_status(self):
         response = {"response": "response_text"}
-        with aioresponses() as mocked:
-            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
-            mocked.get(
+        with aioresponses() as mocked_api:
+            mocked_api.get(
                 f"http://{TEST_HOST}/service/system/leds/status",
                 status=200,
                 body=json.dumps(response)
             )
-            assert await instance.async_get_led_status() == response
+            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
+            resp = await instance.async_get_led_status()
+            assert resp == response
 
     @pytest.mark.asyncio
     async def test_async_get_devices_state(self):

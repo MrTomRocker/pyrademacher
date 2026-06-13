@@ -51,12 +51,12 @@ class HomePilotApi:
     _cookie_jar: Any = None
     _session: aiohttp.ClientSession | None = None
 
-    def __init__(self, host, password, api_version=1) -> None:
+    def __init__(self, host, password, api_version=1, session=None) -> None:
         self._host = host
         self._password = password
         self._api_version = api_version
         self._base_path = HomePilotApi.get_base_path(api_version)
-        self._session = None
+        self._session = session
         self._cookie_jar = None
 
     async def _get_session(self) -> aiohttp.ClientSession:
