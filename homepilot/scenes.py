@@ -17,7 +17,7 @@ class HomePilotScene:
     """HomePilot Scene"""
 
     _api: HomePilotApi
-    _sid: int
+    _sid: str
     _name: str
     _description: str
     _is_enabled: bool
@@ -27,13 +27,15 @@ class HomePilotScene:
     def __init__(
         self,
         api: HomePilotApi,
-        sid: int,
+        sid: str,
         name: str,
         description: str,
         is_enabled: bool = False,
         is_manual_executable: bool = False,
     ) -> None:
         self._api = api
+        # sid is already a str: the API layer normalizes scene ids on read
+        # (see HomePilotApi._normalize_scene_ids), so it is consistent with device ids.
         self._sid = sid
         self._name = name
         self._description = description
@@ -57,7 +59,7 @@ class HomePilotScene:
             is_manual_executable=bool(scene_data.get("is_manual_executable", 0)),
         )
 
-    async def async_update_scene(self, scene) -> None:
+    async def async_update_scene(self, scene: Dict[str, Any]) -> None:
         self.name = scene["name"]
         self.description = scene["description"]
         self.is_enabled = bool(scene["is_enabled"])
@@ -88,7 +90,7 @@ class HomePilotScene:
         return self._api
 
     @property
-    def sid(self) -> int:
+    def sid(self) -> str:
         return self._sid
 
     @property
@@ -104,7 +106,7 @@ class HomePilotScene:
         return self._available
 
     @available.setter
-    def available(self, available):
+    def available(self, available: bool) -> None:
         self._available = available
 
     @property

@@ -215,6 +215,35 @@ class TestHomePilotApi:
                         "3": {"did": "3", "name": "name3"}}
             assert await instance.async_get_devices_state() == expected
 
+    @pytest.mark.asyncio
+    async def test_async_get_scenes_normalizes_ids_to_str(self):
+        # The bridge returns scene ids as raw JSON numbers; the API layer must
+        # normalize them to str so they are consistent with device ids.
+        with aioresponses() as mocked:
+            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
+            mocked.get(
+                f"http://{TEST_HOST}/scenes",
+                status=200,
+                body=json.dumps({"scenes": [{"id": 1, "name": "a"},
+                                            {"id": 8001, "name": "b"}]})
+            )
+            scenes = await instance.async_get_scenes()
+            assert [s["id"] for s in scenes] == ["1", "8001"]
+            assert all(isinstance(s["id"], str) for s in scenes)
+
+    @pytest.mark.asyncio
+    async def test_async_get_scenes_v4_normalizes_ids_to_str(self):
+        with aioresponses() as mocked:
+            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
+            mocked.get(
+                f"http://{TEST_HOST}/v4/scenes",
+                status=200,
+                body=json.dumps({"scenes": [{"id": 42, "name": "c"}]})
+            )
+            scenes = await instance.async_get_scenes_v4()
+            assert scenes[0]["id"] == "42"
+            assert isinstance(scenes[0]["id"], str)
+
     def callback_ping(self, url, **kwargs):
         response = {"error_code": 0, "error_description": "OK", "payload": {}}
         return CallbackResult(
@@ -408,6 +437,27 @@ class TestHomePilotApi:
             )
             result = await instance.async_contact_close_cmd(did)
             assert result["error_code"] == 0
+
+    @pytest.mark.asyncio
+    async def test_send_device_command_omits_value_when_none(self):
+        # Pure command capabilities (e.g. SUN_START_CMD) must be sent as {"name": ...}
+        # WITHOUT a "value": null, which the bridge mis-interprets. Value-carrying
+        # commands must still include the value.
+        did = "1"
+        seen = []
+
+        def cb(url, **kwargs):
+            seen.append(kwargs["json"])
+            return CallbackResult(body=json.dumps({"error_code": 0}))
+
+        with aioresponses() as mocked:
+            instance: HomePilotApi = HomePilotApi(TEST_HOST, "")
+            mocked.put(f"http://{TEST_HOST}/devices/{did}", callback=cb, repeat=True)
+            await instance.async_sun_start_cmd(did)         # value None -> omit
+            await instance.async_set_auto_mode(did, True)   # value given -> include
+            assert "value" not in seen[0]
+            assert seen[0]["name"] == "SUN_START_CMD"
+            assert seen[1]["value"] is True
 
     @pytest.mark.asyncio
     async def test_async_set_boost_active_cfg(self):

@@ -23,7 +23,7 @@ api = HomePilotApi("hostname", "password") # password can be empty if not define
 
 print(asyncio.run(asyncio.run(api.get_devices()))) # get all devices
 
-asyncio.run(api.async_open_cover(did=1)) # open cover for device id 1 (assuming it's a cover device)
+asyncio.run(api.async_open_cover(did="1")) # open cover for device id "1" (assuming it's a cover device)
 ```
 
 ### Manager Class
@@ -99,7 +99,7 @@ manager = asyncio.run(HomePilotManager.async_build_manager(api))
 manager = asyncio.run(HomePilotManager.async_build_manager(api, include_non_manual_executable=True))
 
 # Access scene properties
-scene = manager.scenes[1]  # Scene with ID 1
+scene = manager.scenes["1"]  # Scene with ID "1"
 print(f"Scene: {scene.name}")
 print(f"Description: {scene.description}")
 print(f"Enabled: {scene.is_enabled}")

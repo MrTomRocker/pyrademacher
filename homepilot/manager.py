@@ -101,7 +101,7 @@ class HomePilotManager:
             "led": await self.api.async_get_led_status(),
         }
 
-    async def update_state(self, did):
+    async def update_state(self, did: str):
         try:
             if did == "-1":
                 state = await self.get_hub_state()
