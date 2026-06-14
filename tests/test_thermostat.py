@@ -91,7 +91,7 @@ class TestHomePilotThermostat:
         }, mocked_api)
         assert thermostat.temperature_value == 21.2
         assert thermostat.target_temperature_value == 24.0
-        assert thermostat.relais_status == 1
+        assert thermostat.relais_status is True
         assert thermostat.ext_open_window_detect_value is False
         assert thermostat.int_open_window_detect_value is True
         assert thermostat.boost_time_value == 30.0

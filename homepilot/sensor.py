@@ -1,5 +1,6 @@
 import asyncio
 from enum import Enum
+from typing import Any, Dict
 from .const import (
     APICAP_BATTERY_LVL_PCT_MEA,
     APICAP_CLOSE_CONTACT_MEA,
@@ -55,7 +56,7 @@ class HomePilotSensor(HomePilotDevice):
     _has_contact_state: bool
     _contact_state_value: ContactState
     _has_battery_level: bool
-    _battery_level_value: float
+    _battery_level_value: int
     _has_motion_detection: bool
     _motion_detection_value: bool
     _has_smoke_detection: bool
@@ -64,7 +65,7 @@ class HomePilotSensor(HomePilotDevice):
     def __init__(
         self,
         api: HomePilotApi,
-        did: int,
+        did: str,
         uid: str,
         name: str,
         device_number: str,
@@ -150,7 +151,7 @@ class HomePilotSensor(HomePilotDevice):
             has_smoke_detection=APICAP_SMOKE_DETECTION_MEA in device_map,
         )
 
-    async def update_state(self, state, api):
+    async def update_state(self, state: Dict[str, Any], api: HomePilotApi):
         await super().update_state(state, api)
         if self.has_temperature and "temperature_primary" in state["readings"]:
             self.temperature_value = state["readings"]["temperature_primary"]
@@ -244,7 +245,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._temperature_value
 
     @temperature_value.setter
-    def temperature_value(self, temperature_value):
+    def temperature_value(self, temperature_value: float) -> None:
         self._temperature_value = temperature_value
 
     @property
@@ -252,7 +253,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._target_temperature_value
 
     @target_temperature_value.setter
-    def target_temperature_value(self, target_temperature_value):
+    def target_temperature_value(self, target_temperature_value: float) -> None:
         self._target_temperature_value = target_temperature_value
 
     @property
@@ -260,7 +261,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._wind_speed_value
 
     @wind_speed_value.setter
-    def wind_speed_value(self, wind_speed_value):
+    def wind_speed_value(self, wind_speed_value: float) -> None:
         self._wind_speed_value = wind_speed_value
 
     @property
@@ -268,7 +269,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._wind_detection_value
 
     @wind_detection_value.setter
-    def wind_detection_value(self, wind_detection_value):
+    def wind_detection_value(self, wind_detection_value: bool) -> None:
         self._wind_detection_value = wind_detection_value
 
     @property
@@ -276,7 +277,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._brightness_value
 
     @brightness_value.setter
-    def brightness_value(self, brightness_value):
+    def brightness_value(self, brightness_value: float) -> None:
         self._brightness_value = brightness_value
 
     @property
@@ -284,7 +285,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._sun_height_value
 
     @sun_height_value.setter
-    def sun_height_value(self, sun_height_value):
+    def sun_height_value(self, sun_height_value: float) -> None:
         self._sun_height_value = sun_height_value
 
     @property
@@ -292,7 +293,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._sun_direction_value
 
     @sun_direction_value.setter
-    def sun_direction_value(self, sun_direction_value):
+    def sun_direction_value(self, sun_direction_value: float) -> None:
         self._sun_direction_value = sun_direction_value
 
     @property
@@ -300,7 +301,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._rain_detection_value
 
     @rain_detection_value.setter
-    def rain_detection_value(self, rain_detection_value):
+    def rain_detection_value(self, rain_detection_value: bool) -> None:
         self._rain_detection_value = rain_detection_value
 
     @property
@@ -308,7 +309,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._sun_detection_value
 
     @sun_detection_value.setter
-    def sun_detection_value(self, sun_detection_value):
+    def sun_detection_value(self, sun_detection_value: bool) -> None:
         self._sun_detection_value = sun_detection_value
 
     @property
@@ -316,15 +317,15 @@ class HomePilotSensor(HomePilotDevice):
         return self._contact_state_value
 
     @contact_state_value.setter
-    def contact_state_value(self, contact_state_value):
+    def contact_state_value(self, contact_state_value: ContactState) -> None:
         self._contact_state_value = contact_state_value
 
     @property
-    def battery_level_value(self) -> float:
+    def battery_level_value(self) -> int:
         return self._battery_level_value
 
     @battery_level_value.setter
-    def battery_level_value(self, battery_level_value):
+    def battery_level_value(self, battery_level_value: int) -> None:
         self._battery_level_value = battery_level_value
 
     @property
@@ -332,7 +333,7 @@ class HomePilotSensor(HomePilotDevice):
         return self._motion_detection_value
 
     @motion_detection_value.setter
-    def motion_detection_value(self, motion_detection_value):
+    def motion_detection_value(self, motion_detection_value: bool) -> None:
         self._motion_detection_value = motion_detection_value
 
     @property
@@ -340,5 +341,5 @@ class HomePilotSensor(HomePilotDevice):
         return self._smoke_detection_value
 
     @smoke_detection_value.setter
-    def smoke_detection_value(self, smoke_detection_value):
+    def smoke_detection_value(self, smoke_detection_value: bool) -> None:
         self._smoke_detection_value = smoke_detection_value

@@ -21,7 +21,7 @@ class HomePilotActuator(HomePilotAutoConfigDevice):
     def __init__(
         self,
         api: HomePilotApi,
-        did: int,
+        did: str,
         uid: str,
         name: str,
         device_number: str,
@@ -71,7 +71,7 @@ class HomePilotActuator(HomePilotAutoConfigDevice):
             device_map=device_map,
         )
 
-    async def update_state(self, state, api):
+    async def update_state(self, state: Dict[str, Any], api: HomePilotApi):
         await super().update_state(state, api)
         self.is_on = state["statusesMap"]["Position"] != 0
         self.brightness = state["statusesMap"]["Position"]
@@ -83,7 +83,7 @@ class HomePilotActuator(HomePilotAutoConfigDevice):
         return self._is_on
 
     @is_on.setter
-    def is_on(self, is_on):
+    def is_on(self, is_on: bool) -> None:
         self._is_on = is_on
 
     @property
@@ -91,7 +91,7 @@ class HomePilotActuator(HomePilotAutoConfigDevice):
         return self._brightness
 
     @brightness.setter
-    def brightness(self, brightness):
+    def brightness(self, brightness: int) -> None:
         self._brightness = brightness
 
     async def async_turn_on(self) -> None:
@@ -100,7 +100,7 @@ class HomePilotActuator(HomePilotAutoConfigDevice):
     async def async_turn_off(self) -> None:
         await self.api.async_turn_off(self.did)
 
-    async def async_set_brightness(self, new_brightness) -> None:
+    async def async_set_brightness(self, new_brightness: int) -> None:
         await self.api.async_set_position(self.did, new_brightness)
 
     async def async_toggle(self) -> None:

@@ -161,7 +161,7 @@ class HomePilotApi:
                 return devices
             return []
 
-    async def get_device(self, did):
+    async def get_device(self, did: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.get(f"http://{self._host}{self._base_path}/devices/{did}") as response:
@@ -228,7 +228,7 @@ class HomePilotApi:
             response = await response.json()
             return response
 
-    async def async_get_device_state(self, did):
+    async def async_get_device_state(self, did: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.get(
@@ -291,7 +291,7 @@ class HomePilotApi:
                     transmitters = {}
         return {**actuators, **sensors, **transmitters}
 
-    async def async_ping(self, did):
+    async def async_ping(self, did: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -299,7 +299,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_open_cover(self, did):
+    async def async_open_cover(self, did: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -307,7 +307,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_close_cover(self, did):
+    async def async_close_cover(self, did: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -315,7 +315,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_stop_cover(self, did):
+    async def async_stop_cover(self, did: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -323,7 +323,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_set_position(self, did, position):
+    async def async_set_position(self, did: str, position: int):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -332,7 +332,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_open_cover_tilt(self, did) -> None:
+    async def async_open_cover_tilt(self, did: str) -> None:
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -341,7 +341,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_close_cover_tilt(self, did) -> None:
+    async def async_close_cover_tilt(self, did: str) -> None:
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -350,7 +350,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_set_cover_tilt_position(self, did, position) -> None:
+    async def async_set_cover_tilt_position(self, did: str, position: int) -> None:
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -359,7 +359,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_stop_cover_tilt(self, did) -> None:
+    async def async_stop_cover_tilt(self, did: str) -> None:
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -368,7 +368,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_set_ventilation_position_mode(self, did, mode) -> None:
+    async def async_set_ventilation_position_mode(self, did: str, mode: bool) -> None:
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -377,7 +377,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_set_ventilation_position(self, did, position) -> None:
+    async def async_set_ventilation_position(self, did: str, position: int) -> None:
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -386,7 +386,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_turn_on(self, did):
+    async def async_turn_on(self, did: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -394,7 +394,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_turn_off(self, did):
+    async def async_turn_off(self, did: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -402,7 +402,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_set_target_temperature(self, did, temperature):
+    async def async_set_target_temperature(self, did: str, temperature: float):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -411,19 +411,22 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_send_device_command(self, did, command, value):
+    async def async_send_device_command(self, did: str, command: str, value: Any = None):
         await self.authenticate()
         session = await self._get_session()
+        body = {"name": command}
+        if value is not None:
+            body["value"] = value
         async with session.put(
             f"http://{self._host}{self._base_path}/devices/{did}",
-            json={"name": command, "value": value},
+            json=body,
         ) as response:
             return await response.json()
 
-    async def async_set_auto_mode(self, did, auto_mode):
+    async def async_set_auto_mode(self, did: str, auto_mode: bool):
         return await self.async_send_device_command(did, APICAP_AUTO_MODE_CFG, auto_mode)
 
-    async def async_set_temperature_thresh_cfg(self, did, thresh_number, temperature):
+    async def async_set_temperature_thresh_cfg(self, did: str, thresh_number: int, temperature: float):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -432,7 +435,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_set_rgb(self, did, rgb_value):
+    async def async_set_rgb(self, did: str, rgb_value: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -441,7 +444,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_set_color_temp(self, did, color_temp_value):
+    async def async_set_color_temp(self, did: str, color_temp_value: int):
         await self.authenticate()
         session = await self._get_session()
         async with session.put(
@@ -493,6 +496,20 @@ class HomePilotApi:
             return await response.json()
 
 # Scenes
+    @staticmethod
+    def _normalize_scene_ids(scenes):
+        """Normalize scene ids to str.
+
+        The bridge /scenes endpoint returns the scene id as a raw JSON number,
+        whereas device ids (capability values) are always strings. Converting
+        here keeps ids consistently str everywhere downstream (manager keys,
+        scene.sid), so callers never have to second-guess the id type.
+        """
+        for scene in scenes:
+            if "id" in scene:
+                scene["id"] = str(scene["id"])
+        return scenes
+
     async def async_get_scenes(self):
         await self.authenticate()
         session = await self._get_session()
@@ -504,8 +521,7 @@ class HomePilotApi:
             if response.status == 200:
                 responseJson = await response.json()
                 if "scenes" in responseJson:
-                    scenes = responseJson["scenes"]
-                    return scenes
+                    return self._normalize_scene_ids(responseJson["scenes"])
             return []
 
     async def async_get_scenes_v4(self):
@@ -519,11 +535,10 @@ class HomePilotApi:
             if response.status == 200:
                 responseJson = await response.json()
                 if "scenes" in responseJson:
-                    scenes = responseJson["scenes"]
-                    return scenes
+                    return self._normalize_scene_ids(responseJson["scenes"])
             return []
 
-    async def async_execute_scene(self, sid: int):
+    async def async_execute_scene(self, sid: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.post(
@@ -532,7 +547,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_activate_scene(self, sid: int):
+    async def async_activate_scene(self, sid: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.post(
@@ -541,7 +556,7 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_deactivate_scene(self, sid: int):
+    async def async_deactivate_scene(self, sid: str):
         await self.authenticate()
         session = await self._get_session()
         async with session.post(
@@ -550,61 +565,61 @@ class HomePilotApi:
         ) as response:
             return await response.json()
 
-    async def async_set_time_auto_mode(self, did, auto_mode):
+    async def async_set_time_auto_mode(self, did: str, auto_mode: bool):
         await self.async_send_device_command(did, APICAP_TIME_AUTO_CFG, auto_mode)
 
-    async def async_set_contact_auto_mode(self, did, auto_mode):
+    async def async_set_contact_auto_mode(self, did: str, auto_mode: bool):
         await self.async_send_device_command(did, APICAP_CONTACT_AUTO_CFG, auto_mode)
 
-    async def async_set_wind_auto_mode(self, did, auto_mode):
+    async def async_set_wind_auto_mode(self, did: str, auto_mode: bool):
         await self.async_send_device_command(did, APICAP_WIND_AUTO_CFG, auto_mode)
 
-    async def async_set_dawn_auto_mode(self, did, auto_mode):
+    async def async_set_dawn_auto_mode(self, did: str, auto_mode: bool):
         await self.async_send_device_command(did, APICAP_DAWN_AUTO_CFG, auto_mode)
 
-    async def async_set_dusk_auto_mode(self, did, auto_mode):
+    async def async_set_dusk_auto_mode(self, did: str, auto_mode: bool):
         await self.async_send_device_command(did, APICAP_DUSK_AUTO_CFG, auto_mode)
 
-    async def async_set_rain_auto_mode(self, did, auto_mode):
+    async def async_set_rain_auto_mode(self, did: str, auto_mode: bool):
         await self.async_send_device_command(did, APICAP_RAIN_AUTO_CFG, auto_mode)
 
-    async def async_set_sun_auto_mode(self, did, auto_mode):
+    async def async_set_sun_auto_mode(self, did: str, auto_mode: bool):
         await self.async_send_device_command(did, APICAP_SUN_AUTO_CFG, auto_mode)
 
-    async def async_contact_open_cmd(self, did):
+    async def async_contact_open_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_CONTACT_OPEN_CMD, None)
 
-    async def async_contact_close_cmd(self, did):
+    async def async_contact_close_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_CONTACT_CLOSE_CMD, None)
 
-    async def async_set_boost_active_cfg(self, did, boost_active):
+    async def async_set_boost_active_cfg(self, did: str, boost_active: bool):
         return await self.async_send_device_command(did, APICAP_BOOST_ACTIVE_CFG, boost_active)
 
-    async def async_set_boost_time_cfg(self, did, boost_time):
+    async def async_set_boost_time_cfg(self, did: str, boost_time: float):
         return await self.async_send_device_command(did, APICAP_BOOST_TIME_CFG, boost_time)
 
-    async def async_sun_start_cmd(self, did):
+    async def async_sun_start_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_SUN_START_CMD, None)
 
-    async def async_sun_stop_cmd(self, did):
+    async def async_sun_stop_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_SUN_STOP_CMD, None)
 
-    async def async_wind_start_cmd(self, did):
+    async def async_wind_start_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_WIND_START_CMD, None)
 
-    async def async_wind_stop_cmd(self, did):
+    async def async_wind_stop_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_WIND_STOP_CMD, None)
 
-    async def async_rain_start_cmd(self, did):
+    async def async_rain_start_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_RAIN_START_CMD, None)
 
-    async def async_rain_stop_cmd(self, did):
+    async def async_rain_stop_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_RAIN_STOP_CMD, None)
 
-    async def async_goto_dawn_pos_cmd(self, did):
+    async def async_goto_dawn_pos_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_GOTO_DAWN_POS_CMD, None)
 
-    async def async_goto_dusk_pos_cmd(self, did):
+    async def async_goto_dusk_pos_cmd(self, did: str):
         return await self.async_send_device_command(did, APICAP_GOTO_DUSK_POS_CMD, None)
 
     @property

@@ -48,7 +48,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     def __init__(
         self,
         api: HomePilotApi,
-        did: int,
+        did: str,
         uid: str,
         name: str,
         device_number: str,
@@ -119,7 +119,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
             device_map=device_map,
         )
 
-    async def update_state(self, state, api):
+    async def update_state(self, state: Dict[str, Any], api: HomePilotApi):
         await super().update_state(state, api)
         self.cover_position = 100 - state["statusesMap"]["Position"]
         if self.has_tilt:
@@ -149,7 +149,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
     async def async_close_cover(self) -> None:
         await self.api.async_close_cover(self.did)
 
-    async def async_set_cover_position(self, new_position) -> None:
+    async def async_set_cover_position(self, new_position: int) -> None:
         if self.can_set_position:
             await self.api.async_set_position(self.did,
                                               100 - new_position)
@@ -165,7 +165,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         if self.has_tilt:
             await self.api.async_close_cover_tilt(self.did)
 
-    async def async_set_cover_tilt_position(self, new_position) -> None:
+    async def async_set_cover_tilt_position(self, new_position: int) -> None:
         if self.has_tilt and self.can_set_tilt_position:
             await self.api.async_set_cover_tilt_position(self.did,
                                                          100 - new_position)
@@ -176,11 +176,11 @@ class HomePilotCover(HomePilotAutoConfigDevice):
 
     # Weather program / contact commands are provided by HomePilotAutoConfigDevice.
 
-    async def async_set_ventilation_position_mode(self, mode) -> None:
+    async def async_set_ventilation_position_mode(self, mode: bool) -> None:
         if self.has_ventilation_position_config:
             await self.api.async_set_ventilation_position_mode(self.did, mode)
 
-    async def async_set_ventilation_position(self, position) -> None:
+    async def async_set_ventilation_position(self, position: int) -> None:
         if self.has_ventilation_position_config:
             await self.api.async_set_ventilation_position(self.did, 100 - position)
 
@@ -193,11 +193,11 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._cover_tilt_position
 
     @cover_tilt_position.setter
-    def cover_tilt_position(self, cover_tilt_position):
+    def cover_tilt_position(self, cover_tilt_position: int) -> None:
         self._cover_tilt_position = cover_tilt_position
 
     @cover_position.setter
-    def cover_position(self, cover_position):
+    def cover_position(self, cover_position: int) -> None:
         self._cover_position = cover_position
 
     @property
@@ -205,7 +205,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._is_closed
 
     @is_closed.setter
-    def is_closed(self, is_closed):
+    def is_closed(self, is_closed: bool) -> None:
         self._is_closed = is_closed
 
     @property
@@ -213,7 +213,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._is_closing
 
     @is_closing.setter
-    def is_closing(self, is_closing):
+    def is_closing(self, is_closing: bool) -> None:
         self._is_closing = is_closing
 
     @property
@@ -221,7 +221,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._is_opening
 
     @is_opening.setter
-    def is_opening(self, is_opening):
+    def is_opening(self, is_opening: bool) -> None:
         self._is_opening = is_opening
 
     @property
@@ -237,7 +237,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._has_tilt
 
     @has_tilt.setter
-    def has_tilt(self, has_tilt):
+    def has_tilt(self, has_tilt: bool) -> None:
         self._has_tilt = has_tilt
 
     @property
@@ -245,7 +245,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._can_set_tilt_position
 
     @can_set_tilt_position.setter
-    def can_set_tilt_position(self, can_set_tilt_position):
+    def can_set_tilt_position(self, can_set_tilt_position: bool) -> None:
         self._can_set_tilt_position = can_set_tilt_position
 
     @property
@@ -253,7 +253,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._has_ventilation_position_config
 
     @has_ventilation_position_config.setter
-    def has_ventilation_position_config(self, has_ventilation_position_config):
+    def has_ventilation_position_config(self, has_ventilation_position_config: bool) -> None:
         self._has_ventilation_position_config = has_ventilation_position_config
 
     @property
@@ -261,7 +261,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._ventilation_position_mode
 
     @ventilation_position_mode.setter
-    def ventilation_position_mode(self, ventilation_position_mode):
+    def ventilation_position_mode(self, ventilation_position_mode: bool) -> None:
         self._ventilation_position_mode = ventilation_position_mode
 
     @property
@@ -269,7 +269,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._ventilation_position
 
     @ventilation_position.setter
-    def ventilation_position(self, ventilation_position):
+    def ventilation_position(self, ventilation_position: int) -> None:
         self._ventilation_position = ventilation_position
 
     @property
@@ -281,7 +281,7 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._blocking_detection_status
 
     @blocking_detection_status.setter
-    def blocking_detection_status(self, blocking_detection_status):
+    def blocking_detection_status(self, blocking_detection_status: bool) -> None:
         self._blocking_detection_status = blocking_detection_status
 
     @property
@@ -293,5 +293,5 @@ class HomePilotCover(HomePilotAutoConfigDevice):
         return self._obstacle_detection_status
 
     @obstacle_detection_status.setter
-    def obstacle_detection_status(self, obstacle_detection_status):
+    def obstacle_detection_status(self, obstacle_detection_status: bool) -> None:
         self._obstacle_detection_status = obstacle_detection_status

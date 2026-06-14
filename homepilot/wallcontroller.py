@@ -1,4 +1,5 @@
 import asyncio
+from typing import Any, Dict
 
 from .const import (
     APICAP_DEVICE_TYPE_LOC,
@@ -22,7 +23,7 @@ class HomePilotWallController(HomePilotDevice):
     def __init__(
         self,
         api: HomePilotApi,
-        did: int,
+        did: str,
         uid: str,
         name: str,
         device_number: str,
@@ -81,7 +82,7 @@ class HomePilotWallController(HomePilotDevice):
             channels=channels,
         )
 
-    async def update_state(self, state, api):
+    async def update_state(self, state: Dict[str, Any], api: HomePilotApi):
         await super().update_state(state, api)
         if self.has_battery_low and "batteryLow" in state:
             self.battery_low_value = state["batteryLow"]
@@ -97,7 +98,7 @@ class HomePilotWallController(HomePilotDevice):
                 self._channels[i] = device_map[f"KEY_PUSH_CH{i}_EVT"]["timestamp"]
 
     @property
-    def channels(self):
+    def channels(self) -> dict:
         return self._channels
 
     @property
@@ -109,5 +110,5 @@ class HomePilotWallController(HomePilotDevice):
         return self._battery_low_value
 
     @battery_low_value.setter
-    def battery_low_value(self, battery_low_value):
+    def battery_low_value(self, battery_low_value: bool) -> None:
         self._battery_low_value = battery_low_value

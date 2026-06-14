@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from typing import Any, Dict
 from .api import HomePilotApi
 from .const import (
     APICAP_DEVICE_TYPE_LOC,
@@ -104,7 +105,7 @@ class HomePilotHub(HomePilotDevice):
             ]
         }
 
-    async def update_state(self, state, api):
+    async def update_state(self, state: Dict[str, Any], api: HomePilotApi):
         self.available = True
         self.fw_update_available = (
             state["status"]["update_status"] != "NO_UPDATE_AVAILABLE"
@@ -151,83 +152,83 @@ class HomePilotHub(HomePilotDevice):
         await self.api.async_update_firmware()
 
     @property
-    def hub_type(self):
+    def hub_type(self) -> str:
         return self._hub_type
 
     @property
-    def fw_version(self):
+    def fw_version(self) -> str:
         return self._fw_version
 
     @fw_version.setter
-    def fw_version(self, fw_version):
+    def fw_version(self, fw_version: str) -> None:
         self._fw_version = fw_version
 
     @property
-    def nodename(self):
+    def nodename(self) -> str:
         return self._nodename
 
     @property
-    def hw_platform(self):
+    def hw_platform(self) -> str:
         return self._hw_platform
 
     @property
-    def sw_platform(self):
+    def sw_platform(self) -> str:
         return self._sw_platform
 
     @property
-    def duofern_stick_version(self):
+    def duofern_stick_version(self) -> str:
         return self._duofern_stick_version
 
     @property
-    def fw_update_available(self):
+    def fw_update_available(self) -> bool:
         return self._fw_update_available
 
     @fw_update_available.setter
-    def fw_update_available(self, fw_update_available):
+    def fw_update_available(self, fw_update_available: bool) -> None:
         self._fw_update_available = fw_update_available
 
     @property
-    def release_notes(self):
+    def release_notes(self) -> str:
         return self._release_notes
 
     @release_notes.setter
-    def release_notes(self, release_notes):
+    def release_notes(self, release_notes: str) -> None:
         self._release_notes = release_notes
 
     @property
-    def download_progress(self):
+    def download_progress(self) -> int | bool:
         return self._download_progress
 
     @download_progress.setter
-    def download_progress(self, download_progress):
+    def download_progress(self, download_progress: int | bool) -> None:
         self._download_progress = download_progress
 
     @property
-    def auto_update(self):
+    def auto_update(self) -> bool:
         return self._auto_update
 
     @auto_update.setter
-    def auto_update(self, auto_update):
+    def auto_update(self, auto_update: bool) -> None:
         self._auto_update = auto_update
 
     @property
-    def fw_update_version(self):
+    def fw_update_version(self) -> str:
         return self._fw_update_version
 
     @fw_update_version.setter
-    def fw_update_version(self, fw_update_version):
+    def fw_update_version(self, fw_update_version: str) -> None:
         self._fw_update_version = fw_update_version
 
     @property
-    def led_status(self):
+    def led_status(self) -> bool:
         return self._led_status
 
     @led_status.setter
-    def led_status(self, led_status):
+    def led_status(self, led_status: bool) -> None:
         self._led_status = led_status
 
     @property
-    def extra_attributes(self):
+    def extra_attributes(self) -> Dict[str, Any]:
         extra_attributes = {
             "HW Platform": self.hw_platform,
             "SW Platform": self.sw_platform,

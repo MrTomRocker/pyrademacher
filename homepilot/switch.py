@@ -20,7 +20,7 @@ class HomePilotSwitch(HomePilotAutoConfigDevice):
     def __init__(
         self,
         api: HomePilotApi,
-        did: int,
+        did: str,
         uid: str,
         name: str,
         device_number: str,
@@ -70,7 +70,7 @@ class HomePilotSwitch(HomePilotAutoConfigDevice):
             device_map=device_map,
         )
 
-    async def update_state(self, state, api):
+    async def update_state(self, state: Dict[str, Any], api: HomePilotApi):
         await super().update_state(state, api)
         self.is_on = state["statusesMap"]["Position"] != 0
         device = await api.get_device(self.did)
@@ -82,7 +82,7 @@ class HomePilotSwitch(HomePilotAutoConfigDevice):
         return self._is_on
 
     @is_on.setter
-    def is_on(self, is_on):
+    def is_on(self, is_on: bool) -> None:
         self._is_on = is_on
 
     async def async_turn_on(self) -> None:

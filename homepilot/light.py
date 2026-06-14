@@ -26,13 +26,13 @@ class HomePilotLight(HomePilotAutoConfigDevice):
     _b_value: int
     _has_color_temp: bool
     _color_temp_value: int
-    _has_color_mode: int
-    _color_mode: str
+    _has_color_mode: bool
+    _color_mode_value: str
 
     def __init__(
         self,
         api: HomePilotApi,
-        did: int,
+        did: str,
         uid: str,
         name: str,
         device_number: str,
@@ -91,7 +91,7 @@ class HomePilotLight(HomePilotAutoConfigDevice):
             device_map=device_map,
         )
 
-    async def update_state(self, state, api):
+    async def update_state(self, state: Dict[str, Any], api: HomePilotApi):
         await super().update_state(state, api)
         self.is_on = state["statusesMap"]["Position"] != 0
         self.brightness = state["statusesMap"]["Position"]
@@ -100,7 +100,7 @@ class HomePilotLight(HomePilotAutoConfigDevice):
             self.g_value: int = int(state["statusesMap"]["rgb"].lower()[4:6], 16)
             self.b_value: int = int(state["statusesMap"]["rgb"].lower()[6:8], 16)
         self.color_temp_value = state["statusesMap"]["colortemperature"] if self.has_color_temp else 0
-        self.color_mode_value = state["statusesMap"]["colormode"] if self.has_color_mode else 0
+        self.color_mode_value = state["statusesMap"]["colormode"] if self.has_color_mode else ""
         device = await api.get_device(self.did)
         device_map = HomePilotDevice.get_capabilities_map(device)
         await super().update_device_state(state, device_map)
@@ -110,7 +110,7 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         return self._is_on
 
     @is_on.setter
-    def is_on(self, is_on):
+    def is_on(self, is_on: bool) -> None:
         self._is_on = is_on
 
     @property
@@ -118,19 +118,19 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         return self._brightness
 
     @brightness.setter
-    def brightness(self, brightness):
+    def brightness(self, brightness: int) -> None:
         self._brightness = brightness
 
     @property
-    def has_rgb(self) -> int:
+    def has_rgb(self) -> bool:
         return self._has_rgb
 
     @property
-    def has_color_temp(self) -> int:
+    def has_color_temp(self) -> bool:
         return self._has_color_temp
 
     @property
-    def has_color_mode(self) -> int:
+    def has_color_mode(self) -> bool:
         return self._has_color_mode
 
     @property
@@ -138,7 +138,7 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         return self._r_value
 
     @r_value.setter
-    def r_value(self, r_value):
+    def r_value(self, r_value: int) -> None:
         self._r_value = r_value
 
     @property
@@ -146,7 +146,7 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         return self._g_value
 
     @g_value.setter
-    def g_value(self, g_value):
+    def g_value(self, g_value: int) -> None:
         self._g_value = g_value
 
     @property
@@ -154,7 +154,7 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         return self._b_value
 
     @b_value.setter
-    def b_value(self, b_value):
+    def b_value(self, b_value: int) -> None:
         self._b_value = b_value
 
     @property
@@ -162,15 +162,15 @@ class HomePilotLight(HomePilotAutoConfigDevice):
         return self._color_temp_value
 
     @color_temp_value.setter
-    def color_temp_value(self, color_temp_value):
+    def color_temp_value(self, color_temp_value: int) -> None:
         self._color_temp_value = color_temp_value
 
     @property
-    def color_mode_value(self) -> int:
+    def color_mode_value(self) -> str:
         return self._color_mode_value
 
     @color_mode_value.setter
-    def color_mode_value(self, color_mode_value):
+    def color_mode_value(self, color_mode_value: str) -> None:
         self._color_mode_value = color_mode_value
 
     async def async_turn_on(self) -> None:
@@ -179,14 +179,14 @@ class HomePilotLight(HomePilotAutoConfigDevice):
     async def async_turn_off(self) -> None:
         await self.api.async_turn_off(self.did)
 
-    async def async_set_brightness(self, new_brightness) -> None:
+    async def async_set_brightness(self, new_brightness: int) -> None:
         await self.api.async_set_position(self.did, new_brightness)
 
-    async def async_set_rgb(self, r, g, b) -> None:
+    async def async_set_rgb(self, r: int, g: int, b: int) -> None:
         new_rgb: str = f"0x{(r * pow(2, 16) + g * pow(2, 8) + b):06X}"
         await self.api.async_set_rgb(self.did, new_rgb)
 
-    async def async_set_color_temp(self, new_color_temp) -> None:
+    async def async_set_color_temp(self, new_color_temp: int) -> None:
         await self.api.async_set_color_temp(self.did, new_color_temp)
 
     async def async_toggle(self) -> None:
